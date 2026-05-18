@@ -3,6 +3,14 @@ chcp 65001 >nul
 title 发文张 - 打开网页
 cd /d "%~dp0"
 
+powershell -NoProfile -Command "Get-ChildItem -LiteralPath '%~dp0' -Filter '*.bat' -ErrorAction SilentlyContinue | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
+
+if not exist "%~dp0package.json" (
+    echo [错误] 请先解压完整项目后再运行。详见：从GitHub使用说明.txt
+    pause
+    exit /b 1
+)
+
 echo 正在检查并启动热榜服务...
 echo.
 

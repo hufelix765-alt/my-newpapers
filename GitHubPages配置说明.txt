@@ -1,0 +1,26 @@
+你的在线地址：https://hufelix765-alt.github.io/my-newpapers/
+========================================
+
+一、为什么手机能打开页面，但热榜可能没数据？
+--------------------------------------------
+GitHub Pages 只托管静态 HTML，没有 /api/hot 接口。
+必须把「接口」部署到 Vercel，并在 fwz-config.json 里写上地址。
+
+二、操作步骤（做一次即可）
+--------------------------
+1. 打开 https://vercel.com ，用 GitHub 登录
+2. Import 本项目 → Deploy
+3. Settings → Environment Variables → 添加 OPENAI_API_KEY
+4. 复制 Vercel 地址，例如：https://xxx.vercel.app
+5. 编辑本仓库 public/fwz-config.json ：
+   "apiBase": "https://xxx.vercel.app"
+6. git push ，等 1～2 分钟 Pages 更新
+7. 手机微信打开：https://hufelix765-alt.github.io/my-newpapers/
+
+三、临时在手机里配置（不改文件）
+--------------------------------
+打开网页 → API 设置 → 热榜服务地址 → 粘贴 Vercel 地址 → 保存
+
+四、电脑本地仍可用
+------------------
+双击 启动网站.bat（不依赖 GitHub / Vercel）

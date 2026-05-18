@@ -918,14 +918,58 @@ function isChinese(t){return (t.match(/[\u4e00-\u9fff]/g)||[]).length>=4}
 function isTechCat(){return S.cat==='all'}
 function isCarCat(){return isCarCategory(S.cat)}
 
-function getHotApiBase(){
+function isLocalDev(){
+  const h=location.hostname;
+  return location.protocol==='file:'||h==='localhost'||h==='127.0.0.1';
+}
+function isGithubPages(){
+  return /\.github\.io$/i.test(location.hostname);
+}
+function getGithubPagesRoot(){
+  if(!isGithubPages())return '/';
+  const parts=location.pathname.split('/').filter(Boolean);
+  if(!parts.length)return '/';
+  const last=parts[parts.length-1];
+  if(/\.(html?|htm)$/i.test(last))parts.pop();
+  if(!parts.length)return '/';
+  return '/'+parts[0]+'/';
+}
+function getSiteAssetUrl(name){
+  const n=String(name||'').replace(/^\//,'');
+  if(isGithubPages())return location.origin+getGithubPagesRoot()+n;
+  return location.origin.replace(/\/$/,'')+'/'+n;
+}
+let _publicConfig=null;
+let _publicConfigLoaded=false;
+async function loadPublicConfig(){
+  if(_publicConfigLoaded)return _publicConfig||{};
+  _publicConfigLoaded=true;
+  if(!/^https?:/.test(location.protocol)){_publicConfig={};return _publicConfig;}
+  try{
+    const r=await fetch(getSiteAssetUrl('fwz-config.json')+'?_'+Date.now(),{cache:'no-store'});
+    _publicConfig=r.ok?await r.json():{};
+  }catch(e){_publicConfig={};}
+  return _publicConfig||{};
+}
+function getConfiguredApiBase(){
   const saved=(localStorage.getItem('fwz_hot_api')||'').replace(/\/$/,'');
   if(saved)return saved;
-  if(location.protocol.startsWith('http')){
-    const h=location.hostname;
-    if(h==='localhost'||h==='127.0.0.1')return location.origin;
-  }
+  const cfg=_publicConfig||{};
+  const fromCfg=String(cfg.apiBase||'').replace(/\/$/,'');
+  if(fromCfg)return fromCfg;
+  return '';
+}
+function getHotApiBase(){
+  const configured=getConfiguredApiBase();
+  if(configured)return configured;
+  if(isGithubPages())return '';
+  if(location.protocol.startsWith('http'))return location.origin.replace(/\/$/,'');
   return 'http://localhost:3000';
+}
+function hotServiceHint(){
+  if(isGithubPages()&&!getConfiguredApiBase()&&!localStorage.getItem('fwz_hot_api'))
+    return '请先在「API 设置」填写 Vercel 热榜地址，或配置 fwz-config.json 的 apiBase';
+  return isLocalDev()?'请双击「打开网页.bat」或「启动网站.bat」':'请检查网络后下拉刷新';
 }
 const HOT_LAUNCHER='http://127.0.0.1:38765';
 let _hotWakeTried=false;
@@ -937,6 +981,7 @@ async function pingHotApi(){
   }catch(e){return false}
 }
 async function tryWakeHotServer(){
+  if(!isLocalDev())return;
   if(_hotWakeTried)return;
   _hotWakeTried=true;
   try{await fetch(HOT_LAUNCHER+'/wake',{cache:'no-store'})}catch(e){}
@@ -958,6 +1003,10 @@ async function waitForHotApi(opts){
 }
 async function ensureHotService(silent){
   if(await pingHotApi())return true;
+  if(!isLocalDev()){
+    if(!silent)err('热榜连接失败，'+hotServiceHint());
+    return false;
+  }
   if(!silent)ok('正在启动热榜服务，请稍候…');
   return waitForHotApi({
     maxMs:90000,
@@ -1471,7 +1520,7 @@ async function search(silent){
         if(!online){
           online=await ensureHotService(false);
           if(online)return search(silent);
-          err('热榜服务未连接：请双击「打开网页.bat」（会自动启动服务），或「启动网站.bat」');
+          err('热榜服务未连接：'+hotServiceHint());
           $('cnt').textContent=chLabel+' · 未连接';
         }else{
           err(chLabel+' 拉取失败：'+((e&&e.message)||'请稍后点「立即更新」'));
@@ -2099,15 +2148,19 @@ function normalizeActiveCat(){
 }
 (async function boot(){
   normalizeActiveCat();
-  const needHot=location.protocol==='file:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(isGithubPages())await loadPublicConfig();
+  const needHot=isLocalDev();
   if(needHot)tryWakeHotServer();
+  if(isGithubPages()&&!getConfiguredApiBase()&&!localStorage.getItem('fwz_hot_api')){
+    ok('当前为 GitHub 在线页：请在「API 设置」填写 Vercel 部署地址（热榜/AI 接口）');
+  }
   syncServerAiConfig().then(()=>setDemoUI());
   search(false).catch(e=>{
     console.error(e);
     if(e&&e.name==='AbortError')return;
     err((e&&e.message)||'页面加载失败，请刷新重试');
     if($('btnSearch'))$('btnSearch').disabled=false;
-    if($('list'))$('list').innerHTML='<div class="empty">加载失败<br><small>请双击「打开网页.bat」或点「立即更新」</small></div>';
+    if($('list'))$('list').innerHTML='<div class="empty">加载失败<br><small>'+esc(hotServiceHint())+'</small></div>';
   });
   if(needHot){
     waitForHotApi({maxMs:BOOT_HOT_WAIT_MS,interval:800}).then(ok=>{

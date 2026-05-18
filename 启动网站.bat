@@ -3,6 +3,17 @@ chcp 65001 >nul
 title 发文张 - 知识内容工坊
 cd /d "%~dp0"
 
+REM 解除从 GitHub/ZIP 下载后 Windows 可能加的“锁定”
+powershell -NoProfile -Command "Get-ChildItem -LiteralPath '%~dp0' -Filter '*.bat' -ErrorAction SilentlyContinue | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
+
+if not exist "%~dp0package.json" (
+    echo [错误] 请先把 GitHub 下载的 ZIP 完整解压，再进入文件夹双击本文件。
+    echo        不要隔着压缩包运行，也不要只复制单个 bat 文件。
+    echo        详见：从GitHub使用说明.txt
+    pause
+    exit /b 1
+)
+
 where npm >nul 2>&1
 if errorlevel 1 (
     echo [错误] 未找到 Node.js，请先安装：https://nodejs.org/

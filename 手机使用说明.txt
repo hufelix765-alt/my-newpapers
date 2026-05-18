@@ -1,0 +1,39 @@
+发文张 · 手机 / 微信打开说明
+==============================
+
+手机不能用「启动网站.bat」，需要打开【在线网址】。
+
+一、你自己部署一次（推荐 Vercel，免费）
+----------------------------------------
+1. 把项目推到 GitHub（已完成可跳过）
+2. 打开 https://vercel.com 用 GitHub 登录
+3. Add New Project → 选你的 fawenzhang 仓库 → Deploy
+4. 部署完成后得到网址，例如：
+   https://fawenzhang.vercel.app
+5. 在 Vercel 项目 Settings → Environment Variables 添加：
+   OPENAI_API_KEY = 你的密钥（DeepSeek / Groq 等）
+   可选：OPENAI_BASE_URL、OPENAI_MODEL（见 .env.example）
+6. 重新 Deploy 一次
+
+二、发给微信好友的链接（复制这一行）
+------------------------------------
+https://你的项目名.vercel.app/app.html
+
+也可只发根地址（会自动跳转）：
+https://你的项目名.vercel.app/
+
+三、手机使用注意
+----------------
+1. 微信里点链接 → 选择「在浏览器打开」更稳定
+2. 热榜、抓取、AI 概括都走云端，无需安装 Node.js
+3. 链接抓取部分网站（抖音视频页等）可能仍受限，可粘贴链接到「内容审核」
+4. API Key 在服务器环境变量里配置，不要发给陌生人
+
+四、电脑本地 vs 手机在线
+--------------------------
+| 方式 | 适合 | 链接 |
+|------|------|------|
+| 启动网站.bat | 仅 Windows 本机 | localhost |
+| Vercel 在线版 | 手机、微信、任意设备 | https://xxx.vercel.app/app.html |
+
+详细步骤见 README.md「手机 / 微信访问」

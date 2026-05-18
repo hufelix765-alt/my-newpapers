@@ -38,7 +38,12 @@ h2{font-size:.95rem;margin-bottom:2px}
   .review-pane{flex:1;min-height:0;overflow:auto}
 }
 @media(max-width:959px){
-  .panel-discover .list{max-height:min(36vh,320px)}
+  .panel-discover .list{max-height:min(42vh,420px)}
+  .layout-main{gap:12px}
+  .tabs,.ch-tabs{gap:6px}
+  .tab,.ch-tab{padding:6px 10px;font-size:.72rem}
+  .hdr{flex-direction:column;align-items:flex-start}
+  .editor-card textarea{min-height:min(38vh,280px)}
 }
 .panel-workspace .workspace-hint{margin-bottom:10px}
 .review-toolbar{margin-bottom:8px}
@@ -333,4 +338,8 @@ const html = buildHtml();
 writeFileSync(outPath, html, 'utf8');
 mkdirSync(join(__dirname, 'public'), { recursive: true });
 writeFileSync(publicPath, html, 'utf8');
+const ghCfg = join(__dirname, 'public', 'fwz-config.json');
+if (readFileSync(ghCfg, 'utf8')) {
+  writeFileSync(join(__dirname, 'fwz-config.json'), readFileSync(ghCfg, 'utf8'), 'utf8');
+}
 console.log('Wrote', outPath, 'and', publicPath);

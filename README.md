@@ -2,6 +2,80 @@
 
 一站式中文内容工具：多平台热榜选题 → 链接抓取 / 审阅 → AI 结构化概括 → 导出到 DeepSeek / 豆包等。
 
+## 从微信 / GitHub 打开的朋友（必读）
+
+**GitHub 链接不能在微信里直接运行程序。** 微信里点 `启动网站.bat` 只会看到代码文本，不会启动网站。
+
+| 情况 | 说明 |
+|------|------|
+| 微信里打开 GitHub | 只能浏览，**不能**双击运行 bat |
+| 手机 | **不支持**，必须用 **Windows 电脑** |
+| 正确做法 | 电脑浏览器打开仓库 → **Code → Download ZIP** → **解压** → 双击 **`启动网站.bat`** |
+
+**前置条件：** 安装 [Node.js LTS](https://nodejs.org/)（安装后重启电脑更稳妥）。
+
+更详细的图文步骤见仓库内 **[从GitHub使用说明.txt](./从GitHub使用说明.txt)**。
+
+## GitHub Pages + 手机访问（你当前的方案）
+
+页面地址示例：[https://hufelix765-alt.github.io/my-newpapers/](https://hufelix765-alt.github.io/my-newpapers/)
+
+**重要：** GitHub Pages **只能放网页**，不能跑热榜/AI 接口。需要 **再部署一个 Vercel 后端**（免费），手机才能正常用热榜。
+
+### 两步配置
+
+| 步骤 | 做什么 | 结果 |
+|------|--------|------|
+| ① 网页 | GitHub Pages（已有） | 手机可打开界面 |
+| ② 接口 | [Vercel](https://vercel.com) 部署同一仓库 | 提供 `/api/hot` 等 |
+
+1. 在 Vercel 导入本仓库并 Deploy，记下地址，例如 `https://fawenzhang.vercel.app`
+2. 在 Vercel 配置环境变量 `OPENAI_API_KEY`（及其他可选项）
+3. 编辑仓库 **`public/fwz-config.json`**，把 `apiBase` 改成你的 Vercel 地址：
+
+```json
+{
+  "apiBase": "https://你的项目.vercel.app"
+}
+```
+
+4. `git push` 后等 GitHub Pages 更新（或 Actions 自动部署）
+5. 微信分享：**https://hufelix765-alt.github.io/my-newpapers/**
+
+也可在手机打开后 → **API 设置** → **热榜服务地址** 填 Vercel 地址 → 保存。
+
+---
+
+## 手机 / 微信访问（纯 Vercel 版）
+
+**手机无法运行 `.bat`**，也可只用 Vercel 一个链接（不用 GitHub Pages）。
+
+### 一键部署（Vercel，免费）
+
+1. 登录 [vercel.com](https://vercel.com)，用 GitHub 导入本仓库  
+2. 直接点 **Deploy**（构建命令已配置：`node gen.mjs && next build`）  
+3. 部署完成后在 **Settings → Environment Variables** 添加：  
+   - `OPENAI_API_KEY`（必填，DeepSeek / Groq 等）  
+   - 可选：`OPENAI_BASE_URL`、`OPENAI_MODEL`（见 `.env.example`）  
+4. 重新部署一次  
+
+**发给微信的链接：**
+
+```text
+https://你的项目名.vercel.app/app.html
+```
+
+根路径 `/` 会自动跳转到 `app.html`。更细说明见 **[手机使用说明.txt](./手机使用说明.txt)**。
+
+| 使用场景 | 方式 |
+|----------|------|
+| Windows 本机 | 解压 ZIP → 双击 `启动网站.bat` |
+| 手机 / 微信 | 打开 Vercel 在线链接，无需安装 |
+
+**可转发给朋友的微信话术：**
+
+> 请用 **Windows 电脑** 浏览器打开 GitHub 链接，点绿色 **Code** → **Download ZIP**，解压后双击 **启动网站.bat**（需先安装 Node.js）。不要在微信里直接点 bat，手机也用不了。
+
 ## 功能
 
 - **获取文章**：今日头条、百度、微博、抖音、知乎、B站、小红书热榜；汽车 / 专利 / 其他干货分类

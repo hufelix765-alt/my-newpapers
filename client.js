@@ -1,4 +1,4 @@
-const HOUR2 = 2 * 60 * 60 * 1000;
+const HOUR2 = 2 * 60 * 60 * 1000;update
 const DISPLAY_MAX = 60;
 const DISPLAY_MAX_TOPIC = 120;
 const MIN_DISPLAY = 20;

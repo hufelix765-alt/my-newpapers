@@ -1,0 +1,2428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>发文张 - 各行各业中文精选</title>
+<style>
+:root{--ink:#1f2937;--paper:#e4e7ec;--surface:#f8f9fb;--accent:#c45c26;--sage:#5c7a6b;--muted:#6b7280;--border:#cfd4dc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+header{position:sticky;top:0;z-index:50;background:#f3f4f6;border-bottom:1px solid var(--border);padding:12px 20px}
+.wrap{max-width:1680px;margin:0 auto}
+.hdr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.logo b{font-size:1.2rem}
+.logo small{display:block;color:var(--muted);font-size:.72rem}
+.update-bar{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.update-bar button{padding:4px 10px;font-size:.75rem}
+main.wrap{padding:12px 20px 36px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:0;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+h2{font-size:.95rem;margin-bottom:2px}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.hint{font-size:.76rem;color:var(--muted);margin-bottom:8px;line-height:1.45}
+.layout-main{display:grid;gap:16px;grid-template-columns:1fr;align-items:start}
+@media(min-width:960px){
+  .layout-main{grid-template-columns:minmax(300px,40%) minmax(360px,60%)}
+  .panel-discover .list{max-height:calc(100vh - 200px)}
+  .panel-workspace{position:sticky;top:68px;max-height:calc(100vh - 80px);display:flex;flex-direction:column}
+  .review-pane{flex:1;min-height:0;overflow:auto}
+}
+@media(max-width:959px){
+  .panel-discover .list{max-height:min(36vh,320px)}
+}
+.panel-workspace .workspace-hint{margin-bottom:10px}
+.review-toolbar{margin-bottom:8px}
+.review-toolbar input{flex:1}
+.review-layout{display:grid;gap:14px;grid-template-columns:1fr;min-height:min(52vh,420px)}
+@media(min-width:640px){
+  .review-layout{grid-template-columns:minmax(150px,188px) 1fr}
+}
+.review-aside{display:flex;flex-direction:column;gap:8px;font-size:.76rem}
+.review-aside .hint{margin-bottom:4px;line-height:1.4}
+.review-aside .ok{margin:0;padding:8px 10px;font-size:.74rem}
+.review-main{min-width:0;display:flex;flex-direction:column}
+.editor-card{flex:1;display:flex;flex-direction:column;background:linear-gradient(180deg,#eceef2 0%,#fff 55%);border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.editor-card label.hint{margin:0 0 4px;font-weight:600;color:var(--ink);font-size:.74rem}
+.editor-card input{margin-bottom:10px;font-size:.9rem}
+.editor-card textarea{flex:1;min-height:min(42vh,360px);resize:vertical;line-height:1.55;font-size:.86rem}
+.status-pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.7rem;font-weight:600;background:#d8dce3;color:var(--muted)}
+.status-pill.pass{background:#d1fae5;color:#065f46}
+.ai-jump-row .btn-s{flex:1;min-width:64px;font-size:.7rem;padding:6px 8px}
+.review-empty{display:flex;align-items:center;justify-content:center;min-height:200px;color:var(--muted);font-size:.85rem;text-align:center;padding:24px;border:1px dashed var(--border);border-radius:12px;background:#e9ecf1}
+.card-row-hot .card-main{width:100%;padding:8px 10px}
+.card-row-hot .card-main p{-webkit-line-clamp:1}
+.card-row-hot .card-side{display:none}
+.card-row-hot{margin-bottom:6px}
+.panel-org #org{max-height:min(36vh,320px);overflow-y:auto}
+.panel-img #img textarea,.panel-img #vidPrompt{max-height:min(22vh,200px)}
+.media-tabs{display:flex;gap:6px;margin:8px 0 10px}
+.media-tab{flex:1;padding:7px;border:1px solid var(--border);border-radius:8px;background:var(--paper);cursor:pointer;font-size:.8rem}
+.media-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.vid-tools{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.vid-tools label{font-size:.78rem;padding:6px 11px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.vid-tools input{display:none}
+.vid-tools label.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.panel-review textarea{min-height:88px}
+.publish-row{scroll-margin-top:72px;margin-bottom:32px}
+input,textarea,button,select{font:inherit}
+input[type=text],textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff}
+textarea{min-height:120px;resize:vertical}
+.btn{padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:500;font-size:.82rem}
+.btn-p{background:var(--accent);color:#fff}
+.btn-d{background:var(--ink);color:#fff;width:100%}
+.btn-g{background:var(--sage);color:#fff;width:100%}
+.btn-o{background:var(--surface);border:1px solid var(--border)}
+.btn-s{padding:5px 9px;font-size:.72rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tabs{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.tab{padding:5px 10px;border-radius:16px;border:1px solid var(--border);background:var(--paper);cursor:pointer;font-size:.76rem}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ch-tabs{display:flex;gap:5px;margin:10px 0 6px;flex-wrap:wrap}
+.ch-tab{padding:5px 11px;border-radius:16px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:.74rem}
+.ch-tab:hover{border-color:var(--accent);color:var(--accent)}
+.ch-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.discover-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 10px;flex-wrap:wrap}
+.discover-meta .hint{margin:0}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;align-items:center}
+.tag-rank{background:#1a1614;color:#fff;font-weight:600}
+.tag-heat{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.tag-time{background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd;font-size:.6rem}
+.tag-sync{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:.6rem}
+.tag-pub{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;font-size:.6rem}
+.tag-update{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;font-size:.6rem}
+.tag-warn{background:#fef2f2;color:#991b1b;border:1px dashed #fca5a5}
+.list{overflow:auto}
+.card-row{display:flex;gap:8px;margin-bottom:8px;align-items:stretch}
+.card-main{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--surface);min-width:0}
+.card-main:hover{border-color:var(--accent)}
+.card-main.on{border-color:var(--accent);box-shadow:0 0 0 2px rgba(196,92,38,.2)}
+.card-main h3{font-size:.88rem;margin:5px 0 3px;line-height:1.35}
+.card-main p{font-size:.76rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-actions{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap;position:relative;z-index:2}
+.link-src{font-size:.72rem;color:var(--accent);text-decoration:none;font-weight:500;position:relative;z-index:3;pointer-events:auto}
+.link-src:hover{text-decoration:underline}
+.tag-niche{background:#dbeafe;color:#1e40af}
+.tag-dry{background:#fef3c7;color:#92400e}
+.tag-hot{background:#fee2e2;color:#991b1b}
+.tag-new{background:#e0e7ff;color:#3730a3}
+.tag-video{background:#fce7f3;color:#9d174d}
+.tag-learn{background:#d1fae5;color:#065f46}
+.tag-car{background:#e0f2fe;color:#0369a1}
+.tag-car-int{background:#fef3c7;color:#92400e}
+.tag-car-ext{background:#dbeafe;color:#1d4ed8}
+.tag-car-seat{background:#ede9fe;color:#5b21b6}
+.tag-pat{background:#ecfdf5;color:#047857}
+.tag-pat-new{background:#fff7ed;color:#c2410c}
+.card-side{width:108px;flex-shrink:0;border:1px solid var(--border);border-radius:10px;padding:8px;background:#eceef2;display:flex;flex-direction:column;gap:6px}
+@media(max-width:1280px){.card-row{flex-direction:column}.card-side{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center}.card-side .btn-s{width:auto}}
+.card-side .btn-s{width:100%}
+.sim-toggle{display:flex;align-items:center;gap:4px;font-size:.65rem;color:var(--muted);cursor:pointer}
+.sim-toggle input{width:auto;margin:0}
+.sim-list{font-size:.65rem;color:var(--muted);max-height:72px;overflow:auto;line-height:1.4}
+.sim-list a{color:var(--accent);text-decoration:none;display:block;margin-top:3px}
+.btn-fav-on{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+.btn-fav-on:hover{background:#fde68a}
+.tag{font-size:.62rem;padding:2px 5px;border-radius:4px;background:#eee;margin-right:3px}
+.tag-src{background:#fde8d8}
+.tag-val{background:#d1fae5;color:#065f46}
+.score{font-size:.65rem;color:var(--sage);margin-left:4px}
+.lock{text-align:center;padding:20px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;color:#92400e;font-size:.88rem}
+.empty{text-align:center;padding:28px;color:var(--muted);border:2px dashed var(--border);border-radius:10px;font-size:.88rem}
+.ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;padding:10px;border-radius:8px;font-size:.82rem;margin-bottom:10px}
+.err{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:10px;border-radius:8px;margin-bottom:12px;font-size:.88rem}
+.wc{display:flex;gap:6px;margin:10px 0}
+.wc button{flex:1;padding:7px;border:1px solid var(--border);border-radius:6px;background:var(--paper);cursor:pointer;font-size:.82rem}
+.wc button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:var(--surface);border-radius:14px;padding:20px;width:100%;max-width:400px}
+.imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.imgs img{width:100%;border-radius:8px}
+.hidden{display:none!important}
+.filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.filter-bar label{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:4px}
+.publish-row{border:2px solid var(--accent);background:linear-gradient(180deg,#fff 0%,#fffbf7 100%);padding:16px 18px}
+.publish-row h2{color:var(--accent)}
+.zhihu-types{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.zhihu-types label{font-size:.8rem;padding:6px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.zhihu-types input{display:none}
+.zhihu-types label.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;font-size:.75rem}
+.step{padding:4px 10px;border-radius:6px;background:#f0ebe4;color:var(--muted)}
+.step.done{background:#d1fae5;color:#065f46}
+.step.cur{background:var(--accent);color:#fff}
+.preview-box{background:#eceef2;border:1px solid var(--border);border-radius:10px;padding:12px;max-height:200px;overflow:auto;font-size:.85rem;white-space:pre-wrap;margin:10px 0}
+.org-draft{background:#eceef2;border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px}
+.org-draft p{font-size:.86rem;white-space:pre-wrap;max-height:min(32vh,280px);overflow:auto;line-height:1.55;margin:8px 0 0}
+.org-draft b{font-size:.92rem;display:block}
+.btn-zhihu{background:#0066ff;color:#fff;width:100%;font-size:.95rem;padding:12px;margin-top:6px}
+.btn-zhihu:disabled{opacity:.5}
+.pub-hist{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.pub-hist h3{font-size:.85rem;margin-bottom:8px;color:var(--muted)}
+.pub-item{font-size:.78rem;padding:8px 10px;background:#eceef2;border-radius:8px;margin-bottom:6px;border:1px solid var(--border)}
+.pub-item b{display:block;margin-bottom:3px;color:var(--ink)}
+.pub-item span{color:var(--muted)}
+.fw-tabs{display:flex;gap:6px;margin:8px 0 10px}
+.fw-tabs button{flex:1;padding:7px;border:1px solid var(--border);border-radius:8px;background:var(--paper);cursor:pointer;font-size:.78rem}
+.fw-tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.analyze-drop{border:2px dashed var(--border);border-radius:12px;padding:16px;text-align:center;background:#e9ecf1;margin:10px 0;cursor:pointer}
+.analyze-drop:hover{border-color:var(--accent)}
+.analyze-previews{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.analyze-previews img{max-width:120px;max-height:80px;border-radius:8px;border:1px solid var(--border)}
+.analyze-result{background:#f0fdf4;border:1px solid #a7f3d0;padding:12px;border-radius:10px;font-size:.85rem;max-height:200px;overflow:auto;white-space:pre-wrap;margin:10px 0}
+.modal-box.wide{max-width:640px;max-height:92vh;overflow:auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hdr">
+    <div class="logo"><b>发文张</b><small>获取文章 · 发布</small></div>
+    <div class="update-bar">
+      <span id="nextUpdate">下次更新 --:--:--</span>
+      <label class="sim-toggle"><input type="checkbox" id="globalAuto"/> 每2小时自动更新</label>
+      <button class="btn btn-o btn-s" id="btnRefreshNow">立即更新</button>
+      <button class="btn btn-o" id="btnAnalyze">素材分析</button>
+      <button class="btn btn-o" id="btnSettings">API 设置</button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+<div id="err" class="err hidden"></div>
+<div class="box">
+  <div class="row">
+    <input type="text" id="q" placeholder="搜索关键词，如：新车、专利、座椅、新能源…" style="flex:1"/>
+    <button class="btn btn-p" id="btnSearch">搜索</button>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-c="all">全部</button>
+    <button class="tab" data-c="car">汽车</button>
+    <button class="tab" data-c="carInt">汽车内饰件</button>
+    <button class="tab" data-c="carExt">汽车外饰件</button>
+    <button class="tab" data-c="carSeat">汽车座椅</button>
+    <button class="tab" data-c="patHome">家电专利</button>
+    <button class="tab" data-c="patCar">汽车专利</button>
+    <button class="tab" data-c="patSeat">座椅专利</button>
+    <button class="tab" data-c="fun">趣事</button>
+    <button class="tab" data-c="other">其他</button>
+  </div>
+</div>
+<div class="layout-main">
+  <section class="box panel-discover">
+    <div class="panel-head"><h2>获取文章</h2><span class="hint" style="margin:0">热榜与资讯 · 点频道筛选</span></div>
+    <div class="ch-tabs" id="chTabs">
+      <button type="button" class="ch-tab on" data-ch="all">全部热榜</button>
+      <button type="button" class="ch-tab" data-ch="toutiao">今日头条</button>
+      <button type="button" class="ch-tab" data-ch="baidu">百度热搜</button>
+      <button type="button" class="ch-tab" data-ch="weibo">微博</button>
+      <button type="button" class="ch-tab" data-ch="douyin">抖音</button>
+      <button type="button" class="ch-tab" data-ch="zhihu">知乎热榜</button>
+      <button type="button" class="ch-tab" data-ch="bilibili">哔哩哔哩</button>
+      <button type="button" class="ch-tab" data-ch="xiaohongshu">小红书</button>
+    </div>
+    <div class="discover-meta">
+      <span class="hint" id="cnt">加载中…</span>
+      <div class="row" style="margin:0">
+        <label id="onlyValuableWrap" style="display:none"><input type="checkbox" id="onlyValuable" checked/> RSS精选</label>
+        <button type="button" class="btn btn-o btn-s" id="btnFavs">我的收藏</button>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+  <section class="box panel-workspace">
+    <h2>内容审核</h2>
+    <p class="hint workspace-hint">左侧选选题 · 粘贴链接抓取 · 右侧编辑标题与正文</p>
+    <div class="review-toolbar row">
+      <input type="text" id="reviewUrl" placeholder="粘贴网页 / 知乎 / B站 / 新闻链接…"/>
+      <button type="button" class="btn btn-p" id="btnFetchUrl">抓取链接</button>
+    </div>
+    <input type="file" id="file" class="hidden" accept=".txt,.md,.json,.csv,.html,.pdf"/>
+    <button type="button" class="btn btn-o btn-s" style="margin-bottom:10px" id="btnUpload">上传本地文件</button>
+    <div id="review" class="review-pane"></div>
+  </section>
+  <section class="box publish-row" hidden aria-hidden="true">
+    <div id="zhSteps"></div><div id="pubPlats"></div><div id="zhTypes"></div><div id="xhsTypes"></div>
+    <input type="text" id="zhihuQ" tabindex="-1"/><div id="publishArea"></div>
+  </section>
+</div>
+</main>
+<div class="modal" id="modal"><div class="modal-box" style="max-width:480px">
+  <h2 style="margin-bottom:8px">API 设置</h2>
+  <div class="ok" id="demoBanner" style="margin-bottom:10px">当前：<b>演示模式</b></div>
+  <label class="sim-toggle" style="display:block;margin-bottom:8px"><input type="checkbox" id="useDemo" checked/> 演示模式（无 Key 时用本地规则）</label>
+  <p class="hint" style="margin-bottom:8px;font-size:.72rem"><b>免费 Key 推荐：</b>点下面按钮自动填地址和模型，再去对应网站注册复制 Key</p>
+  <div class="row" style="margin-bottom:6px;gap:5px;flex-wrap:wrap">
+    <button type="button" class="btn btn-o btn-s" data-api-preset="groq">Groq 免费</button>
+    <button type="button" class="btn btn-o btn-s" data-api-preset="siliconflow">硅基流动</button>
+    <button type="button" class="btn btn-o btn-s" data-api-preset="openrouter">OpenRouter</button>
+    <button type="button" class="btn btn-o btn-s" data-api-preset="deepseek">DeepSeek</button>
+    <button type="button" class="btn btn-o btn-s" data-api-preset="dashscope">通义千问</button>
+  </div>
+  <div class="row" style="margin-bottom:8px"><button type="button" class="btn btn-o btn-s" id="btnTestApi">测试连接</button></div>
+  <details style="margin-bottom:8px;font-size:.7rem;border:1px solid var(--border);border-radius:8px;padding:6px 10px">
+    <summary style="cursor:pointer">免费平台注册地址</summary>
+    <p class="hint" style="margin:6px 0 2px"><b>Groq</b> <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com</a> · Key: gsk_</p>
+    <p class="hint" style="margin:2px 0"><b>硅基流动</b> <a href="https://cloud.siliconflow.cn/account/ak" target="_blank" rel="noopener">cloud.siliconflow.cn</a></p>
+    <p class="hint" style="margin:2px 0"><b>OpenRouter</b> <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai</a></p>
+    <p class="hint" style="margin:2px 0"><b>DeepSeek</b> <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">platform.deepseek.com</a></p>
+  </details>
+  <label class="hint">API Key</label>
+  <input type="password" id="apiKey" placeholder="粘贴注册获得的 Key（sk- 或 gsk_ 等）" style="margin:4px 0 8px"/>
+  <label class="hint">API 基础地址</label>
+  <input type="text" id="apiBase" placeholder="https://api.deepseek.com/v1" style="margin:4px 0 8px"/>
+  <label class="hint">概括模型名</label>
+  <input type="text" id="orgModel" placeholder="deepseek-chat" style="margin:4px 0 10px"/>
+  <hr style="margin:12px 0;border:none;border-top:1px solid var(--border)"/>
+  <p class="hint" style="margin-bottom:6px"><b>豆包配图</b>（火山方舟，无水印高清图）</p>
+  <label class="hint">豆包 API Key</label>
+  <input type="password" id="doubaoKey" placeholder="火山方舟 API Key" style="margin:4px 0 8px"/>
+  <label class="hint">豆包接口地址</label>
+  <input type="text" id="doubaoEp" placeholder="https://ark.cn-beijing.volces.com/api/v3" style="margin:4px 0 8px"/>
+  <label class="hint">豆包模型（文生图）</label>
+  <input type="text" id="doubaoModel" placeholder="doubao-seedream-4-0-250828" style="margin:4px 0 10px"/>
+  <p class="hint" style="font-size:.72rem">概括用 API；配图请用 ChatGPT 生图（见「生成配图」）</p>
+  <hr style="margin:12px 0;border:none;border-top:1px solid var(--border)"/>
+  <p class="hint" style="margin-bottom:6px"><b>七大平台热榜</b>（双击「打开网页.bat」可自动启动服务）</p>
+  <label class="hint">热榜服务地址</label>
+  <input type="text" id="hotApi" placeholder="http://localhost:3000" style="margin:4px 0 10px"/>
+  <p class="hint" style="font-size:.72rem">今日头条 · 百度 · 微博 · 抖音 · 知乎 · B站 · 小红书</p>
+  <div class="row"><button class="btn btn-o" id="btnClose">关闭</button><button class="btn btn-p" id="btnSave">保存</button></div>
+</div></div>
+<div class="modal" id="analyzeModal"><div class="modal-box wide">
+  <h2 style="margin-bottom:6px">素材分析</h2>
+  <p class="hint">下载的视频/网页/带视频的文章：在此提炼可学习的干货，整理成科普文章后导入「内容审核」</p>
+  <label class="hint">网页 / 视频链接</label>
+  <input type="text" id="analyzeUrl" placeholder="https:// 文章、B站、知乎、新闻链接…" style="margin-bottom:8px"/>
+  <label class="hint">补充说明（可选）</label>
+  <textarea id="analyzeNote" placeholder="例如：这是 B 站个税科普视频，重点整理 7 项专项附加扣除…" style="min-height:60px;margin-bottom:8px"></textarea>
+  <div class="analyze-drop" id="analyzeDrop">点击或拖拽上传：图片 / PDF / Word / 文本 / 视频文件</div>
+  <input type="file" id="analyzeFiles" class="hidden" multiple accept="image/*,.pdf,.md,.html,.mp4,.mov,.webm,.txt,.doc,.docx"/>
+  <div class="analyze-previews" id="analyzePreviews"></div>
+  <div id="analyzeResult" class="analyze-result hidden"></div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn btn-o" id="btnAnalyzeClose">关闭</button>
+    <button class="btn btn-p" id="btnAnalyzeRun">开始分析</button>
+    <button class="btn btn-p" id="btnAnalyzeImport" style="display:none">导入到内容审核</button>
+  </div>
+</div></div><script>
+const HOUR2 = 2 * 60 * 60 * 1000;
+const DISPLAY_MAX = 60;
+const DISPLAY_MAX_TOPIC = 120;
+const MIN_DISPLAY = 20;
+const RSS_PER_FEED = 14;
+const RSS_PER_FEED_PAT = 40;
+const RSS_PER_FEED_CAR = 40;
+const HOT_FETCH_LIMIT = 60;
+const HOT_CACHE_MIN = 60;
+const HOT_CACHE_MAX = 120;
+const HOT_CACHE_KEY = 'fwz_hot_cache';
+const AGE_FALLBACK_DAYS = [30, 60, 90, 180, 365];
+const FETCH_BATCH = 8;
+const FETCH_BATCH_FAST = 12;
+const FETCH_TIMEOUT = 8000;
+const FETCH_TIMEOUT_FAST = 4500;
+const FAST_UPDATE_MS = 10000;
+const BOOT_HOT_WAIT_MS = 8000;
+const RSS_CACHE_MS = 10 * 60 * 1000;
+const RECENT_DAYS_HOT = 7;
+const MAX_AGE_MS = 30 * 86400000;
+const S={
+  items:[],allItems:[],cat:'all',draft:null,wc:500,org:null,orgOk:false,imgs:[],ic:1,selId:null,
+  simCache:{},nextRefreshAt:Date.now()+HOUR2,framework:'scaq',pubPlatform:'zhihu',analyzeFiles:[],analyzeOut:null,
+  viewFavs:false,lastFetchStats:null,hotChannel:'all',hotFetchCtrl:null,hotFetchSeq:0,hotSearchGen:0,specialtyLoadGen:0,serverAi:null,
+  mediaMode:localStorage.getItem('fwz_media_mode')||'img',vidTool:localStorage.getItem('fwz_vid_tool')||'jimeng'
+};
+const VIDEO_TOOLS={jimeng:{name:'即梦 AI',url:'https://jimeng.jianying.com/ai-tool/video/generate'},vidu:{name:'Vidu',url:'https://www.vidu.cn/create'},kling:{name:'可灵 AI',url:'https://klingai.kuaishou.com/'}};
+const HOT_CH={all:{p:'',label:'全部热榜'},toutiao:{p:'toutiao',label:'今日头条'},baidu:{p:'baidu',label:'百度热搜'},weibo:{p:'weibo',label:'微博'},douyin:{p:'douyin',label:'抖音'},zhihu:{p:'zhihu',label:'知乎热榜'},bilibili:{p:'bilibili',label:'哔哩哔哩'},xiaohongshu:{p:'xiaohongshu',label:'小红书'}};
+const PUB_PLAT={zhihu:'知乎',xhs:'小红书'};
+const ZH_CAT={article:'专栏文章',answer:'回答问题',pin:'想法',note:'图文笔记',video:'视频笔记'};
+const $=id=>document.getElementById(id);
+const gs=()=>({k:localStorage.getItem('fwz_key')||'',b:(localStorage.getItem('fwz_base')||'https://api.openai.com/v1').replace(/\/$/,'')});
+const gsDoubao=()=>({k:localStorage.getItem('fwz_doubao_key')||'',ep:(localStorage.getItem('fwz_doubao_ep')||'https://ark.cn-beijing.volces.com/api/v3').replace(/\/$/,''),model:localStorage.getItem('fwz_doubao_model')||'doubao-seedream-4-0-250828'});
+function hasDoubao(){return !!gsDoubao().k}
+function hasServerAi(){return !!(S.serverAi&&S.serverAi.organize)}
+function hasBrowserAi(){
+  const k=(gs().k||'').trim();
+  return k.length>12&&!/your-key|placeholder|sk-your|sk-xxx|在此粘贴|gsk_your/i.test(k);
+}
+function hasAiAccess(){return hasServerAi()||hasBrowserAi()}
+function isDemo(){
+  if(hasServerAi())return false;
+  if(!hasBrowserAi())return true;
+  return localStorage.getItem('fwz_demo')!=='0';
+}
+async function syncServerAiConfig(){
+  try{
+    const base=getHotApiBase();
+    const r=await fetch(base+'/api/ai-status',{cache:'no-store'});
+    if(!r.ok)return;
+    const j=await r.json();
+    S.serverAi=j;
+    if(j.organize){
+      localStorage.setItem('fwz_demo','0');
+      if(j.baseUrl)localStorage.setItem('fwz_base',j.baseUrl);
+      if(j.model)localStorage.setItem('fwz_chat_model',j.model);
+      setDemoUI();
+    }
+  }catch(e){}
+}
+function chatModel(){
+  const b=(gs().b||'').toLowerCase(),m=(localStorage.getItem('fwz_chat_model')||'').trim();
+  if(m)return m;
+  if(b.includes('deepseek'))return 'deepseek-chat';
+  if(b.includes('groq'))return 'llama-3.3-70b-versatile';
+  if(b.includes('siliconflow'))return 'Qwen/Qwen2.5-7B-Instruct';
+  if(b.includes('openrouter'))return 'google/gemma-2-9b-it:free';
+  if(b.includes('dashscope')||b.includes('aliyuncs'))return 'qwen-turbo';
+  if(b.includes('openai.com'))return 'gpt-4o-mini';
+  return 'gpt-4o-mini';
+}
+const API_PRESETS={
+  groq:{name:'Groq（免费）',base:'https://api.groq.com/openai/v1',model:'llama-3.3-70b-versatile',reg:'https://console.groq.com/keys',note:'注册即送免费额度，Key 以 gsk_ 开头'},
+  siliconflow:{name:'硅基流动（免费额度）',base:'https://api.siliconflow.cn/v1',model:'Qwen/Qwen2.5-7B-Instruct',reg:'https://cloud.siliconflow.cn/account/ak',note:'国内可用，新用户送额度'},
+  openrouter:{name:'OpenRouter（免费模型）',base:'https://openrouter.ai/api/v1',model:'google/gemma-2-9b-it:free',reg:'https://openrouter.ai/keys',note:'可选用带 :free 的模型'},
+  deepseek:{name:'DeepSeek',base:'https://api.deepseek.com/v1',model:'deepseek-chat',reg:'https://platform.deepseek.com/api_keys',note:'新用户有赠送额度'},
+  dashscope:{name:'通义千问',base:'https://dashscope.aliyuncs.com/compatible-mode/v1',model:'qwen-turbo',reg:'https://dashscope.console.aliyun.com/apiKey',note:'阿里云，有免费额度'}
+};
+function applyApiPreset(preset){
+  const p=API_PRESETS[preset];if(!p)return;
+  if($('apiBase'))$('apiBase').value=p.base;
+  if($('orgModel'))$('orgModel').value=p.model;
+  const reg=p.reg?(' · <a href="'+p.reg+'" target="_blank" rel="noopener">去注册领 Key</a>'):'';
+  ok('已选 '+p.name+'（'+p.model+'）'+reg+(p.note?' · '+p.note:''));
+}
+function parseApiErr(j,r){
+  const e=j&&j.error;
+  if(e&&e.message)return e.message;
+  if(r&&r.status===401)return 'API Key 无效或已过期，请检查 Key 是否完整';
+  if(r&&r.status===402)return '账户余额不足，请充值后重试';
+  if(r&&r.status===429)return '请求过于频繁，请稍后再试';
+  return r?'HTTP '+r.status:'请求失败';
+}
+async function testOrgApi(){
+  const btn=$('btnTestApi');
+  if(btn){btn.disabled=true;btn.textContent='测试中…'}
+  try{
+    await syncServerAiConfig();
+    if(hasServerAi()){ok('服务端 AI 已就绪：'+S.serverAi.model+'（读取 .env.local，无需浏览器 Key）');if(btn){btn.disabled=false;btn.textContent='测试连接'}return}
+  }catch(e){}
+  const g=gs();
+  if(!g.k){err('服务端未配置 Key：请双击「配置API.bat」填入 DeepSeek Key，或在此粘贴');if(btn){btn.disabled=false;btn.textContent='测试连接'}return}
+  const model=chatModel();
+  try{
+    const r=await fetch(g.b+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+g.k},body:JSON.stringify({model,messages:[{role:'user',content:'回复：连接成功'}],max_tokens:16,temperature:0})});
+    const j=await r.json();
+    if(!r.ok)throw new Error(parseApiErr(j,r));
+    ok('浏览器 API 连接成功 · '+model);
+    if($('useDemo')&&$('useDemo').checked){$('useDemo').checked=false;localStorage.setItem('fwz_demo','0');setDemoUI()}
+  }catch(e){err('连接失败：'+(e.message||e))}
+  if(btn){btn.disabled=false;btn.textContent='测试连接'}
+}
+function draftBodyLen(d){
+  const m=normalizeDraftMaterial(d||{});
+  return (m.content||'').trim().length;
+}
+function setDemoUI(){
+  const d=isDemo(),db=hasDoubao(),b=$('demoBanner');
+  if(b){
+    if(hasServerAi())b.innerHTML='当前：<b>服务端 AI 已配置</b>（'+esc(S.serverAi.provider||'AI')+' / '+esc(S.serverAi.model||'')+'）<br><small>文件内容审核自动使用 .env.local 中的 Key，无需浏览器填写</small>';
+    else if(d)b.innerHTML='当前：<b>演示模式</b>（本地规则概括）'+(db?' · 豆包配图已配置':'')+'<br><small>双击「配置API.bat」选 Groq/硅基流动等免费 Key，或点下方免费平台按钮填 Key</small>';
+    else b.innerHTML='当前：<b>浏览器 AI 模式</b>（'+esc(chatModel())+'）'+(db?' · 豆包配图':'');
+  }
+  if($('useDemo'))$('useDemo').checked=d;
+}
+function fmtTime(ts){const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function loadPubHist(){try{return JSON.parse(localStorage.getItem('fwz_pub_hist')||'[]')}catch(e){return[]}}
+function savePubRecord(rec){const h=loadPubHist();const plat=PUB_PLAT[rec.platform]||rec.platform||'知乎';const typ=ZH_CAT[rec.type]||rec.type;h.unshift({id:Date.now(),title:rec.title||'无标题',type:rec.type,platform:rec.platform||'zhihu',cat:plat+' · '+typ,sentAt:rec.sentAt||Date.now(),framework:rec.framework||'scaq'});localStorage.setItem('fwz_pub_hist',JSON.stringify(h.slice(0,80)))}
+function stripLinks(t){return String(t||'').replace(/https?:\/\/\S+/gi,'').replace(/www\.\S+/gi,'').replace(/[ \t]{2,}/g,' ').trim()}
+function cleanOrgBody(t){return cleanOrgNoSource(cleanOrgPhrases(String(t||'').replace(/读完本文你将明白[：:]?\s*/g,'').replace(/读完本文[，,]?\s*你将明白[：:]?\s*/g,'').trim()))}
+function cleanOrgPhrases(t){
+  return String(t||'')
+    .replace(/建议收藏[^\n。]*/g,'').replace(/按步骤实践[。]?/g,'').replace(/参考类型[：:][^\n]*/g,'')
+    .replace(/请生成知识可视化配图[。]?/g,'').replace(/知识可视化[^\n]*/g,'')
+    .replace(/价值在于可复用[；;]?/g,'').replace(/可替换为你的真实案例[^。]*/g,'')
+    .replace(/【素材现状】[^。\n]*/g,'').replace(/【一句话】/g,'').replace(/【重点】[^。\n]*/g,'')
+    .replace(/【文章讲什么】|【可能展开】|【阅读价值】|【问题】|【文章可能回答】|【已知片段】|【背景】|【内容方向】/g,'')
+    .replace(/【背景脉络】|【事实梳理】|【常见疑问】|【为何值得关注】|【核心矛盾】|【读者可怎么做】|【核心问题】/g,'')
+    .replace(/延伸案例[：:][^\n]*/g,'').replace(/^\s*延伸案例[^\n]*/gm,'')
+    .replace(/\n{3,}/g,'\n\n').trim();
+}
+function cleanOrgNoSource(t){
+  let s=String(t||'');
+  s=s.replace(/https?:\/\/\S+/gi,'').replace(/www\.\S+/gi,'');
+  s=s.replace(/据[^，。\n]{0,20}(报道|消息|透露)/g,'');
+  s=s.replace(/(来自|源于|转自|出处)[:：]?[^，。\n]{0,16}/g,'');
+  s=s.replace(/今日头条热榜|微博热搜|知乎热榜|百度热搜|抖音热榜|哔哩哔哩热榜|B站热榜|小红书热榜/g,' ');
+  s=s.replace(/今日头条|小红书|微博|知乎|抖音|百度|哔哩哔哩|B站|头条号|微信公众号|公众号|热榜|热搜/g,' ');
+  s=s.replace(/[·•]\s*热度\s*[\d.,万亿]+\s*/g,' ');
+  s=s.replace(/[ \t]{2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+  return s;
+}
+const ORG_FORMAT_EXAMPLE='主题：成都甜品店熊猫摆件被索赔10万事件分析\n\n一、结论\n甜品店老板小林花2000元网购熊猫摆件放在店门口，被诉侵犯「展览权」索赔10万元。其行为客观上涉嫌侵权，但因能证明产品有合法来源（正规平台购买），根据《著作权法》第五十九条，可免于承担赔偿责任，但需停止使用。原告向终端使用者而非生产厂家索赔，合理性存疑。\n\n二、分析\n1. 事件核心：小林从淘宝购买摆件用于甜品店商业展示，原告北京某公司持有熊猫美术作品著作权证书，主张其「展览权」被侵犯。\n2. 法律焦点：将摆件用于经营场所展示，属于商业性使用。若该摆件确为侵权复制品，则行为构成侵权。但小林能提供购买记录，且购买时页面无任何版权提示，已尽到合理注意义务，符合「合法来源」抗辩条件，依法可不承担赔偿责任。\n3. 各方观点：小林认为无辜，质疑应起诉厂家；原告公司索赔10万，后降至1万多附加差旅费；律师支持合法来源抗辩；法官也当庭质疑为何不起诉生产厂家。\n4. 类似案例：2025年河南一民宿老板因网购小熊摆件被索赔3.8万元，显示此类针对小商户的「维权」诉讼已非个案。\n\n三、总结\n此事件对小商户构成重要警示：即使是正规平台购买的装饰品，若用于店面等经营场所展示，也需留意版权风险。同时，法律保护善意使用者——保留好购买凭证等「合法来源」证据，可免于赔偿。从责任源头看，生产、销售侵权产品的商家应承担首要责任。';
+function orgUserContent(d){
+  const t=normalizeDraftMaterial(d);
+  const n=+S.wc||500;
+  const p1=Math.round(n*0.22),p2=Math.round(n*0.53),p3=Math.max(80,n-p1-p2);
+  return '【写作要求】严格按下方「格式范例」写概括稿（正文约'+n+'字），提炼观点、禁止搬运。\n结构：先写「主题：…」一行，再三段——\n一、结论（约'+p1+'字）：2～4句，何人何事、争议/结果、关键判断（法律类可加粗结论）。\n二、分析（约'+p2+'字）：必须用 1. 2. 3. 4. 分条（事件核心、法律/业务焦点、各方观点、类似案例或读者启示）。\n三、总结（约'+p3+'字）：警示+可操作建议。\n禁止重复标题凑字；禁止「三、要点」「四、总结」；禁止链接与「据报道」。素材不足时说明缺什么，勿编造。\n\n【格式范例】\n'+ORG_FORMAT_EXAMPLE+'\n\n【素材标题】'+(t.title||'主题')+'\n\n【素材正文】\n'+(t.content||'').slice(0,6000);
+}
+function cleanDraftText(d){return{title:stripLinks(d.title),content:stripLinks(stripHtml(d.content))}}
+function isPlatformBoilerplate(s){
+  const t=String(s||'').trim();
+  if(!t||t.length<4)return true;
+  if(/^(今日头条|微博|知乎|抖音|百度|哔哩哔哩|B站|小红书|MSN)(热榜|热搜)?$/i.test(t))return true;
+  if(/^热度\s*[\d.,万亿wkWK]+$/.test(t))return true;
+  if(/^[·•\s\d.,万亿wkWK]+$/.test(t))return true;
+  return false;
+}
+function isLikelyCode(s){
+  const t=String(s||'').trim();
+  if(t.length<50)return false;
+  if(/function\s*\(|=>|var\s+\w+\s*=|const\s+\w+\s*=|window\.|document\.|localStorage|sessionStorage|__PageExperiment|uxlogin|uxlogout|_clientSettings/i.test(t))return true;
+  const cn=(t.match(/[\u4e00-\u9fff]/g)||[]).length;
+  if(cn<t.length*0.06&&t.length>120)return true;
+  if((t.match(/[{}();=]/g)||[]).length>t.length*0.06&&cn<t.length*0.15)return true;
+  return false;
+}
+function extractJsonLdBodies(html){
+  const out=[];
+  const re=/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while((m=re.exec(html))){
+    try{
+      const walk=o=>{
+        if(!o)return;
+        if(Array.isArray(o))o.forEach(walk);
+        else if(typeof o==='object'){
+          ['articleBody','text','description'].forEach(k=>{if(typeof o[k]==='string'&&o[k].length>40)out.push(o[k])});
+          Object.values(o).forEach(walk);
+        }
+      };
+      walk(JSON.parse(m[1]));
+    }catch(e){}
+  }
+  return out;
+}
+function extractArticleFromHtml(html){
+  const title=stripHtml((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]||'').replace(/\s*[-_|].*$/,'').trim();
+  const ld=extractJsonLdBodies(html).map(b=>stripHtml(b)).filter(b=>b.length>60&&!isLikelyCode(b)).sort((a,b)=>b.length-a.length);
+  if(ld[0])return{title,text:ld[0].slice(0,12000)};
+  const _tagScr='<'+'script',_tagSty='<'+'style',_endScr='</scr'+'ipt>',_endSty='</sty'+'le>';
+  let main=html.replace(new RegExp(_tagScr+'[\s\S]*?'+_endScr,'gi'),' ').replace(new RegExp(_tagSty+'[\s\S]*?'+_endSty,'gi'),' ').replace(/<noscript[\s\S]*?<\/noscript>/gi,' ');
+  const art=(main.match(/<article[\s\S]*?<\/article>/i)||[])[0];
+  let text=art?stripHtml(art):'';
+  if(!text||text.length<80){
+    const ps=[...main.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map(x=>stripHtml(x[1])).filter(p=>p.length>24&&!isLikelyCode(p));
+    if(ps.length>=2)text=ps.join('\n');
+  }
+  if(!text||text.length<80){
+    const meta=stripHtml(extractMetaDesc(html));
+    if(meta&&!isLikelyCode(meta))text=meta;
+  }
+  text=text.replace(/\s+/g,' ').trim();
+  if(isLikelyCode(text))return{title,text:'',err:'抓取到的是网页脚本而非正文（MSN 等站常见），请点「阅读原文」打开后复制正文粘贴'};
+  return{title,text:text.slice(0,12000)};
+}
+function normalizeDraftMaterial(d){
+  const ct=cleanDraftText(d);
+  let title=(ct.title||'').trim().replace(/[？?！!。]+$/,'');
+  let content=(ct.content||'').trim();
+  content=content.replace(/今日头条热榜|微博热搜|知乎热榜|百度热搜|抖音热榜/g,' ');
+  content=content.replace(/[·•]\s*热度\s*[\d.,万亿wkWK]+/g,' ').replace(/\s+/g,' ').trim();
+  if(isPlatformBoilerplate(content)||content===title)content='';
+  if(title&&content&&!content.includes(title.slice(0,Math.min(10,title.length))))content=title+'。'+content;
+  if(!content)content=title||'';
+  return{title:title||'主题',content};
+}
+function isSearchUrl(u){
+  const s=String(u||'').toLowerCase();
+  if(!s)return true;
+  if(/\/search\?|\/s\?wd=|search_result\?|weibo\?q=|\/search\//.test(s))return true;
+  if(/douyin\.com\/search\//.test(s))return true;
+  if(/keyword=/.test(s)&&!/article|\/a\d|\/group\/|\/video\/|aweme|\/p\/|question\/\d|zhuanlan\.zhihu\.com\/p\//.test(s))return true;
+  return false;
+}
+function isArticleUrl(u){
+  const s=String(u||'').trim();
+  return /^https?:\/\//i.test(s)&&!isSearchUrl(s);
+}
+function buildSearchUrl(it){
+  const title=String(it?.title||'').trim();
+  if(!title)return '';
+  const pt=it?.platform||'';
+  const map={toutiao:'https://www.toutiao.com/search/?keyword=',baidu:'https://www.baidu.com/s?wd=',weibo:'https://s.weibo.com/weibo?q=',douyin:'https://www.douyin.com/search/',zhihu:'https://www.zhihu.com/search?q=',bilibili:'https://search.bilibili.com/all?keyword=',xiaohongshu:'https://www.xiaohongshu.com/search_result?keyword='};
+  if(pt&&map[pt])return map[pt]+encodeURIComponent(title);
+  return 'https://www.baidu.com/s?wd='+encodeURIComponent(title);
+}
+function normalizeArticleUrl(it){
+  const u=String(it?.url||it?.articleUrl||'').trim();
+  if(isArticleUrl(u))return u;
+  const gid=it?.groupId||it?.clusterId||'';
+  if(gid&&/^\d{8,}$/.test(String(gid)))return 'https://www.toutiao.com/article/'+gid+'/';
+  return '';
+}
+function getArticleUrl(it){return normalizeArticleUrl(it)}
+function resolveItemUrl(it){return getArticleUrl(it)}
+const OPEN_LINK_LABELS={douyin:'去抖音热榜 →',baidu:'去百度查看 →',weibo:'去微博查看 →',zhihu:'去知乎查看 →',bilibili:'去B站查看 →',xiaohongshu:'去小红书查看 →',toutiao:'去头条查看 →'};
+function getOpenLink(it){
+  const direct=getArticleUrl(it);
+  if(direct)return {href:direct,text:'阅读原文 →'};
+  const search=it.searchUrl||buildSearchUrl(it);
+  if(search){
+    const pt=it.platform||'';
+    return {href:search,text:OPEN_LINK_LABELS[pt]||'去平台查看 →'};
+  }
+  return null;
+}
+function isVideoUrl(url,it){
+  const s=String(url||'')+(it?itemText(it):'');
+  return /douyin|iesdouyin|bilibili|b23\.tv|youtube|youku|iqiyi|v\.qq|acfun|kuaishou|weixin\.qq\.com\/sph|channels\.weixin/i.test(s)||/\/video\/|\/aweme\/|\/v\/|player\.|\/shipin\//i.test(s)||!!(it&&it.isVideo);
+}
+function extractRssLink(b){
+  const blocks=[...String(b||'').matchAll(/<link[^>]*>/gi)].map(m=>m[0]);
+  for(const tag of blocks){
+    const href=(tag.match(/href=["']([^"']+)["']/i)||[])[1];
+    const rel=((tag.match(/rel=["']([^"']+)["']/i)||[])[1]||'').toLowerCase();
+    if(href&&/^https?:/i.test(href)&&(rel.includes('alternate')||rel.includes('related')||(!rel&&blocks.length===1)))return href;
+  }
+  let l=(b.match(/<link[^>]*>([^<]+)<\/link>/i)||[])[1];
+  if(l&&/^https?:/i.test(l.trim()))return l.trim();
+  const guid=(b.match(/<guid[^>]*>([^<]+)<\/guid>/i)||[])[1]||(b.match(/<id[^>]*>([^<]+)<\/id>/i)||[])[1];
+  if(guid&&/^https?:/i.test(guid.trim()))return guid.trim();
+  return '';
+}
+function parseTitleMeta(title){
+  const t=String(title||'');
+  const m=t.match(/(\d+)\s*个([^\s，,。；;？?！!]+)/);
+  return{n:m?+m[1]:0,unit:m?m[2]:'',isList:!!m,isHealth:/寿命|健康|养生|走路|饮食|睡眠|体检|疾病|症状|锻炼/.test(t),isHow:/如何|怎么|怎样|为何|为什么|？|\?/.test(t)};
+}
+function mergeFetchedContent(d,fetch){
+  const title=(d.title||fetch.title||'').trim();
+  let text=String(fetch.text||'').replace(/\s+/g,' ').trim();
+  if(!text||text.length<40)return d;
+  if(fetch.isVideo){
+    text='【视频/网页内容摘录】\n'+text+'\n\n【整理说明】以上来自原链接页面可见标题、简介与正文/字幕文本，文件内容审核将据此概括总结。';
+  }
+  const head=title.slice(0,Math.min(12,title.length));
+  if(head&&text.includes(head))text=text;
+  else if(title)text=title+'\n\n'+text;
+  return{...d,title,content:text.slice(0,8000),fetched:true,isVideo:!!fetch.isVideo};
+}
+async function fetchUrlContentServer(url){
+  try{
+    const base=getHotApiBase();
+    const r=await fetch(base+'/api/fetch-url',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url}),cache:'no-store'});
+    const j=await r.json();
+    if(!r.ok)return{title:'',text:'',err:j.error||'抓取失败'};
+    return{title:j.title||'',text:j.text||'',url:j.url||url,err:j.ok?'':j.error};
+  }catch(e){return{title:'',text:'',err:e.message}}
+}
+async function enrichDraftForOrganize(d){
+  if(!d)return d;
+  const mat=normalizeDraftMaterial(d);
+  const pool=buildMaterialPool(mat.title,mat.content);
+  if(!isThinMaterial(pool))return{...d,title:mat.title,content:mat.content};
+  let url=getArticleUrl({url:d.pickUrl||d.url,title:d.title})||d.pickUrl||d.url||'';
+  if(!url&&/^https?:\/\//i.test(String(d.url||d.pickUrl||'')))url=String(d.url||d.pickUrl).trim();
+  if(!url)return{...d,title:mat.title,content:mat.content};
+  let u=await fetchUrlContentServer(url);
+  if(u.text&&u.text.length>60)return mergeFetchedContent({...d,title:u.title||mat.title,content:mat.content},u);
+  u=await fetchUrlContent(url,d);
+  if(u.text&&u.text.length>60)return mergeFetchedContent({...d,title:mat.title,content:mat.content},u);
+  return{...d,title:mat.title,content:mat.content};
+}
+async function prefetchDraftFromUrl(){
+  const d=S.draft;
+  if(!d||!d.pickUrl||d._prefetching||d.fetched)return;
+  if(!isArticleUrl(d.pickUrl))return;
+  const pool=buildMaterialPool(d.title,d.content);
+  if(!isThinMaterial(pool))return;
+  d._prefetching=true;
+  try{
+    const u=await fetchUrlContent(d.pickUrl,d);
+    if(u.text&&u.text.length>60){
+      S.draft=mergeFetchedContent(d,u);
+      drawReview();
+    }
+  }finally{if(S.draft)S.draft._prefetching=false}
+}
+function buildDraftContent(it){
+  let c=String(it.body||'').trim();
+  c=c.replace(/今日头条热榜|微博热搜|知乎热榜|百度热搜/g,' ').replace(/[·•]\s*热度\s*[\d.,万亿wkWK]+/g,' ').trim();
+  if(isPlatformBoilerplate(c)||!c||c===it.title)c=it.title||c;
+  else if(it.title&&!c.includes(it.title.slice(0,Math.min(10,it.title.length))))c=it.title+'。'+c;
+  return c||it.title||'';
+}
+function splitSents(t){
+  return String(t||'').replace(/\s+/g,' ').split(/[。！？；\n]+/).map(x=>x.trim()).filter(x=>x.length>3&&!isPlatformBoilerplate(x));
+}
+function buildMaterialPool(title,content){
+  const parts=[];
+  splitSents(content).forEach(s=>{if(s&&!parts.includes(s))parts.push(s)});
+  splitSents(title).forEach(s=>{if(s&&!parts.includes(s))parts.push(s)});
+  if(!parts.length&&title&&!isPlatformBoilerplate(title))parts.push(title);
+  return parts;
+}
+function isThinMaterial(pool){
+  const u=uniquePoolLines(pool,20);
+  if(!u.length)return true;
+  if(u.length<2&&u.join('').length<200)return true;
+  return u.join('').length<80;
+}
+function uniquePoolLines(pool,max){
+  const out=[],seen=new Set();
+  for(const x of pool||[]){
+    const k=String(x||'').trim().slice(0,40);
+    if(k.length<6||seen.has(k)||isPlatformBoilerplate(k))continue;
+    seen.add(k);
+    out.push(String(x).trim());
+    if(out.length>=(max||12))break;
+  }
+  return out;
+}
+function padSectionText(text,target,pool){
+  let s=String(text||'').trim();
+  if(!s||!target)return s;
+  const p=uniquePoolLines(pool,8).filter(x=>!s.includes(x.slice(0,Math.min(18,x.length))));
+  for(const add of p){
+    if(s.length>=target)break;
+    s+=(s.endsWith('。')||s.endsWith('；')?'':'。')+add;
+  }
+  if(s.length<target*0.7&&p.length<2){
+    s+=(s.endsWith('。')?'':'。')+'（原文信息较少，建议在审核区抓取链接或粘贴正文后重新概括。）';
+  }
+  return s.length>target*1.35?s.slice(0,Math.round(target*1.2)):s;
+}
+function buildThinOrgBody(title,content,wc){
+  const n=+wc||500;
+  const topic=(title||'主题').slice(0,48);
+  const body='一、结论\n当前素材仅有标题或极短摘要，无法据此写出可靠结论。请先在「内容审核」粘贴原文链接并点「抓取链接」，或将正文粘贴进审核框；也可在「API 设置」填入 Key（如 DeepSeek）后关闭演示模式，由 AI 根据完整正文概括。\n\n二、分析\n1. 事件核心：待补充原文后，写清人物、时间、地点、经过与争议点。\n2. 焦点：待补充（如法律适用、责任划分、行业规则等）。\n3. 各方观点：待补充。\n4. 类似案例：有则补充，无则省略。\n\n三、总结\n完成素材补充后重新「文件内容审核」，即可生成类似「结论→分条分析→启示」的完整稿。当前标题：「'+topic+'」。';
+  return finalizeOrgBody(cleanOrgBody(stripLinks(body)),n);
+}
+function buildStructuredAnalysis(title,pool,content){
+  const lines=uniquePoolLines(pool,10);
+  const tx=title+' '+(content||'')+' '+lines.join(' ');
+  const isLegal=/索赔|侵权|诉讼|法院|著作权|专利|赔偿|起诉|判决|法规|合法来源/.test(tx);
+  const isBiz=/经营|店铺|商户|平台|网购|消费者/.test(tx);
+  const core=lines[0]||title;
+  const parts=[];
+  parts.push('1. 事件核心：'+core+(lines[1]?'；'+lines[1]:'')+'。');
+  if(isLegal)parts.push('2. 法律/责任焦点：'+((lines.find(s=>/法|权|赔|诉/.test(s))||lines[2]||'结合素材梳理争议焦点与可能适用的法律逻辑')+'。'));
+  else if(/专利|授权|实用新型|外观/.test(tx))parts.push('2. 技术/产业焦点：'+((lines[2]||lines[1]||'梳理技术要点、应用场景与产业影响')+'。'));
+  else parts.push('2. 背景与关键事实：'+(lines.slice(1,4).join('；')||'交代背景、因果与关键数据')+'。');
+  const view=lines.find(s=>/认为|表示|称|质疑|支持|反对|律师|法官|原告|被告/.test(s));
+  parts.push('3. 各方观点：'+(view||(isBiz?'梳理当事人、平台与专业人士的立场差异':'概括主要观点与分歧'))+'。');
+  const similar=lines.find(s=>/案例|类似|此前|另一|河南|民宿/.test(s));
+  if(similar||isLegal)parts.push('4. 类似案例或延伸：'+(similar||'可结合同类维权/纠纷案例对照，说明是否具普遍性')+'。');
+  return parts.join('\n');
+}
+function removeSectionPoints(b){
+  return String(b||'').replace(/\r\n/g,'\n').replace(/\n*三、要点[\s\S]*?(?=\n三、总结|$)/,'').replace(/\n*三、要点[\s\S]*$/,'').trim();
+}
+function normalizeOrgHeadings(b){
+  return String(b||'').replace(/四、总结/g,'三、总结').replace(/\n*三、要点[\s\S]*?(?=\n三、总结)/,'').trim();
+}
+function finalizeOrgBody(body,wc){
+  let b=normalizeOrgHeadings(removeSectionPoints(String(body||'').replace(/\r\n/g,'\n').trim()));
+  if(!/三、总结/.test(b)){
+    b=b+'\n\n三、总结\n以上内容概括了主题的来龙去脉与核心判断，读者无需阅读原文也能把握要旨，可直接用于发布。';
+  }
+  const target=+wc||500;
+  if(b.length>target*1.4)b=b.slice(0,Math.max(target+40,target+60));
+  return b;
+}
+function organizeBody(d,wc,mode){
+  const mat0=normalizeDraftMaterial(d);
+  const title=mat0.title||'主题';
+  const newTitle=title.length>28?title.slice(0,26)+'…':title;
+  const topic=title.slice(0,32);
+  const pool=buildMaterialPool(title,mat0.content);
+  const n=+wc||500;
+  if(isThinMaterial(pool)){
+    const body=buildThinOrgBody(title,mat0.content,n);
+    return{title:newTitle,body,framework:mode,thin:true};
+  }
+  const mat=uniquePoolLines(pool,14);
+  const p1=Math.round(n*0.2),p2=Math.round(n*0.55),p3=Math.max(100,n-p1-p2);
+  const meta=parseTitleMeta(title);
+  let concl=meta.isList
+    ?'「'+topic+'」围绕约 '+meta.n+' 个'+meta.unit+'展开，核心可概括为：'+(mat.slice(0,2).join('；')||mat[0])+'.'
+    :(mat[0]||topic)+'。'+(mat[1]?mat[1]+'。':'');
+  if(concl.length>p1+40)concl=concl.slice(0,p1+36)+'…';
+  let anal=buildStructuredAnalysis(title,mat,mat0.content);
+  if(meta.isList&&meta.n>0){
+    const extra=[];
+    for(let i=1;i<=Math.min(meta.n,6);i++){
+      const hit=mat[i]||'';
+      if(hit)extra.push('第'+i+'个'+meta.unit+'：'+hit.slice(0,100));
+    }
+    if(extra.length)anal+='\n'+extra.join('\n');
+  }
+  if(anal.length>p2+80)anal=anal.slice(0,p2+76)+'…';
+  let sum='此议题对普通读者的启示是：'+(mat[mat.length-1]||mat[0]||'把握事实、核实细节、留存必要凭证')+'。';
+  if(mat[1]&&mat[1].slice(0,12)!==(mat[0]||'').slice(0,12))sum+=mat[1]+'。';
+  sum+='以上概括覆盖素材主线，可独立阅读发布。';
+  if(sum.length>p3+30)sum=sum.slice(0,p3+26)+'…';
+  let body='主题：'+topic+'\n\n一、结论\n'+concl.trim()+'\n\n二、分析\n'+anal.trim()+'\n\n三、总结\n'+sum.trim();
+  body=finalizeOrgBody(cleanOrgBody(stripLinks(body)),n);
+  return{title:newTitle,body,framework:mode,thin:false};
+}function organizeScaq(d,wc){return organizeBody(d,wc,'scaq')}
+function organizeAtar(d,wc){return organizeBody(d,wc,'atar')}
+function organizeDemo(d,wc){return organizeBody(d,wc,S.framework==='atar'?'atar':'scaq')}
+function orgSystemPrompt(){
+  const n=S.wc;
+  const p1=Math.round(n*0.2),p2=Math.round(n*0.55),p3=Math.max(100,n-p1-p2);
+  return '你是资深中文编辑，擅长把新闻/科普素材整理成「快速读懂原文」的概括稿。正文约'+n+'字。\n\n【结构】正文必须以「主题：」开头，然后仅三段：\n一、结论（约'+p1+'字）：核心事实+明确判断，可加粗关键法律结论。\n二、分析（约'+p2+'字）：用「1. 2. 3. 4.」分条写——事件核心、法律/技术焦点、各方观点、类似案例（无则省略第4条）。\n三、总结（约'+p3+'字）：对读者的警示、启示或可操作建议。\n\n【范例风格】（勿照抄，仅学结构）\n主题：成都甜品店熊猫摆件被索赔10万事件分析\n一、结论：店主网购摆件用于店门口展示被诉侵权；若能证明合法来源可免赔偿但须停用……\n二、分析：1.事件核心… 2.法律焦点… 3.各方观点… 4.类似案例…\n三、总结：小商户须留意版权风险；保留购买凭证可作抗辩……\n\n【禁止】复述标题凑字数；写「三、要点」「四、总结」；平台名、链接、据报道；空泛套话。\n素材不足时如实说明缺什么，不要编造。\n返回 JSON：{"title":"15-25字标题","body":"含主题行与三段正文"}';
+}
+function extractImgBriefs(n){const body=S.org?.body||'',title=S.org?.title||'';const secs=body.match(/[一二三四]、[^\n]+[\s\S]*?(?=\n[一二三四]、|$)/g)||body.match(/【[^】]+】[\s\S]*?(?=\n【|$)/g)||[];const out=[];for(let i=0;i<n;i++){const sec=(secs[i]||body).replace(/^[一二三四]、/,'').replace(/【|】/g,'').trim();out.push({title:title.slice(0,14),sub:sec.slice(0,36)||body.slice(0,36),i})}return out}
+function makeDemoImage(brief,i){const c=document.createElement('canvas');c.width=768;c.height=512;const x=c.getContext('2d');const palettes=[['#1a365d','#2c5282','#bee3f8'],['#744210','#c05621','#fbd38d'],['#234e52','#2c7a7b','#b2f5ea']];const p=palettes[i%3];const g=x.createLinearGradient(0,0,768,512);g.addColorStop(0,p[0]);g.addColorStop(1,p[1]);x.fillStyle=g;x.fillRect(0,0,768,512);x.strokeStyle='rgba(255,255,255,.25)';x.lineWidth=2;[120,220,320].forEach(y=>{x.beginPath();x.moveTo(40,y);x.lineTo(280,y);x.stroke()});x.fillStyle='#fff';x.font='bold 22px "PingFang SC",sans-serif';x.textAlign='left';x.fillText('知识可视化 '+(i+1),40,50);x.font='15px sans-serif';x.fillStyle='rgba(255,255,255,.92)';const sub=(brief.sub||brief.title||'核心要点').slice(0,56);for(let j=0;j<4;j++)x.fillText(sub.slice(j*14,(j+1)*14),48,110+j*36);x.fillStyle=p[2];x.fillRect(40,460,140,5);x.font='12px sans-serif';x.fillStyle='rgba(255,255,255,.7)';x.fillText('知识图解·演示（配置豆包出高清美图）',40,485);return c.toDataURL('image/png')}
+const CAT={all:'全部',car:'汽车',carInt:'汽车内饰件',carExt:'汽车外饰件',carSeat:'汽车座椅',patHome:'家电专利',patCar:'汽车专利',patSeat:'座椅专利',fun:'趣事',other:'其他'};
+const REMOVED_CATS=['tech','finance','edu','health','work','legal','parent','food','travel','culture','life'];
+const PAT_CAT_KEYS=['patHome','patCar','patSeat'];
+const PAT_BASE_KW=['专利','发明专利','实用新型','外观设计','授权','专利申请','专利号','知识产权','专利局','过审','获批','PCT','公布','公开'];
+const PAT_CHANNEL_KW=['微信公众号','公众号','微信','头条','今日头条','小红书','百度','抖音','知乎','热榜','热搜','哔哩','B站','微博'];
+const PAT_COMMERCE_KW=['新品','爆款','上新','首发','发布','上市','外贸','跨境','亚马逊','Amazon','出海','出口','爆品','热卖','开卖','预售','众筹'];
+const PAT_HOME_DOMAIN=['家电','冰箱','洗衣机','空调','洗碗机','厨电','小家电','扫地机','吸尘器','热水器','烤箱','微波炉','净水','干衣机','集成灶','电视','投影仪','智能家居','清洁电器','加湿器','空气净化器','电饭煲','电磁灶'];
+const PAT_CAR_DOMAIN=['汽车','车辆','新能源车','新能源汽车','电动汽车','智能驾驶','自动驾驶','造车','主机厂','车型','新车','电池','续航','充电','特斯拉','比亚迪','蔚来','小鹏','理想','问界'];
+const PAT_SEAT_DOMAIN=['座椅','汽车座椅','坐垫','靠背','头枕','腰托','腿托','座椅骨架','发泡','面套','零重力','滑轨','调角器','座椅加热','座椅通风','座椅按摩','二排座椅','三排'];
+const PAT_FEEDS=[{u:'https://36kr.com/feed',s:'36氪',c:'科技'},{u:'https://www.ithome.com/rss/',s:'IT之家',c:'科技'},{u:'https://www.ifanr.com/feed',s:'爱范儿',c:'科技'},{u:'https://www.geekpark.net/rss',s:'极客公园',c:'科技'},{u:'https://www.leiphone.com/feed',s:'雷锋网',c:'科技'},{u:'https://www.qbitai.com/feed',s:'量子位',c:'科技'},{u:'https://www.tmtpost.com/rss.xml',s:'钛媒体',c:'财经'},{u:'https://www.chinanews.com.cn/rss/it.xml',s:'中新网',c:'科技'}];
+const PAT_EXTRA_FEEDS=[{u:'https://www.huxiu.com/rss/0.xml',s:'虎嗅',c:'财经'},{u:'https://www.chinanews.com.cn/rss/fortune.xml',s:'中新网财经',c:'财经'},{u:'https://www.chinanews.com.cn/rss/scroll-news.xml',s:'中新网滚动',c:'综合'},{u:'https://sspai.com/feed',s:'少数派',c:'科技'}];
+const CAR_EXTRA_FEEDS=[{u:'https://www.huxiu.com/rss/0.xml',s:'虎嗅',c:'汽车'},{u:'https://www.tmtpost.com/rss.xml',s:'钛媒体',c:'汽车'},{u:'https://www.chinanews.com.cn/rss/fortune.xml',s:'中新网财经',c:'汽车'},{u:'https://www.chinanews.com.cn/rss/scroll-news.xml',s:'中新网',c:'汽车'},{u:'https://www.qbitai.com/feed',s:'量子位',c:'汽车'}];
+function isSpecialtyCategory(cat){return isPatentCategory(cat)||isCarCategory(cat)}
+function dedupeFeeds(feeds){
+  const seen=new Set();
+  return (feeds||[]).filter(f=>{const u=f&&f.u;if(!u||seen.has(u))return false;seen.add(u);return true});
+}
+function getTopicFeeds(cat){
+  const c=cat||S.cat;
+  if(isPatentCategory(c))return dedupeFeeds([...PAT_FEEDS,...PAT_EXTRA_FEEDS,...CAR_FEEDS]);
+  if(isCarCategory(c))return dedupeFeeds([...CAR_FEEDS,...CAR_EXTRA_FEEDS,...PAT_FEEDS]);
+  return [];
+}
+function isPatentCategory(cat){return PAT_CAT_KEYS.includes(cat||S.cat)}
+function isPatentCat(){return isPatentCategory(S.cat)}
+function fromPatChannel(it){
+  const tx=itemText(it);
+  if(it.isHotList||it.platform)return true;
+  if(PAT_CHANNEL_KW.some(k=>tx.includes(k)))return true;
+  const u=String(it.url||'');
+  return /toutiao|zhihu|weibo|douyin|baidu|xiaohongshu|amazon|weixin|mp\.weixin/i.test(u);
+}
+function hasPatentSignal(tx){return PAT_BASE_KW.some(k=>tx.includes(k))||/CN\d{9,}/.test(tx)}
+function hasCommerceSignal(tx){return PAT_COMMERCE_KW.some(k=>tx.includes(k))}
+function patentDomainKw(cat){return cat==='patHome'?PAT_HOME_DOMAIN:cat==='patCar'?PAT_CAR_DOMAIN:PAT_SEAT_DOMAIN}
+function matchDomain(tx,cat){const dom=patentDomainKw(cat);return dom.some(k=>tx.includes(k))}
+function matchPatentCategory(it,cat){
+  const c=cat||S.cat;const tx=itemText(it);
+  const dom=matchDomain(tx,c);
+  const pat=hasPatentSignal(tx);
+  const commerce=hasCommerceSignal(tx);
+  const channel=fromPatChannel(it);
+  if(pat&&dom)return true;
+  if(pat&&(c==='patCar'?CAR_KW.some(k=>tx.includes(k)):c==='patSeat'?CAR_SEAT_KW.some(k=>tx.includes(k)):PAT_HOME_DOMAIN.some(k=>tx.includes(k))))return true;
+  if(dom&&(pat||commerce||channel))return true;
+  if(dom&&commerce&&channel)return true;
+  return false;
+}
+function matchPatentCategoryRelaxed(it,cat){
+  if(matchPatentCategory(it,cat))return true;
+  const c=cat||S.cat;const tx=itemText(it);
+  if(!matchDomain(tx,c))return false;
+  if(hasPatentSignal(tx)||hasCommerceSignal(tx))return true;
+  if(c==='patCar'&&CAR_KW.some(k=>tx.includes(k)))return true;
+  if(c==='patSeat'&&CAR_SEAT_KW.some(k=>tx.includes(k)))return true;
+  if(c==='patHome'&&PAT_HOME_DOMAIN.some(k=>tx.includes(k)))return true;
+  return false;
+}
+function matchPatentCategoryBroad(it,cat){
+  if(matchPatentCategory(it,cat)||matchPatentCategoryRelaxed(it,cat))return true;
+  const tx=itemText(it);
+  if(matchDomain(tx,cat))return true;
+  if(fromPatChannel(it)&&(hasPatentSignal(tx)||hasCommerceSignal(tx)||matchDomain(tx,cat)))return true;
+  return false;
+}
+function matchCarCategoryBroad(it,cat){
+  if(matchCarCategory(it,cat))return true;
+  const tx=itemText(it);
+  const c=cat||S.cat;
+  const bag=CAR_CAT_KW[c]||CAR_KW;
+  if(bag.some(k=>tx.includes(k)))return true;
+  if(CAR_KW.some(k=>tx.includes(k)))return true;
+  if(c==='carInt'&&/内饰|座舱|中控|仪表|门板|顶棚|HMI|车机|软饰/.test(tx))return true;
+  if(c==='carExt'&&/外饰|保险杠|格栅|车灯|翼子板|涂装|漆面|包围/.test(tx))return true;
+  if(c==='carSeat'&&/座椅|坐垫|靠背|头枕|发泡|面套|零重力|滑轨/.test(tx))return true;
+  return false;
+}
+function dedupeByTitle(items){
+  const seen=new Set();
+  return items.filter(it=>{const k=(it.title||'').slice(0,28);if(seen.has(k))return false;seen.add(k);return true});
+}
+function filterByAgeDays(list,days){
+  const ms=days*86400000;
+  const dated=list.filter(it=>it.publishedAt>0);
+  const undated=list.filter(it=>!it.publishedAt);
+  const inRange=dated.filter(it=>Date.now()-(it.publishedAt||0)<=ms);
+  return [...inRange,...undated];
+}
+function expandByDate(list,min){
+  min=min||MIN_DISPLAY;
+  for(const d of AGE_FALLBACK_DAYS){
+    const merged=filterByAgeDays(list,d);
+    if(merged.length>=min)return merged;
+  }
+  const dated=list.filter(it=>it.publishedAt>0).sort((a,b)=>(b.publishedAt||0)-(a.publishedAt||0));
+  const undated=list.filter(it=>!it.publishedAt);
+  return dedupeByTitle([...dated,...undated,...list]);
+}
+function patentTitleTokens(title){
+  return String(title||'').replace(/[：:，,。；;？?！!、]/g,' ').split(/\s+/).filter(w=>w.length>=2&&!/专利|新品|整理|曝光|公开|授权|获准|相关|大全|一览/.test(w));
+}
+function matchArticleFromPool(title,pool){
+  const keys=patentTitleTokens(title);
+  if(!keys.length)return '';
+  let best='',score=0;
+  for(const it of pool||[]){
+    const u=getArticleUrl(it);
+    if(!u)continue;
+    const tx=itemText(it);
+    let s=0;
+    keys.forEach(k=>{if(tx.includes(k))s++});
+    if(s>score){score=s;best=u}
+  }
+  return score>=2?best:'';
+}
+function attachReadUrlsToItems(items,pool){
+  const src=pool&&pool.length?pool:items;
+  return (items||[]).map(it=>{
+    if(getArticleUrl(it))return it;
+    const u=matchArticleFromPool(it.title,src);
+    return u?{...it,url:u}:it;
+  });
+}
+function enrichPatentItem(it){
+  const tx=itemText(it);const cat=S.cat;
+  it.patHit=[];
+  if(hasPatentSignal(tx))it.patHit.push('专利');
+  if(hasCommerceSignal(tx))it.patHit.push('新品');
+  if(fromPatChannel(it))it.patHit.push('热榜');
+  if(/外贸|跨境|出海|亚马逊|Amazon/i.test(tx))it.patHit.push('外贸');
+  if(cat==='patHome'&&matchDomain(tx,'patHome'))it.patSub='家电';
+  else if(cat==='patCar'&&matchDomain(tx,'patCar'))it.patSub='汽车';
+  else if(cat==='patSeat'&&matchDomain(tx,'patSeat'))it.patSub='座椅';
+  if(hasCommerceSignal(tx))it.isNew=true;
+  const au=getArticleUrl(it);
+  if(au)it.url=au;
+  else if(S.allItems&&S.allItems.length){
+    const u=matchArticleFromPool(it.title,S.allItems);
+    if(u)it.url=u;
+  }
+  return ensureItemTimes(it);
+}
+function getDefaultPatent(){
+  const now=Date.now();
+  const day=86400000;
+  return[
+    {id:'ph0',title:'家电发明专利：扫地机器人避障算法获授权',body:'专利要点：多传感器融合避障、路径规划；适用于扫地机、吸尘器类家电。',src:'专利整理',c:'家电专利',url:'',isNew:1,score:10,publishedAt:now-day*3},
+    {id:'ph1',title:'亚马逊爆款小家电：便携榨汁杯出海热卖',body:'外贸新品：轻量榨汁杯在多个海外站点登上新品榜，关注电压规格、认证与物流。',src:'专利整理',c:'家电专利',url:'',isNew:1,score:9,publishedAt:now-day*8},
+    {id:'ph2',title:'空调新品：一级能效变频技术迭代',body:'家电新品常见方向：能效等级、静音、智能互联与专利布局。',src:'专利整理',c:'家电专利',url:'',isNew:1,score:8,publishedAt:now-day*15},
+    {id:'ph3',title:'洗碗机专利：喷淋臂结构优化获公开',body:'厨电专利涉及洗涤路径、烘干与除菌模块。',src:'专利整理',c:'家电专利',url:'',isLearn:1,score:8,publishedAt:now-day*22},
+    {id:'pc0',title:'汽车专利：一体式压铸车身结构公布',body:'新能源汽车常见技术专利方向：一体化压铸、电池包结构、热管理。',src:'专利整理',c:'汽车专利',url:'',isNew:1,score:10,publishedAt:now-day*2},
+    {id:'pc1',title:'比亚迪新专利曝光：智能驾驶相关',body:'车型专利速递：涉及智驾域控、传感器布置等。',src:'专利整理',c:'汽车专利',url:'',isNew:1,score:9,publishedAt:now-day*5},
+    {id:'pc2',title:'蔚来公开电池热管理专利：提升冬季续航',body:'动力电池热管理、快充与寿命相关专利持续增多。',src:'专利整理',c:'汽车专利',url:'',isNew:1,score:9,publishedAt:now-day*12},
+    {id:'pc3',title:'理想汽车专利：增程系统控制策略',body:'混动/增程路线常见专利：能量管理、NVH与排放控制。',src:'专利整理',c:'汽车专利',url:'',isLearn:1,score:8,publishedAt:now-day*20},
+    {id:'pc4',title:'小米汽车外饰专利：灯组造型与空气动力学',body:'外饰专利覆盖灯组、保险杠与风阻优化。',src:'专利整理',c:'汽车专利',url:'',isNew:1,score:8,publishedAt:now-day*28},
+    {id:'pc5',title:'特斯拉新专利：线控转向相关技术',body:'底盘与转向系统专利是智能驾驶配套热点。',src:'专利整理',c:'汽车专利',url:'',isLearn:1,score:8,publishedAt:now-day*35},
+    {id:'pc6',title:'华为问界座舱专利：多屏联动与座椅联动',body:'智能座舱专利涉及人机交互、座椅与场景模式。',src:'专利整理',c:'汽车专利',url:'',isNew:1,score:9,publishedAt:now-day*45},
+    {id:'pc7',title:'小鹏汽车充电专利：超充桩与电池匹配',body:'补能网络与电池包匹配是新能源专利高频领域。',src:'专利整理',c:'汽车专利',url:'',isNew:1,score:8,publishedAt:now-day*55},
+    {id:'ps0',title:'汽车座椅专利：零重力姿态调节机构',body:'座椅专利常覆盖骨架、滑轨、调角器、通风加热模块。',src:'专利整理',c:'座椅专利',url:'',isLearn:1,score:10,publishedAt:now-day*4},
+    {id:'ps1',title:'座椅新品：通风按摩配置下放至主流车型',body:'通风+按摩+腰托组合成为中低端车型卖点。',src:'专利整理',c:'座椅专利',url:'',isNew:1,score:9,publishedAt:now-day*10},
+    {id:'ps2',title:'座椅专利：侧翼支撑与安全气囊联动',body:'被动安全与座椅结构一体化设计相关专利。',src:'专利整理',c:'座椅专利',url:'',isLearn:1,score:8,publishedAt:now-day*18},
+    {id:'ps3',title:'二排座椅专利：长滑轨与地板纯平方案',body:'MPV与六座SUV常见座椅布局专利方向。',src:'专利整理',c:'座椅专利',url:'',isNew:1,score:8,publishedAt:now-day*26}
+  ].map(x=>enrichPatentItem({...x}));
+}
+function getPatentItems(){
+  const d=getDefaultPatent();
+  try{
+    const s=localStorage.getItem('fwz_patent');
+    if(s){const a=JSON.parse(s);if(a&&a.length>=MIN_DISPLAY)return a.map(x=>enrichPatentItem({...x}))}
+    if(s){const a=JSON.parse(s);if(a&&a.length){const merged=dedupeByTitle([...d,...a.map(x=>enrichPatentItem({...x}))]);localStorage.setItem('fwz_patent',JSON.stringify(merged));return merged}}
+  }catch(e){}
+  localStorage.setItem('fwz_patent',JSON.stringify(d));return d;
+}
+function pickDisplayItemsPatent(list){
+  const cat=S.cat;
+  const pool=expandByDate((list||[]).filter(isNewsItem).map(it=>enrichPatentItem({...it,c:CAT[cat]||it.c})),MIN_DISPLAY);
+  let baked=getPatentItems().filter(it=>matchPatentCategoryBroad(it,cat));
+  let merged=dedupeByTitle([...pool,...baked]);
+  if(merged.length<MIN_DISPLAY)merged=dedupeByTitle([...merged,...getPatentItems().filter(it=>matchPatentCategoryBroad(it,cat))]);
+  merged=attachReadUrlsToItems(merged,[...list,...pool,...merged]);
+  merged.sort((a,b)=>{
+    const au=getArticleUrl(a)?1:0, bu=getArticleUrl(b)?1:0;
+    if(bu!==au)return bu-au;
+    return rankScore(b)-rankScore(a);
+  });
+  return merged.slice(0,DISPLAY_MAX_TOPIC);
+}
+async function hydrateListReadUrls(){
+  if(!isSpecialtyCategory(S.cat))return;
+  const need=(S.items||[]).filter(x=>!getArticleUrl(x));
+  if(!need.length)return;
+  try{
+    const feeds=getTopicFeeds(S.cat);
+    const per=isPatentCategory(S.cat)?RSS_PER_FEED_PAT:RSS_PER_FEED_CAR;
+    const out=await fetchAllFeeds(feeds,per,{minRaw:40});
+    const enrichFn=isPatentCategory(S.cat)?enrichPatentItem:enrichCarItem;
+    const matchBroad=isPatentCategory(S.cat)?matchPatentCategoryBroad:matchCarCategoryBroad;
+    const extra=out.filter(isNewsItem).map(it=>enrichFn({...it,c:CAT[S.cat]})).filter(it=>matchBroad(it,S.cat));
+    S.allItems=dedupeByTitle([...(S.allItems||[]),...extra]);
+    S.items=attachReadUrlsToItems(S.items,S.allItems);
+    drawList();
+  }catch(e){}
+}
+function applySpecialtyList(cat,label,list,q,silent,t0,phase){
+  const enrichFn=isPatentCategory(cat)?enrichPatentItem:enrichCarItem;
+  const matchBroad=isPatentCategory(cat)?matchPatentCategoryBroad:matchCarCategoryBroad;
+  const pickFn=isPatentCategory(cat)?pickDisplayItemsPatent:pickDisplayItemsCar;
+  let enriched=list.filter(isNewsItem).map(it=>enrichFn({...it,c:label}));
+  if(q)enriched=enriched.filter(it=>matchQ(it,q));
+  const related=stampListTimes(dedupeByTitle(enriched.filter(it=>matchBroad(it,cat))));
+  S.allItems=related;
+  S.items=pickFn(related);
+  if(q)S.items=S.items.filter(it=>matchQ(it,q));
+  const st=S.lastFetchStats||{},sec=((Date.now()-(t0||Date.now()))/1000).toFixed(1);
+  $('cnt').textContent=label+' · 展示 '+S.items.length+' 条 / 入库 '+S.allItems.length+' 条 · '+sec+'秒'+(phase==='bg'?' · 后台补充':(st.total?' · 源 '+st.ok+'/'+st.total:''));
+  drawList();
+  if(phase==='fast'&&!silent&&S.allItems.length)ok(label+' 已更新（'+sec+'秒内）');
+}
+async function loadSpecialtyCategory(silent,q){
+  const cat=S.cat;
+  const label=CAT[cat]||'专题';
+  const feeds=getTopicFeeds(cat);
+  const per=isPatentCategory(cat)?RSS_PER_FEED_PAT:RSS_PER_FEED_CAR;
+  const gen=++S.specialtyLoadGen;
+  const t0=Date.now();
+  if(!silent)$('cnt').textContent=label+' · 正在快速抓取（目标 10 秒内）…';
+  const hotP=fetchPlatformHot(q,'all').then(r=>r.list||[]).catch(()=>[]);
+  const rssP=fetchAllFeeds(feeds,Math.min(per,20),{fast:true,deadlineMs:FAST_UPDATE_MS,minRaw:12});
+  const [hotList,rssOut]=await Promise.all([hotP,rssP]);
+  if(gen!==S.specialtyLoadGen)return;
+  applySpecialtyList(cat,label,hotList.concat(rssOut),q,silent,t0,'fast');
+  if(!silent)$('btnSearch').disabled=false;
+  if(!S.allItems.length&&!silent)err(q?'未找到「'+q+'」相关内容':'相关网页内容较少，已展示示例');
+  fetchAllFeeds(feeds,per,{deadlineMs:FAST_UPDATE_MS+8000,minRaw:40}).then(more=>{
+    if(gen!==S.specialtyLoadGen)return;
+    applySpecialtyList(cat,label,hotList.concat(more),q,true,t0,'bg');
+  }).catch(()=>{});
+}
+const CAR_CAT_KEYS=['car','carInt','carExt','carSeat'];
+const CAR_KW=['汽车','车市','车型','新车','新能源车','新能源汽车','电动汽车','纯电','混动','插混','智能驾驶','自动驾驶','智驾','主机厂','造车','轿车','SUV','MPV','皮卡','车展','交付','销量','召回','4S','保养','里程','电池','续航','充电','特斯拉','比亚迪','蔚来','小鹏','理想','问界','鸿蒙智行','华为汽车'];
+const CAR_INT_KW=['内饰','内饰件','座舱','仪表台','中控台','门板','顶棚','地毯','饰条','包覆','软饰','NVH座舱','HMI','屏幕','车机','氛围灯','内饰配色','真皮内饰','翻毛皮','内饰质感'];
+const CAR_EXT_KW=['外饰','外饰件','保险杠','格栅','中网','车灯','大灯','尾灯','翼子板','引擎盖','后备箱盖','涂装','漆面','钣金','镀铬','外饰造型','空气动力学套件','包围'];
+const CAR_SEAT_KW=['座椅','汽车座椅','坐垫','靠背','头枕','腰托','腿托','座椅骨架','发泡','面套','真皮座椅','座椅加热','座椅通风','座椅按摩','零重力座椅','二排','三排','座椅调节','滑轨','调角器','安全带锁扣'];
+const CAR_CAT_KW={car:CAR_KW,carInt:CAR_INT_KW,carExt:CAR_EXT_KW,carSeat:CAR_SEAT_KW};
+const CAR_FEEDS=[{u:'https://36kr.com/feed',s:'36氪',c:'汽车'},{u:'https://www.ithome.com/rss/',s:'IT之家',c:'汽车'},{u:'https://www.ifanr.com/feed',s:'爱范儿',c:'汽车'},{u:'https://www.geekpark.net/rss',s:'极客公园',c:'汽车'},{u:'https://www.leiphone.com/feed',s:'雷锋网',c:'汽车'},{u:'https://www.chinanews.com.cn/rss/scroll-news.xml',s:'中新网',c:'汽车'},{u:'https://www.chinanews.com.cn/rss/fortune.xml',s:'中新网财经',c:'汽车'},{u:'https://www.chinanews.com.cn/rss/it.xml',s:'中新网科技',c:'汽车'}];
+function isCarCategory(cat){return CAR_CAT_KEYS.includes(cat||S.cat)}
+function itemText(it){return (it.title||'')+' '+(it.body||'')+' '+(it.url||'')}
+function detectCarTags(tx){
+  const t=String(tx||'');
+  const tags=[];
+  if(CAR_INT_KW.some(k=>t.includes(k)))tags.push('int');
+  if(CAR_EXT_KW.some(k=>t.includes(k)))tags.push('ext');
+  if(CAR_SEAT_KW.some(k=>t.includes(k)))tags.push('seat');
+  if(CAR_KW.some(k=>t.includes(k))&&!tags.length)tags.push('car');
+  return tags;
+}
+function matchCarCategory(it,cat){
+  const tx=itemText(it);
+  const c=cat||S.cat;
+  if(c==='car')return CAR_KW.some(k=>tx.includes(k))||CAR_INT_KW.some(k=>tx.includes(k))||CAR_EXT_KW.some(k=>tx.includes(k))||CAR_SEAT_KW.some(k=>tx.includes(k));
+  if(c==='carInt')return CAR_INT_KW.some(k=>tx.includes(k))||(CAR_KW.some(k=>tx.includes(k))&&/内饰|座舱|中控|仪表|门板|顶棚|HMI|车机/.test(tx));
+  if(c==='carExt')return CAR_EXT_KW.some(k=>tx.includes(k))||(CAR_KW.some(k=>tx.includes(k))&&/外饰|保险杠|格栅|车灯|翼子板|涂装|漆面/.test(tx));
+  if(c==='carSeat')return CAR_SEAT_KW.some(k=>tx.includes(k))||(CAR_KW.some(k=>tx.includes(k))&&/座椅|坐垫|靠背|头枕|发泡|面套|滑轨/.test(tx));
+  return false;
+}
+function enrichCarItem(it){
+  const tx=itemText(it);
+  it.carTags=detectCarTags(tx);
+  if(it.carTags.includes('int'))it.carSub='内饰';
+  else if(it.carTags.includes('ext'))it.carSub='外饰';
+  else if(it.carTags.includes('seat'))it.carSub='座椅';
+  else if(it.carTags.includes('car')||CAR_KW.some(k=>tx.includes(k)))it.carSub='汽车';
+  const au=getArticleUrl(it);
+  if(au)it.url=au;
+  else if(S.allItems&&S.allItems.length){
+    const u=matchArticleFromPool(it.title,S.allItems);
+    if(u)it.url=u;
+  }
+  return ensureItemTimes(it);
+}
+function getDefaultCar(){
+  return[
+    {id:'c0',title:'汽车碰撞责任认定：谁担责一眼看懂',body:'干货：保护现场→报警报险→拍照留证（车位、刹车痕、信号灯）→按交规判责：追尾多为后车责任；变道未让直行常担主责→协商或交管认定后理赔。',src:'干货整理',c:'汽车',url:'',isLearn:1,score:10},
+    {id:'c1',title:'新能源汽车电池衰减：正常吗',body:'一般8年或一定里程内衰减在合理范围；影响因子包括快充频率、温度、充放电深度；保养建议：避免长期满充满放。',src:'干货整理',c:'汽车',url:'',isNew:1,score:9},
+    {id:'c2',title:'华为五界有哪些：一张图理清',body:'问界（赛力斯）智能豪华SUV；智界（奇瑞）年轻运动；享界（北汽）行政豪华；尊界（江淮）超豪华；尚界（上汽）主流市场。鸿蒙智行多品牌合作线。',src:'干货整理',c:'汽车',url:'',isNew:1,score:9},
+    {id:'ci0',title:'汽车内饰件怎么选：中控台与门板包覆要点',body:'内饰件关注：材料耐候/VOC、触感与耐磨、装配间隙与异响；中控台看屏幕集成与散热；门板关注音响网罩、拉手、氛围灯槽；批量件需验证冷热循环与暴晒。',src:'干货整理',c:'汽车内饰件',url:'',isLearn:1,score:9},
+    {id:'ci1',title:'智能座舱HMI：仪表与中控屏协同趋势',body:'座舱电子：液晶仪表+中控屏+语音；软件定义座舱；关注功能安全、启动时序、OTA；内饰质感靠软饰、饰条、配色统一。',src:'干货整理',c:'汽车内饰件',url:'',isNew:1,score:8},
+    {id:'ce0',title:'汽车外饰件：保险杠与格栅设计要点',body:'外饰：保险杠吸能结构、格栅通风与雷达预留、车灯配光法规；表面处理看漆面橘皮、间隙面差；轻量化用塑料+金属混合。',src:'干货整理',c:'汽车外饰件',url:'',isLearn:1,score:9},
+    {id:'ce1',title:'车灯与翼子板：外饰造型与空气动力学',body:'大灯矩阵ADB、尾灯贯穿式；翼子板与轮眉影响风阻；外饰件需做冻融、石击、UV老化试验。',src:'干货整理',c:'汽车外饰件',url:'',score:8},
+    {id:'cs0',title:'汽车座椅：加热通风按摩怎么选',body:'座椅系统：骨架强度、发泡硬度、面套耐磨；功能件含加热垫、通风风扇、按摩气袋；零重力/腿托看行程与锁止；二排独立座椅关注滑轨与调角器。',src:'干货整理',c:'汽车座椅',url:'',isLearn:1,score:10},
+    {id:'cs1',title:'座椅骨架与发泡：舒适与安全如何平衡',body:'骨架满足碰撞与鞭打试验；发泡密度分区（坐垫/侧翼）；面套真皮/超纤；安全带锁扣与座椅集成需注意固定点强度。',src:'干货整理',c:'汽车座椅',url:'',score:9}
+  ].map((x,i)=>enrichCarItem(enrichCuratedItem({...x},i)));
+}
+function getCarItems(){
+  try{const s=localStorage.getItem('fwz_car');if(s){const a=JSON.parse(s);if(a&&a.length)return a.map((x,i)=>enrichCarItem(enrichCuratedItem({...x},i)))}}catch(e){}
+  const d=getDefaultCar();localStorage.setItem('fwz_car',JSON.stringify(d));return d;
+}
+function getDefaultOther(){return[
+  {id:'o0',title:'个税专项附加扣除大全：这7项很多人能用到，别白白多交税',body:'个人所得税专项附加扣除：计算个税前先扣除部分家庭和生活支出。7项：①子女教育（3岁至博士，约2000元/月/孩）②继续教育 ③大病医疗（年度汇算）④住房贷款利息（首套约1000元/月，最长20年）⑤住房租金 ⑥赡养老人（60岁以上，独生子女约3000元/月）⑦3岁以下婴幼儿照护（约2000元/月/孩）。易漏：住房租金、赡养老人。个税APP申报，年底年度汇算。官方入口：个人所得税APP官方平台。',src:'干货整理',c:'其他',url:'',isLearn:1,score:10},
+  {id:'o2',title:'个人所得税怎么缴纳：普通人一页读懂',body:'干货要点：弄清是否需申报→区分综合所得与经营所得→关注专项附加扣除→用个税APP核对→按时申报缴纳，避免滞纳金。',src:'干货整理',c:'其他',url:'',isLearn:1,score:9},
+  {id:'o4',title:'重疾险怎么选：3个关键原则',body:'先保大病保额→再看高发疾病覆盖→最后比免责条款与续保条件；优先高保额、清晰免责、可长期续保的产品。',src:'干货整理',c:'其他',url:'',isLearn:1,score:8},
+  {id:'o5',title:'劳动合同解除：员工必须知道的边界',body:'区分协商解除、过失辞退、经济性裁员；注意经济补偿N/N+1、书面通知与仲裁时效。',src:'干货整理',c:'其他',url:'',isLearn:1,score:8},
+].map((x,i)=>enrichCuratedItem({...x,c:'其他'},i))}
+function getOtherItems(){try{const s=localStorage.getItem('fwz_other');if(s){const a=JSON.parse(s);if(a&&a.length)return a.map((x,i)=>enrichCuratedItem({...x,c:'其他'},i))}}catch(e){}const d=getDefaultOther();localStorage.setItem('fwz_other',JSON.stringify(d));return d}
+const VAL_KW=['干货','深度','原理','方法论','底层','认知','复盘','揭秘','案例','实践','步骤','指南','攻略','技巧','经验','科学','研究','分析','解读','入门','进阶','如何','怎样','为什么','什么是','知识','科普','提升','改善','养成','框架','模型','策略','思维'];
+const NICHE_KW=['冷门','小众','少有人','被忽视','底层逻辑','长期','系统','本质','误区','真相','关键','核心'];
+const BAD_KW=['广告','推广','限时优惠','抽奖','八卦','明星','绯闻','震惊','万万没想到','重磅快讯','官宣'];
+const ENCYCLO_KW=['是指','是一种','也称为','又被称为','维基百科','百科词条','——百科','，是'];
+const QUERY_EXPAND={汽车:['汽车','新车','新能源车','电动汽车','智能驾驶','自动驾驶','车市','车型','发布','上市','改款'],内饰:['汽车内饰','内饰件','座舱','中控','仪表','门板','顶棚'],外饰:['汽车外饰','外饰件','保险杠','格栅','车灯','翼子板'],座椅:['汽车座椅','座椅','坐垫','靠背','发泡','面套','零重力座椅'],专利:['专利','发明专利','实用新型','授权'],家电:['家电','专利','小家电','厨电','空调','冰箱','亚马逊','外贸','新品'],亚马逊:['亚马逊','Amazon','爆款','外贸','跨境','出海'],AI:['AI','人工智能','大模型','ChatGPT','芯片','算力'],手机:['手机','旗舰','发布会','新品']};
+const LISTY_KW=['本周看什么','片单','追剧','票房','综艺'];
+const HOT_KW=['热点','热议','爆款','刷屏','点赞','上新','首发','突破','走红','热搜','爆火','关注度','冲上热搜','话题','引发关注'];
+const NEW_KW=['新品','发布','上市','专利','新技术','新功能','概念车','新能源','自动驾驶','大模型','芯片','新车','改款','汽车','车市','智能驾驶'];
+const LEARN_KW=['科普','学习','教程','入门','知识','解读','干货','原理','方法','指南','攻略','技巧','一文读懂','怎么','如何','为什么','什么是','详解','盘点'];
+const TECH_KW=['科技','数码','手机','芯片','AI','人工智能','大模型','电脑','苹果','华为','小米','发布','评测','系统','更新','显卡','处理器','开源','编程','软件','互联网','IT','5G','新能源','智能','自动驾驶','机器人'];
+const VIDEO_RE=/bilibili|youtube|youku|iqiyi|v\.qq|douyin|tiktok|acfun|video/i;
+const FEEDS={
+  all:[
+    {u:'https://www.ruanyifeng.com/blog/atom.xml',s:'阮一峰',c:'科技'},
+    {u:'https://www.ithome.com/rss/',s:'IT之家',c:'科技'},
+    {u:'https://www.solidot.org/index.rss',s:'Solidot',c:'科技'},
+    {u:'https://www.oschina.net/news/rss',s:'开源中国',c:'科技'},
+    {u:'https://hnrss.org/frontpage',s:'HN热点',c:'科技'},
+    {u:'https://36kr.com/feed',s:'36氪',c:'科技'},
+    {u:'https://www.huxiu.com/rss/0.xml',s:'虎嗅',c:'财经'},
+    {u:'https://sspai.com/feed',s:'少数派',c:'科技'},
+    {u:'https://www.ifanr.com/feed',s:'爱范儿',c:'科技'},
+    {u:'https://www.qbitai.com/feed',s:'量子位',c:'科技'},
+    {u:'https://www.leiphone.com/feed',s:'雷锋网',c:'科技'},
+    {u:'https://www.geekpark.net/rss',s:'极客公园',c:'科技'},
+    {u:'https://www.jiqizhixin.com/rss',s:'机器之心',c:'科技'},
+    {u:'https://www.tmtpost.com/rss.xml',s:'钛媒体',c:'财经'},
+    {u:'https://www.chinanews.com.cn/rss/scroll-news.xml',s:'中新网热点',c:'生活'},
+    {u:'https://www.chinanews.com.cn/rss/it.xml',s:'中新网',c:'科技'},
+    {u:'https://www.chinanews.com.cn/rss/fortune.xml',s:'中新网',c:'财经'},
+    {u:'https://www.chinanews.com.cn/rss/edu.xml',s:'中新网',c:'教育'},
+    {u:'https://www.chinanews.com.cn/rss/health.xml',s:'中新网',c:'健康'},
+    {u:'https://www.chinanews.com.cn/rss/culture.xml',s:'中新网',c:'文化'},
+    {u:'https://www.chinanews.com.cn/rss/society.xml',s:'中新网',c:'生活'},
+    {u:'https://www.chinanews.com.cn/rss/life.xml',s:'中新网',c:'生活'}
+  ],
+  car:CAR_FEEDS,
+  carInt:CAR_FEEDS,
+  carExt:CAR_FEEDS,
+  carSeat:CAR_FEEDS,
+  patHome:PAT_FEEDS,
+  patCar:PAT_FEEDS,
+  patSeat:PAT_FEEDS,
+  fun:[{u:'https://www.chinanews.com.cn/rss/scroll-news.xml',s:'中新网',c:'趣事'},{u:'https://hnrss.org/frontpage',s:'HN热点',c:'趣事'}],
+  other:[],
+  hot:[]
+};
+function parsePubDate(b){
+  const m=(b||'').match(/<pubDate[^>]*>([^<]+)<\/pubDate>/i)||(b||'').match(/<published[^>]*>([^<]+)<\/published>/i)||(b||'').match(/<updated[^>]*>([^<]+)<\/updated>/i)||(b||'').match(/<dc:date[^>]*>([^<]+)<\/dc:date>/i)||(b||'').match(/<created[^>]*>([^<]+)<\/created>/i);
+  if(!m)return 0;
+  const t=Date.parse(m[1].trim());
+  return isNaN(t)?0:t;
+}
+function normalizeHotPubTime(v){
+  if(v==null||v==='')return 0;
+  if(typeof v==='number'&&v>0)return v<1e12?v*1000:v;
+  const n=Number(v);
+  if(!isNaN(n)&&n>0)return n<1e12?n*1000:n;
+  const t=Date.parse(String(v).trim());
+  return isNaN(t)?0:t;
+}
+function formatSyncTime(ts){
+  const t=normalizeHotPubTime(ts);
+  if(!t)return '';
+  const d=new Date(t);
+  if(isNaN(d.getTime()))return '';
+  const pad=n=>String(n).padStart(2,'0');
+  const mo=pad(d.getMonth()+1),day=pad(d.getDate()),hh=pad(d.getHours()),mm=pad(d.getMinutes());
+  return '同步 '+mo+'-'+day+' '+hh+':'+mm;
+}
+function formatArticlePubTime(ts){
+  const t=normalizeHotPubTime(ts);
+  if(!t)return '';
+  const d=new Date(t);
+  if(isNaN(d.getTime()))return '';
+  const age=Date.now()-t;
+  const pad=n=>String(n).padStart(2,'0');
+  const y=d.getFullYear(),mo=pad(d.getMonth()+1),day=pad(d.getDate()),hh=pad(d.getHours()),mm=pad(d.getMinutes());
+  if(age<120000)return '发文 刚刚';
+  if(age<3600000)return '发文 '+Math.max(1,Math.floor(age/60000))+'分钟前';
+  if(age<86400000)return '发文 '+Math.max(1,Math.floor(age/3600000))+'小时前';
+  if(age<7*86400000)return '发文 '+Math.max(1,Math.floor(age/86400000))+'天前';
+  return '发文 '+y+'-'+mo+'-'+day+' '+hh+':'+mm;
+}
+function formatUpdateTime(ts){
+  const t=normalizeHotPubTime(ts);
+  if(!t)return '';
+  const d=new Date(t);
+  if(isNaN(d.getTime()))return '';
+  const age=Date.now()-t;
+  const pad=n=>String(n).padStart(2,'0');
+  const y=d.getFullYear(),mo=pad(d.getMonth()+1),day=pad(d.getDate()),hh=pad(d.getHours()),mm=pad(d.getMinutes());
+  if(age<120000)return '更新 刚刚';
+  if(age<3600000)return '更新 '+Math.max(1,Math.floor(age/60000))+'分钟前';
+  if(age<86400000)return '更新 '+Math.max(1,Math.floor(age/3600000))+'小时前';
+  if(age<7*86400000)return '更新 '+Math.max(1,Math.floor(age/86400000))+'天前';
+  return '更新 '+mo+'-'+day+' '+hh+':'+mm;
+}
+function ensureItemTimes(it){
+  if(!it.syncedAt)it.syncedAt=Date.now();
+  const pub=normalizeHotPubTime(it.publishedAt);
+  if(pub){it.publishedAt=pub;if(!it.updatedAt)it.updatedAt=pub;}
+  const upd=normalizeHotPubTime(it.updatedAt);
+  if(upd)it.updatedAt=upd;
+  return it;
+}
+function enrichCuratedItem(it,i){
+  const now=Date.now();
+  const day=86400000;
+  const idx=i==null?0:i;
+  const pub=normalizeHotPubTime(it.publishedAt)||now-(idx+1)*10*day;
+  const upd=normalizeHotPubTime(it.updatedAt)||pub;
+  return ensureItemTimes({...it,publishedAt:pub,updatedAt:upd,syncedAt:normalizeHotPubTime(it.syncedAt)||now,pubTimeEst:false});
+}
+function stampListTimes(list,syncAt){
+  const t=syncAt||Date.now();
+  return (list||[]).map(it=>ensureItemTimes({...it,syncedAt:it.syncedAt||t}));
+}
+function cardTimeTags(it){
+  let h='';
+  const sync=formatSyncTime(it.syncedAt);
+  if(sync)h+='<span class="tag tag-sync" title="列表同步时间">'+esc(sync)+'</span>';
+  const isHot=!!(it.isHotList||it.platform);
+  if(isHot&&!it.pubTimeEst&&it.publishedAt>0){
+    const pub=formatArticlePubTime(it.publishedAt);
+    if(pub)h+='<span class="tag tag-pub" title="文章发布时间">'+esc(pub)+'</span>';
+  }
+  const updTs=normalizeHotPubTime(it.updatedAt)||(!isHot?normalizeHotPubTime(it.publishedAt):0);
+  if(updTs){
+    const upd=formatUpdateTime(updTs);
+    if(upd)h+='<span class="tag tag-update" title="内容更新时间">'+esc(upd)+'</span>';
+  }
+  return h;
+}
+function enrichItem(it,b){const ts=parsePubDate(b);it.publishedAt=ts;it.updatedAt=ts;const tx=it.title+' '+it.body+' '+(it.url||'');it.isVideo=VIDEO_RE.test(tx)||/视频/.test(it.title);const recent=ts>0&&ts>Date.now()-RECENT_DAYS_HOT*86400000;it.isHot=HOT_KW.some(k=>tx.includes(k))||recent;it.isNew=NEW_KW.some(k=>tx.includes(k));it.isLearn=LEARN_KW.some(k=>tx.includes(k));return ensureItemTimes(it)}
+function recencyBoost(it){const ts=it.publishedAt;if(!ts)return 0;const age=Date.now()-ts;if(age<86400000)return 4;if(age<3*86400000)return 3;if(age<7*86400000)return 2;if(age<30*86400000)return 1;return 0}
+function rankScore(it){return scoreValue(it)+recencyBoost(it)*0.9+(it.isHot?1:0)+(it.isLearn?1:0)}
+function err(m){const e=$('err');e.textContent=m;e.className='err';e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),6000)}
+function ok(m){const e=$('err');e.textContent=m;e.className='ok';e.classList.remove('hidden');setTimeout(()=>{e.classList.add('hidden');e.className='err'},2500)}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function reset(){S.org=null;S.orgOk=false;S.imgs=[]}
+function stripHtml(h){return String(h||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim()}
+function isChinese(t){return (t.match(/[\u4e00-\u9fff]/g)||[]).length>=4}
+function isTechCat(){return S.cat==='all'}
+function isCarCat(){return isCarCategory(S.cat)}
+
+function getHotApiBase(){
+  const saved=(localStorage.getItem('fwz_hot_api')||'').replace(/\/$/,'');
+  if(saved)return saved;
+  if(location.protocol.startsWith('http')){
+    const h=location.hostname;
+    if(h==='localhost'||h==='127.0.0.1')return location.origin;
+  }
+  return 'http://localhost:3000';
+}
+const HOT_LAUNCHER='http://127.0.0.1:38765';
+let _hotWakeTried=false;
+async function pingHotApi(){
+  const base=getHotApiBase();
+  try{
+    const r=await fetch(base+'/api/hot?limit=1&platforms=toutiao&_='+Date.now(),{cache:'no-store'});
+    return r.ok;
+  }catch(e){return false}
+}
+async function tryWakeHotServer(){
+  if(_hotWakeTried)return;
+  _hotWakeTried=true;
+  try{await fetch(HOT_LAUNCHER+'/wake',{cache:'no-store'})}catch(e){}
+}
+async function waitForHotApi(opts){
+  const maxMs=(opts&&opts.maxMs)||90000;
+  const interval=(opts&&opts.interval)||2000;
+  const onWait=opts&&opts.onWait;
+  const start=Date.now();
+  let n=0;
+  while(Date.now()-start<maxMs){
+    if(await pingHotApi())return true;
+    if(n===0)await tryWakeHotServer();
+    n++;
+    if(onWait)onWait(Math.round((Date.now()-start)/1000));
+    await new Promise(r=>setTimeout(r,interval));
+  }
+  return false;
+}
+async function ensureHotService(silent){
+  if(await pingHotApi())return true;
+  if(!silent)ok('正在启动热榜服务，请稍候…');
+  return waitForHotApi({
+    maxMs:90000,
+    onWait(sec){if($('cnt'))$('cnt').textContent=(silent?'正在连接热榜服务… ':'正在启动热榜服务… ')+sec+' 秒'}
+  });
+}
+function enrichHotItem(it,i,forcePlatform){
+  const pt=(forcePlatform||it.platform||'').trim();
+  const label=pt&&HOT_CH[pt]?HOT_CH[pt].label:(it.source||'热榜');
+  const src=pt?label:(it.source||'热榜');
+  const heat=it.heat?String(it.heat):'';
+  const rank=it.rank||i+1;
+  const summary=String(it.summary||it.body||'').slice(0,420);
+  let body=heat?(summary.indexOf('热度')>=0?summary:summary+' · 热度 '+heat):summary;
+  if(!body||body===it.title||/^(今日头条|微博|知乎|抖音|百度)(热榜|热搜)?$/i.test(body.trim()))body=it.title||body;
+  const rawUrl=String(it.url||'').trim();
+  const gid=it.clusterId||it.groupId||it.ClusterId||'';
+  const item={id:(pt?pt+'-':'hot-')+(it.id||i+'-'+Math.random().toString(36).slice(2,5)),title:it.title||'',body,url:rawUrl,src,c:src,platform:pt,heat,rank,clusterId:gid,groupId:gid};
+  const au=getArticleUrl(item);
+  item.url=au;
+  item.searchUrl=buildSearchUrl(item);
+  const pubTs=normalizeHotPubTime(it.publishedAt||it.pubTime||it.eventTime);
+  item.pubTimeEst=!pubTs;
+  item.publishedAt=pubTs||0;
+  item.updatedAt=pubTs||normalizeHotPubTime(it.updatedAt)||0;
+  item.syncedAt=normalizeHotPubTime(it.syncedAt)||Date.now();
+  item.isVideo=isVideoUrl(au||rawUrl,item)||/抖音|bilibili|哔哩|视频|B站/i.test(src+item.title+(rawUrl||''));
+  item.isHot=true;item.isNew=false;item.isLearn=false;item.score=8;item.isHotList=true;
+  return item;
+}
+function filterHotByChannel(list,channel){
+  const ch=channel||S.hotChannel||'all';
+  const cfg=HOT_CH[ch]||HOT_CH.all;
+  if(!cfg.p)return list;
+  return list.filter(it=>it.platform===cfg.p);
+}
+function cardTags(it){
+  ensureItemTimes(it);
+  if(it.isHotList||it.platform||S.hotChannel){
+    const ch=S.hotChannel&&HOT_CH[S.hotChannel]?HOT_CH[S.hotChannel].label:'';
+    const srcOk=!ch||!it.platform||(HOT_CH[S.hotChannel]&&it.platform===HOT_CH[S.hotChannel].p);
+    let h='';
+    if(it.rank)h+='<span class="tag tag-rank">#'+esc(String(it.rank))+'</span>';
+    h+='<span class="tag tag-src'+(srcOk?'':' tag-warn')+'">'+esc(it.src||'热榜')+'</span>';
+    if(it.heat)h+='<span class="tag tag-heat">热度 '+esc(it.heat)+'</span>';
+    else h+='<span class="tag tag-hot">热榜</span>';
+    return h+cardTimeTags(it);
+  }
+  let h='<span class="tag">'+esc(it.c||CAT[S.cat]||'')+'</span>';
+  if(it.carSub)h+='<span class="tag tag-car">'+esc(it.carSub)+'</span>';
+  if(it.carTags&&it.carTags.includes('int'))h+='<span class="tag tag-car-int">内饰件</span>';
+  if(it.carTags&&it.carTags.includes('ext'))h+='<span class="tag tag-car-ext">外饰件</span>';
+  if(it.carTags&&it.carTags.includes('seat'))h+='<span class="tag tag-car-seat">座椅</span>';
+  if(it.patSub)h+='<span class="tag tag-pat">'+esc(it.patSub)+'</span>';
+  if(it.patHit&&it.patHit.includes('专利'))h+='<span class="tag tag-pat">专利</span>';
+  if(it.patHit&&it.patHit.includes('外贸'))h+='<span class="tag tag-pat-new">外贸/亚马逊</span>';
+  else if(it.patHit&&it.patHit.includes('新品'))h+='<span class="tag tag-pat-new">新品</span>';
+  h+=(it.src&&it.src!==it.c?'<span class="tag tag-src">'+esc(it.src)+'</span>':'')+
+    (it.isHot?'<span class="tag tag-hot">热点</span>':'')+(it.isNew?'<span class="tag tag-new">新品</span>':'')+(it.isLearn?'<span class="tag tag-learn">科普</span>':'');
+  return h+cardTimeTags(it);
+}
+async function fetchPlatformHot(q,channel){
+  const base=getHotApiBase();
+  const ch=channel||S.hotChannel||'all';
+  const cfg=HOT_CH[ch]||HOT_CH.all;
+  const seq=++S.hotFetchSeq;
+  if(S.hotFetchCtrl)try{S.hotFetchCtrl.abort()}catch(e){}
+  S.hotFetchCtrl=new AbortController();
+  const platforms=cfg.p||'toutiao,baidu,weibo,douyin,zhihu,bilibili,xiaohongshu';
+  const url=base+'/api/hot?limit='+HOT_FETCH_LIMIT+'&platforms='+encodeURIComponent(platforms)+'&_='+Date.now();
+  let lastErr;
+  for(let attempt=0;attempt<2;attempt++){
+    if(seq!==S.hotFetchSeq)throw Object.assign(new Error('请求已取消'),{name:'AbortError'});
+    try{
+      const r=await fetch(url,{signal:S.hotFetchCtrl.signal,cache:'no-store',headers:{Accept:'application/json'}});
+      if(seq!==S.hotFetchSeq)throw Object.assign(new Error('请求已取消'),{name:'AbortError'});
+      const data=await r.json();
+      if(!r.ok)throw new Error(data.error||('HTTP '+r.status));
+      const forcePt=cfg.p||'';
+      let list=(data.items||[]).map((it,i)=>enrichHotItem(it,i,forcePt));
+      list=filterHotByChannel(list,ch);
+      if(q)list=list.filter(it=>matchQ(it,q));
+      const seen=new Set();
+      list=list.filter(it=>{const k=(it.platform||'')+'|'+it.title.slice(0,24);if(seen.has(k))return false;seen.add(k);return true});
+      list=sortHotByUpdate(list);
+      const st=data.stats||{};
+      const ok=cfg.p?(st[cfg.p]?.count>0?1:0):(data.meta?.platformsOk||0);
+      const total=cfg.p?1:(data.meta?.platformsTotal||7);
+      S.lastFetchStats={total,ok,raw:list.length,channel:ch};
+      return {list,meta:data.meta,stats:data.stats};
+    }catch(e){
+      if(e&&e.name==='AbortError')throw e;
+      lastErr=e;
+      if(attempt<2)await new Promise(r=>setTimeout(r,500*(attempt+1)));
+    }
+  }
+  throw lastErr||new Error('连接失败');
+}
+function itemUpdateTs(it){
+  return normalizeHotPubTime(it.updatedAt)||normalizeHotPubTime(it.publishedAt)||normalizeHotPubTime(it.syncedAt)||0;
+}
+function sortHotByUpdate(list){
+  const arr=(list||[]).slice();
+  arr.sort((a,b)=>{
+    const d=itemUpdateTs(b)-itemUpdateTs(a);
+    if(d)return d;
+    return (a.rank||999)-(b.rank||999);
+  });
+  arr.forEach((it,i)=>{it.rank=i+1});
+  return arr;
+}
+function sortHotCacheRaw(items){
+  return (items||[]).slice().sort((a,b)=>{
+    const ta=normalizeHotPubTime(b.updatedAt)||normalizeHotPubTime(b.publishedAt)||0;
+    const tb=normalizeHotPubTime(a.updatedAt)||normalizeHotPubTime(a.publishedAt)||0;
+    return ta-tb;
+  });
+}
+function hotItemKey(it){
+  return (it.platform||'')+'|'+(it.title||'').slice(0,24);
+}
+function serializeHotItem(it){
+  return{
+    id:it.id,title:it.title,body:it.body,url:it.url,src:it.src,c:it.c,
+    platform:it.platform,heat:it.heat,rank:it.rank,
+    publishedAt:it.publishedAt||0,updatedAt:it.updatedAt||0,syncedAt:it.syncedAt||0,
+    pubTimeEst:!!it.pubTimeEst,isVideo:!!it.isVideo,isHotList:true,
+    clusterId:it.clusterId,groupId:it.groupId,searchUrl:it.searchUrl||''
+  };
+}
+function hotCacheRead(){
+  try{return JSON.parse(localStorage.getItem(HOT_CACHE_KEY)||'{}')}catch(e){return{}}
+}
+function hotCacheWrite(store){
+  try{localStorage.setItem(HOT_CACHE_KEY,JSON.stringify(store))}catch(e){}
+}
+function mergeHotCacheItems(newList,prevItems){
+  const seen=new Set();
+  const out=[];
+  const add=raw=>{
+    if(!raw||!raw.title)return;
+    const k=(raw.platform||'')+'|'+(raw.title||'').slice(0,24);
+    if(seen.has(k))return;
+    seen.add(k);
+    out.push(raw);
+  };
+  (newList||[]).forEach(it=>add(serializeHotItem(it)));
+  (prevItems||[]).forEach(raw=>{if(out.length<HOT_CACHE_MAX)add(raw)});
+  return out.slice(0,HOT_CACHE_MAX);
+}
+function saveHotCache(channel,list){
+  if(!list||!list.length)return;
+  const ch=channel||'all';
+  const store=hotCacheRead();
+  const prev=store[ch]?.items||[];
+  store[ch]={t:Date.now(),items:sortHotCacheRaw(mergeHotCacheItems(list,prev))};
+  hotCacheWrite(store);
+}
+function hydrateHotCacheItems(items,ch,q){
+  const cfg=HOT_CH[ch]||HOT_CH.all;
+  const forcePt=cfg.p||'';
+  let list=(items||[]).map((it,i)=>enrichHotItem({...it,isHotList:true},i,forcePt));
+  list=filterHotByChannel(list,ch);
+  if(q)list=list.filter(it=>matchQ(it,q));
+  const seen=new Set();
+  list=list.filter(it=>{const k=hotItemKey(it);if(seen.has(k))return false;seen.add(k);return true});
+  list=sortHotByUpdate(list);
+  list.forEach(it=>{it._fromCache=true});
+  return stampListTimes(list);
+}
+function loadHotCache(channel,q){
+  const ch=channel||'all';
+  const store=hotCacheRead();
+  const entry=store[ch];
+  let items=entry?.items||[];
+  if(ch!=='all'&&items.length<HOT_CACHE_MIN){
+    const fromAll=store.all?.items||[];
+    if(fromAll.length)items=mergeHotCacheItems([],items.concat(fromAll));
+  }
+  if(!items.length)return [];
+  return hydrateHotCacheItems(items,ch,q);
+}
+function setHotListUI(list,chLabel,opts){
+  const o=opts||{};
+  const silent=!!o.silent;
+  list=sortHotByUpdate(list);
+  list=stampListTimes(list);
+  S.allItems=list;
+  const showN=Math.min(list.length,Math.max(DISPLAY_MAX,HOT_CACHE_MIN));
+  S.items=list.slice(0,list.length?showN:0);
+  if(S.items.length<MIN_DISPLAY&&list.length>=MIN_DISPLAY)S.items=list.slice(0,MIN_DISPLAY);
+  const st=S.lastFetchStats||{};
+  if(!S.items.length&&!o.fromCache){
+    err(chLabel+' 暂无热榜数据，可点「全部热榜」或稍后重试');
+    $('cnt').textContent=chLabel+' · 展示 0 条'+(st.total?' · 源 '+st.ok+'/'+st.total:'');
+    return;
+  }
+  const cacheNote=o.fromCache?' · 缓存':'';
+  $('cnt').textContent=chLabel+cacheNote+' · 展示 '+S.items.length+' 条'+(o.fromCache?'':'')+(st.total&&!o.fromCache?' · 源 '+st.ok+'/'+st.total:'');
+  if(o.fromCache&&!silent){
+    const why=o.fetchFail?'拉取失败':(o.fetchEmpty?'暂无新数据':'');
+    ok(chLabel+(why?'（'+why+'）':'')+' · 沿用上次热榜 '+S.items.length+' 条');
+  }else if(!silent&&!o.fromCache){
+    ok(chLabel+' 已更新 · '+S.items.length+' 条');
+  }
+}
+function toggleHotFilterUI(){
+  const wrap=$('onlyValuableWrap');
+  if(wrap)wrap.style.display=S.hotChannel?'none':'';
+}
+function setHotChannelUI(ch){
+  document.querySelectorAll('.ch-tab').forEach(b=>b.classList.toggle('on',ch?b.dataset.ch===ch:false));
+}
+
+function getValuableMinScore(listLen){
+  if(isCarCat()||isPatentCat())return 1;
+  let m=isTechCat()?3:4;
+  if(listLen!=null&&listLen<40)m=Math.max(2,m-1);
+  if(listLen!=null&&listLen<15)m=2;
+  return m;
+}
+function scoreValue(it){
+  let s=0;const t=(it.title+' '+it.body);
+  if(isChinese(t))s+=3;
+  else if((it.src||'').match(/IT之家|少数派|爱范儿|量子位|雷锋网|极客公园|36氪|Solidot|HN|阮一峰/)&&t.length>12)s+=2;
+  if(it.c==='科技')s+=2;
+  if(isCarCat()||CAR_KW.some(k=>t.includes(k)))s+=2;
+  if(isPatentCat()||hasPatentSignal(t))s+=3;
+  if(PAT_COMMERCE_KW.some(k=>t.includes(k)))s+=2;
+  if(fromPatChannel({title:t,body:t,url:t}))s+=2;
+  if(CAR_INT_KW.some(k=>t.includes(k)))s+=2;
+  if(CAR_EXT_KW.some(k=>t.includes(k)))s+=2;
+  if(CAR_SEAT_KW.some(k=>t.includes(k)))s+=2;
+  let tk=0;TECH_KW.forEach(k=>{if(t.includes(k)&&tk<4){s+=1;tk++}});
+  VAL_KW.forEach(k=>{if(t.includes(k))s+=2});
+  NICHE_KW.forEach(k=>{if(t.includes(k))s+=3});
+  NEW_KW.forEach(k=>{if(t.includes(k))s+=2});
+  LEARN_KW.forEach(k=>{if(t.includes(k))s+=1});
+  HOT_KW.forEach(k=>{if(t.includes(k))s+=2});
+  BAD_KW.forEach(k=>{if(t.includes(k))s-=4});
+  LISTY_KW.forEach(k=>{if(t.includes(k))s-=2});
+  if(it.isVideo)s+=1;
+  if(it.isHot)s+=3;
+  if(it.isNew)s+=2;
+  if(it.isLearn)s+=2;
+  if(it.isHot&&it.isLearn)s+=2;
+  s+=recencyBoost(it);
+  if((it.body||'').length>80)s+=1;
+  if((it.body||'').length>150)s+=2;
+  if(it.src&&(it.src.includes('少数派')||it.src.includes('阮一峰')||it.src.includes('IT之家')))s+=3;
+  if(it.src&&(it.src.includes('虎嗅')||it.src.includes('36氪')||it.src.includes('量子位')||it.src.includes('雷锋网')||it.src.includes('极客公园')||it.src.includes('爱范儿')||it.src.includes('Solidot')||it.src.includes('HN')))s+=2;
+  if(it.src&&(it.src.includes('维基')||it.src.includes('wikipedia')))s-=20;
+  if(isEncyclopedia(it))s-=25;
+  if(it.publishedAt&&it.publishedAt>Date.now()-7*86400000)s+=2;
+  if((it.title||'').length>8&&(it.title||'').length<45)s+=1;
+  return Math.max(s,0);
+}
+function isEncyclopedia(it){
+  const src=it.src||'',body=it.body||'',title=it.title||'';
+  if(/维基|wikipedia|百科/i.test(src+title))return true;
+  if(ENCYCLO_KW.filter(k=>(body+title).includes(k)).length>=2)return true;
+  if(/^[^，。]{2,12}(汽车|公司|技术|方法)$/.test(title)&&body.length>180&&ENCYCLO_KW.some(k=>(body+title).includes(k))&&!(body+title).match(/发布|上市|新品|宣布|推出|亮相|首发|内饰|外饰|座椅|车型|交付|销量/))return true;
+  return false;
+}
+function isNewsItem(it){return !isEncyclopedia(it)&&(it.publishedAt>0||!(it.src||'').match(/维基|wikipedia/))}
+function applyValuableFilter(list){
+  const only=$('onlyValuable').checked;
+  const min=getValuableMinScore(list.length);
+  let arr=list.filter(isNewsItem).map(it=>({...it,score:scoreValue(it)}));
+  arr.sort((a,b)=>rankScore(b)-rankScore(a));
+  if(only)arr=arr.filter(it=>it.score>=min||(it.isHot&&it.score>=2)||(it.isNew&&it.score>=2)||(it.isLearn&&it.score>=2)||(it.isHot&&it.isLearn)||(it.c==='科技'&&it.score>=2)||(isCarCat()&&matchCarCategory(it,S.cat))||(isPatentCat()&&matchPatentCategory(it,S.cat)));
+  return arr;
+}
+function pickDisplayItemsCar(list){
+  const cat=S.cat;
+  const pool=expandByDate((list||[]).filter(isNewsItem).map(it=>enrichCarItem({...it,c:CAT[cat]||it.c})),MIN_DISPLAY);
+  let baked=getCarItems().filter(it=>matchCarCategoryBroad(it,cat));
+  let merged=dedupeByTitle([...pool,...baked]);
+  if(merged.length<MIN_DISPLAY)merged=dedupeByTitle([...merged,...getCarItems().filter(it=>matchCarCategoryBroad(it,cat))]);
+  merged=attachReadUrlsToItems(merged,[...list,...pool,...merged]);
+  merged.sort((a,b)=>{
+    const au=getArticleUrl(a)?1:0, bu=getArticleUrl(b)?1:0;
+    if(bu!==au)return bu-au;
+    return rankScore(b)-rankScore(a);
+  });
+  return merged.slice(0,DISPLAY_MAX_TOPIC);
+}
+function filterOneMonth(list){
+  return expandByDate(list.filter(isNewsItem),MIN_DISPLAY);
+}
+function pickDisplayItems(list){
+  const rawLen=list.length;
+  list=filterOneMonth(list);
+  let arr=applyValuableFilter(list);
+  if(arr.length>=MIN_DISPLAY)return arr.slice(0,DISPLAY_MAX);
+  arr=list.map(it=>({...it,score:scoreValue(it)}));
+  arr.sort((a,b)=>{const d=rankScore(b)-rankScore(a);if(d)return d;return (b.publishedAt||0)-(a.publishedAt||0)});
+  const only=$('onlyValuable').checked;
+  const min=getValuableMinScore(list.length);
+  let picked=only?arr.filter(it=>it.score>=min-1||(it.c==='科技')||(it.isHot||it.isLearn||it.isNew)):arr;
+  if(picked.length<MIN_DISPLAY)picked=arr.filter(it=>it.score>=2||it.c==='科技');
+  if(picked.length<Math.max(12,MIN_DISPLAY-6))picked=arr.slice(0,DISPLAY_MAX);
+  if(!picked.length&&arr.length)picked=arr;
+  if(!picked.length&&rawLen)return list.map(it=>({...it,score:scoreValue(it)})).sort((a,b)=>rankScore(b)-rankScore(a)).slice(0,DISPLAY_MAX);
+  while(picked.length<MIN_DISPLAY&&picked.length<arr.length)picked=arr.slice(0,Math.min(DISPLAY_MAX,Math.max(picked.length,MIN_DISPLAY)));
+  return picked.slice(0,DISPLAY_MAX);
+}
+function getSimSettings(id){return S.simCache[id]||{autoUpdate:true,similar:[],loadedAt:0}}
+function saveSimSettings(id,data){S.simCache[id]=data;try{localStorage.setItem('fwz_sim',JSON.stringify(S.simCache))}catch(e){}}
+function loadSimCache(){try{const r=localStorage.getItem('fwz_sim');if(r)S.simCache=JSON.parse(r)}catch(e){}}
+function loadFavs(){try{return JSON.parse(localStorage.getItem('fwz_favs')||'[]')}catch(e){return[]}}
+function saveFavs(arr){try{localStorage.setItem('fwz_favs',JSON.stringify(arr.slice(0,200)))}catch(e){}}
+function isFav(id){return loadFavs().some(x=>x.id===id)}
+function toggleFav(it){
+  if(!it)return;
+  let f=loadFavs();
+  const i=f.findIndex(x=>x.id===it.id);
+  if(i>=0){f.splice(i,1);saveFavs(f);ok('已取消收藏')}
+  else{f.unshift({id:it.id,title:it.title,body:it.body,url:it.url||'',src:it.src||'',c:it.c||'',score:it.score||0,publishedAt:it.publishedAt||0,savedAt:Date.now()});saveFavs(f);ok('已收藏')}
+}
+function showFavorites(){
+  S.viewFavs=true;
+  const f=loadFavs().map(x=>({...x,score:x.score||scoreValue(x)}));
+  S.allItems=f;
+  S.items=f.slice(0,DISPLAY_MAX);
+  $('cnt').textContent='我的收藏 · '+S.items.length+' 条';
+  drawList();
+}
+function keywords(title){return title.replace(/[^\u4e00-\u9fffA-Za-z0-9]/g,' ').split(/\s+/).filter(w=>w.length>=2).slice(0,6)}
+function findSimilar(item,n){
+  const ks=keywords(item.title);
+  const pool=S.allItems.filter(x=>x.id!==item.id);
+  const scored=pool.map(p=>{
+    let s=0;
+    if(p.c===item.c)s+=3;
+    ks.forEach(k=>{if((p.title+p.body).includes(k))s+=2});
+    return {...p,sim:s+scoreValue(p)*0.3};
+  }).filter(p=>p.sim>0).sort((a,b)=>b.sim-a.sim);
+  return scored.slice(0,n||4);
+}
+function parseRss(xml,src,cat,limit){
+  const items=[],blocks=xml.match(/<item[\s\S]*?<\/item>/gi)||xml.match(/<entry[\s\S]*?<\/entry>/gi)||[];
+  blocks.slice(0,limit).forEach((b,i)=>{
+    const t=stripHtml((b.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]);
+    let d=stripHtml((b.match(/<description[^>]*>([\s\S]*?)<\/description>/i)||[])[1]||(b.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i)||[])[1]);
+    const l=(b.match(/<link[^>]*>([^<]+)<\/link>/i)||[])[1]||(b.match(/<link[^>]*href="([^"]+)"/i)||[])[1]||'';
+    if(t){const _u=extractRssLink(b);items.push(enrichItem({id:'r'+Date.now()+i+Math.random().toString(36).slice(2,5),title:t,body:(d||t).slice(0,420),url:_u||l,src,c:cat},b));const _it=items[items.length-1];if(_it){const au=getArticleUrl(_it);if(au)_it.url=au;}}
+  });
+  return items;
+}
+function rssCacheKey(url){return 'fwz_rss_'+String(url).slice(0,120)}
+function readRssCache(url){
+  try{const raw=localStorage.getItem(rssCacheKey(url));if(!raw)return'';const o=JSON.parse(raw);if(Date.now()-o.t>RSS_CACHE_MS)return'';return o.x||''}catch(e){return''}
+}
+function writeRssCache(url,xml){try{localStorage.setItem(rssCacheKey(url),JSON.stringify({t:Date.now(),x:xml}))}catch(e){}}
+function firstResolved(promises){
+  return new Promise((resolve,reject)=>{
+    let n=promises.length,done=0,err;
+    if(!n)return reject(new Error('empty'));
+    promises.forEach(p=>Promise.resolve(p).then(v=>resolve(v),e=>{err=e;if(++done>=n)reject(err||new Error('all failed'))}));
+  });
+}
+async function fetchRssText(url,timeoutMs){
+  const cached=readRssCache(url);
+  if(cached)return cached;
+  const ms=timeoutMs||FETCH_TIMEOUT;
+  const tryRaw=async(u)=>{
+    const r=await fetch(u,{signal:AbortSignal.timeout(ms)});
+    if(!r.ok)throw new Error('http');
+    const t=await r.text();
+    if(t&&t.length>300&&(t.includes('<item')||t.includes('<entry')||t.includes('<html')))return t;
+    throw new Error('empty');
+  };
+  const proxies=[
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
+    'https://corsproxy.io/?'+encodeURIComponent(url)
+  ];
+  try{
+    const t=await firstResolved(proxies.map(u=>tryRaw(u)));
+    writeRssCache(url,t);
+    return t;
+  }catch(e){}
+  try{
+    const t=await tryRaw(proxies[0]);
+    writeRssCache(url,t);
+    return t;
+  }catch(e){}
+  return '';
+}
+async function fetchRss(url,src,cat,n,timeoutMs){
+  const xml=await fetchRssText(url,timeoutMs);
+  if(!xml)return[];
+  return parseRss(xml,src,cat,n);
+}
+async function fetchAllFeeds(feeds,per,opts){
+  opts=opts||{};
+  const fast=!!opts.fast;
+  const deadline=opts.deadlineMs||(fast?FAST_UPDATE_MS:0);
+  const t0=Date.now();
+  const minRaw=opts.minRaw||0;
+  const batchSz=fast?FETCH_BATCH_FAST:FETCH_BATCH;
+  const rssTimeout=fast?FETCH_TIMEOUT_FAST:FETCH_TIMEOUT;
+  const out=[],failed=[];
+  let ok=0;
+  const timedOut=()=>deadline>0&&Date.now()-t0>=deadline;
+  for(let i=0;i<feeds.length;i+=batchSz){
+    if(timedOut())break;
+    const batch=feeds.slice(i,i+batchSz);
+    const res=await Promise.all(batch.map(async f=>{
+      const items=await fetchRss(f.u,f.s,f.c,per,rssTimeout);
+      return {f,items};
+    }));
+    res.forEach(({f,items})=>{
+      if(items.length){ok++;items.forEach(it=>out.push(it))}
+      else failed.push(f);
+    });
+  }
+  if(!fast){
+    const retryMin=Math.max(40,minRaw);
+    if(!timedOut()&&out.length<retryMin&&failed.length){
+      for(const f of failed){
+        if(timedOut())break;
+        const items=await fetchRss(f.u,f.s,f.c,per+15,rssTimeout);
+        if(items.length){ok++;items.forEach(it=>out.push(it))}
+      }
+    }
+    if(!timedOut()&&out.length<retryMin&&failed.length){
+      for(const f of failed){
+        if(timedOut())break;
+        const items=await fetchRss(f.u,f.s,f.c,per+25,rssTimeout);
+        if(items.length){ok++;items.forEach(it=>out.push(it))}
+      }
+    }
+  }
+  S.lastFetchStats={total:feeds.length,ok,raw:out.length,fast};
+  return out;
+}
+async function searchWikiZh(q,n){
+  try{
+    const r=await fetch('https://zh.wikipedia.org/w/api.php?action=query&list=search&utf8=1&format=json&origin=*&srlimit='+n+'&srsearch='+encodeURIComponent(q));
+    const d=await r.json();
+    return (d.query?.search||[]).map(x=>({id:'w'+x.pageid,title:x.title,body:stripHtml(x.snippet||'').slice(0,300),url:'https://zh.wikipedia.org/wiki/'+encodeURIComponent(x.title.replace(/ /g,'_')),src:'维基百科',c:CAT[S.cat]||'综合'}));
+  }catch(e){return[]}
+}
+function expandQuery(q){
+  const k=q.trim();if(!k)return[];
+  const extra=QUERY_EXPAND[k]||QUERY_EXPAND[k.toUpperCase()]||[];
+  return [...new Set([k,...extra])];
+}
+function matchQ(item,q){
+  if(!q)return true;
+  const text=(item.title+' '+item.body).toLowerCase();
+  const keys=expandQuery(q);
+  if(keys.some(k=>text.includes(k.toLowerCase())))return true;
+  const core=q.trim().toLowerCase();
+  if(core.length>=2&&text.includes(core))return true;
+  return false;
+}
+function updateCountdown(){
+  const left=Math.max(0,S.nextRefreshAt-Date.now());
+  const h=Math.floor(left/3600000),m=Math.floor((left%3600000)/60000),s=Math.floor((left%60000)/1000);
+  $('nextUpdate').textContent='下次更新 '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+async function refreshSimilar(id,force){
+  const item=S.items.find(x=>x.id===id)||S.allItems.find(x=>x.id===id);
+  if(!item)return;
+  const st=getSimSettings(id);
+  if(!force&&!st.autoUpdate&&st.similar.length)return;
+  const sim=findSimilar(item,4);
+  saveSimSettings(id,{autoUpdate:st.autoUpdate,similar:sim,loadedAt:Date.now()});
+  drawList();
+}
+async function refreshAllSimilar(){
+  for(const it of S.items){
+    const st=getSimSettings(it.id);
+    if(st.autoUpdate)await refreshSimilar(it.id,true);
+  }
+}
+async function search(silent){
+  S.viewFavs=false;
+  if(!silent){$('btnSearch').disabled=true;$('cnt').textContent=S.cat==='other'?'正在加载干货整理…':'正在抓取多源内容（近1个月内 · 热点+知识）…'}
+  const q=$('q').value.trim();
+  if(S.hotChannel){
+    toggleHotFilterUI();
+    const chAtStart=S.hotChannel;
+    const chLabel=(HOT_CH[chAtStart]||HOT_CH.all).label;
+    const gen=++S.hotSearchGen;
+    const cached=loadHotCache(chAtStart,q);
+    if(cached.length)setHotListUI(cached,chLabel,{fromCache:true,silent:true});
+    else{S.items=[];S.allItems=[];drawList()}
+    if(!silent){$('btnSearch').disabled=true;$('cnt').textContent='正在连接 '+chLabel+'…'}
+    try{
+      let {list}=await fetchPlatformHot(q,chAtStart);
+      if(gen!==S.hotSearchGen||S.hotChannel!==chAtStart)return;
+      if(list.length){
+        saveHotCache(chAtStart,list);
+        setHotListUI(list,chLabel,{fromCache:false,silent});
+      }else{
+        const fallback=loadHotCache(chAtStart,q);
+        if(fallback.length)setHotListUI(fallback,chLabel,{fromCache:true,silent,fetchEmpty:true});
+        else setHotListUI([],chLabel,{fromCache:false,silent});
+      }
+    }catch(e){
+      if(gen!==S.hotSearchGen||S.hotChannel!==chAtStart)return;
+      if(e&&e.name==='AbortError')return;
+      const fallback=loadHotCache(chAtStart,q);
+      if(fallback.length){
+        setHotListUI(fallback,chLabel,{fromCache:true,silent,fetchFail:true});
+      }else{
+        let online=await pingHotApi();
+        if(!online){
+          online=await ensureHotService(false);
+          if(online)return search(silent);
+          err('热榜服务未连接：请双击「打开网页.bat」（会自动启动服务），或「启动网站.bat」');
+          $('cnt').textContent=chLabel+' · 未连接';
+        }else{
+          err(chLabel+' 拉取失败：'+((e&&e.message)||'请稍后点「立即更新」'));
+          $('cnt').textContent=chLabel+' · 连接异常';
+        }
+        S.items=[];S.allItems=[];
+      }
+    }
+    drawList();
+    if(!silent)$('btnSearch').disabled=false;
+    return;
+  }
+  toggleHotFilterUI();
+  if(S.cat==='other'){
+    let list=stampListTimes(getOtherItems());
+    if(q)list=list.filter(it=>matchQ(it,q));
+    S.allItems=list;
+    S.items=pickDisplayItems(list);
+    $('cnt').textContent='其他 · 干货整理 '+S.items.length+' 条';
+    drawList();
+    if(!silent)$('btnSearch').disabled=false;
+  return;
+  }
+  if(isSpecialtyCategory(S.cat)){
+    try{await loadSpecialtyCategory(silent,q)}catch(e){err((CAT[S.cat]||'专题')+'资讯加载失败');S.items=[];S.allItems=[];drawList()}
+    if(!silent)$('btnSearch').disabled=false;
+    return;
+  }
+  const feeds=FEEDS[S.cat]||FEEDS.all;
+  try{
+    const per=Math.max(RSS_PER_FEED,q?Math.min(30,Math.ceil(320/feeds.length)):Math.ceil(240/feeds.length));
+    const out=await fetchAllFeeds(feeds,per,{fast:true,deadlineMs:FAST_UPDATE_MS,minRaw:20});
+    let list=out.filter(isNewsItem);
+    const rssTotal=list.length;
+    if(q)list=list.filter(it=>matchQ(it,q));
+    const seen=new Set();
+    list=list.filter(it=>{const k=it.title.slice(0,26);if(seen.has(k))return false;seen.add(k);return true});
+    const rawCount=list.length;
+    list=list.map(it=>({...it,score:scoreValue(it)})).sort((a,b)=>rankScore(b)-rankScore(a));
+    list=stampListTimes(list);
+    S.allItems=list;
+    S.items=pickDisplayItems(list);
+    if(!S.items.length&&list.length)S.items=list.slice(0,DISPLAY_MAX);
+    const st=S.lastFetchStats||{};
+    if(!S.items.length)err(q?'未找到「'+q+'」相关资讯（RSS 共 '+rssTotal+' 条），可换「新车」「新能源」或取消「精选」':(st.ok<3?'多数源抓取失败（成功 '+st.ok+'/'+st.total+'），请点「立即更新」重试':rawCount?'近1个月内匹配较少，可取消「精选」或换分类':'抓取失败，请点「立即更新」重试'));
+    else if(!silent){
+      const hint=st.total&&st.ok<st.total*0.5?' · 部分源超时':(rssTotal>rawCount&&q?' · 关键词已筛掉 '+(rssTotal-rawCount)+' 条':'');
+      ok('已更新 · 源 '+st.ok+'/'+st.total+hint);
+    }
+  }catch(e){err('加载失败');S.items=[];S.allItems=[]}
+  const st=S.lastFetchStats||{};
+  $('cnt').textContent=(CAT[S.cat]||'全部')+' · 展示 '+S.items.length+' 条 / 入库 '+S.allItems.length+' 条'+(st.total?' · RSS源 '+st.ok+'/'+st.total+' 成功':'');
+  drawList();
+  if(!silent)$('btnSearch').disabled=false;
+}
+function pick(id){
+  const it=S.items.find(x=>x.id===id);if(!it)return;
+  S.selId=id;
+  const src=it.src||(it.c||'热榜');
+  const open=getOpenLink(it);
+  const pickUrl=open?open.href:'';
+  S.draft={title:it.title,content:buildDraftContent(it),url:'',pickUrl,searchUrl:it.searchUrl||buildSearchUrl(it),source:src,ok:false,isVideo:!!it.isVideo||isVideoUrl(pickUrl,it)};
+  if($('reviewUrl'))$('reviewUrl').value='';
+  reset();draw();
+  if(pickUrl)prefetchDraftFromUrl();
+}
+function drawList(){
+  if(!S.items.length){$('list').innerHTML='<div class="empty">暂无内容<br><small>选择分类或输入关键词后搜索</small></div>';return}
+  const compactHot=!!S.hotChannel;
+  $('list').innerHTML=S.items.map(it=>{
+    const st=getSimSettings(it.id);
+    const simHtml=(st.similar||[]).length
+      ?st.similar.map(s=>'<a href="#" data-pick="'+s.id+'">'+esc(s.title.slice(0,14))+(s.title.length>14?'…':'')+'</a>').join('')
+      :'<span style="color:#ccc">点击推荐</span>';
+    const open=getOpenLink(it);
+    const readLink=open?'<a class="link-src" href="'+esc(open.href)+'" target="_blank" rel="noopener noreferrer">'+esc(open.text)+'</a>':'<span class="hint" style="margin:0;font-size:.68rem">暂无链接</span>';
+    const hotHint=it.platform==='douyin'?' · 热榜为话题词，可打开抖音页查看相关视频':'';
+    if(compactHot){
+      return '<div class="card-row card-row-hot"><div class="card-main '+(S.selId===it.id?'on':'')+'" data-id="'+it.id+'">'+
+      '<div class="card-tags">'+cardTags(it)+'</div>'+
+      '<h3>'+esc(it.title)+'</h3><p>'+esc(it.body)+'</p>'+
+      '<div class="card-actions">'+readLink+'<span class="hint" style="margin:0;font-size:.68rem">点击卡片选用'+hotHint+'</span></div></div></div>';
+    }
+    return '<div class="card-row"><div class="card-main '+(S.selId===it.id?'on':'')+'" data-id="'+it.id+'">'+
+      '<div class="card-tags">'+cardTags(it)+'</div>'+
+      '<h3>'+esc(it.title)+'</h3><p>'+esc(it.body)+'</p>'+
+      '<div class="card-actions">'+readLink+'<span class="hint" style="margin:0;font-size:.68rem">点击卡片选用</span></div></div>'+
+      '<div class="card-side"><button class="btn btn-p btn-s" data-sim="'+it.id+'">同类推荐</button>'+
+      '<label class="sim-toggle"><input type="checkbox" data-auto="'+it.id+'" '+(st.autoUpdate?'checked':'')+'> 自动更新</label>'+
+      '<div class="sim-list" id="sim-'+it.id+'">'+simHtml+'</div>'+
+      '<button type="button" class="btn btn-o btn-s '+(isFav(it.id)?'btn-fav-on':'')+'" data-fav="'+it.id+'">'+(isFav(it.id)?'★ 已收藏':'☆ 收藏')+'</button></div></div>';
+  }).join('');
+  $('list').querySelectorAll('.card-main').forEach(el=>{el.onclick=e=>{if(e.target.closest('a.link-src,button,input,label,.card-side'))return;pick(el.dataset.id)}});
+  $('list').querySelectorAll('a.link-src').forEach(a=>{a.onclick=e=>e.stopPropagation()});
+  $('list').querySelectorAll('[data-sim]').forEach(btn=>btn.onclick=e=>{e.stopPropagation();refreshSimilar(btn.dataset.sim,true)});
+  $('list').querySelectorAll('[data-auto]').forEach(cb=>cb.onclick=e=>{e.stopPropagation();const id=cb.dataset.auto;const st=getSimSettings(id);st.autoUpdate=cb.checked;saveSimSettings(id,st)});
+  $('list').querySelectorAll('[data-pick]').forEach(a=>a.onclick=e=>{e.preventDefault();e.stopPropagation();pick(a.dataset.pick)});
+  $('list').querySelectorAll('[data-fav]').forEach(btn=>btn.onclick=e=>{e.stopPropagation();const it=S.items.find(x=>x.id===btn.dataset.fav)||S.allItems.find(x=>x.id===btn.dataset.fav);if(it)toggleFav(it);drawList()});
+}
+function drawReview(){
+  const d=S.draft,e=$('review');
+  if(!e)return;
+  if(!d){e.innerHTML='<div class="review-empty">点击左侧热榜卡片选用选题<br>在上方粘贴链接并抓取</div>';return}
+  const statusPill='<span class="status-pill'+(d.ok?' pass':'')+'">'+(d.ok?'已通过':'待审核')+'</span>';
+  let aside=statusPill+'<p class="hint" style="margin:0">'+esc(d.source)+(d.isVideo?' · 视频':'')+'</p>';
+  if(!d.url&&!d.fetched)aside+='<p class="hint" style="color:var(--accent)">'+(d._prefetching?'正在预抓取…':'请点上方「抓取链接」')+'</p>';
+  else if(d.fetched)aside+='<p class="hint" style="color:var(--sage)">已抓取正文</p>';
+  if(d.pickUrl)aside+='<a class="link-src" href="'+esc(d.pickUrl)+'" target="_blank" rel="noopener noreferrer">阅读原文 →</a>';
+  if(d.url&&d.url!==d.pickUrl)aside+='<a class="link-src" href="'+esc(d.url)+'" target="_blank" rel="noopener noreferrer">抓取来源 →</a>';
+  if(d.pickUrl&&!d.fetched)aside+='<button type="button" class="btn btn-o btn-s" id="btnPrefetch" style="width:100%">抓取正文</button>';
+  if(d.ok){
+    aside+='<div class="ok">审核已通过</div><p class="hint">STAR：结论 → 分析 → 总结</p><div class="row ai-jump-row">'+aiJumpButtonsHtml()+'</div><button type="button" class="btn btn-o btn-s" style="width:100%;margin-top:4px" id="rs">重新编辑</button>';
+  }else{
+    aside+='<div style="margin-top:auto;display:flex;flex-direction:column;gap:6px"><button class="btn btn-p" id="ap" style="width:100%">通过审核</button><button class="btn btn-o" id="rj" style="width:100%">驳回</button></div>';
+  }
+  const editor='<div class="editor-card"><label class="hint">标题</label><input id="dt" value="'+esc(d.title)+'" '+(d.ok?'disabled':'')+'/><label class="hint">正文</label><textarea id="dc" '+(d.ok?'disabled':'')+'>'+esc(d.content)+'</textarea></div>';
+  e.innerHTML='<div class="review-layout"><aside class="review-aside">'+aside+'</aside><div class="review-main">'+editor+'</div></div>';
+  if(!d.ok){
+    $('ap').onclick=()=>{if(!$('dt').value.trim()||!$('dc').value.trim())return err('请填写标题和正文');if(isLikelyCode($('dc').value))return err('正文像是代码/脚本，请粘贴真实文章内容');d.title=$('dt').value;d.content=$('dc').value;d.ok=true;reset();draw();ok('审核通过')};
+    $('rj').onclick=()=>{d.ok=false;reset();draw()};
+    $('dt').oninput=()=>d.title=$('dt').value;$('dc').oninput=()=>d.content=$('dc').value;
+  }else{
+    $('rs').onclick=()=>{d.ok=false;reset();draw()};
+    bindAiJump(e);
+  }
+  const pf=$('btnPrefetch');if(pf)pf.onclick=()=>prefetchDraftFromUrl();
+}
+const ORG_AUDIT_LABEL='文件内容审核';
+function orgBodyBrief(maxLen){
+  if(!S.org)return'';
+  return cleanOrgPhrases(S.org.body).slice(0,maxLen||900);
+}
+function extractOrgSections(){
+  const body=S.org?.body||'';
+  const secs=body.match(/[一二三四]、[^\n]+[\s\S]*?(?=\n[一二三四]、|$)/g)||[];
+  if(secs.length)return secs.map(x=>x.replace(/^[一二三四]、/,'').trim()).slice(0,4);
+  return body.split(/\n+/).filter(x=>x.trim().length>8).slice(0,4);
+}
+function buildChatGptImgPrompt(){
+  if(!S.org)return'';
+  return '请根据以下文章生成一张科普信息图，版式清晰、重点突出，无水印。\n\n标题：'+S.org.title+'\n\n正文要点：\n'+orgBodyBrief(900);
+}
+function buildVideoPrompt(tool){
+  if(!S.org)return'';
+  const t=VIDEO_TOOLS[tool]||VIDEO_TOOLS.jimeng;
+  const secs=extractOrgSections();
+  const shots=secs.length?secs.map((s,i)=>'镜头'+(i+1)+'：'+s.slice(0,80)).join('\n'):'镜头1：'+orgBodyBrief(120);
+  const platNote=tool==='jimeng'?'（即梦：文生视频/图生视频，建议 5–10 秒，竖屏 9:16 或横屏 16:9）':tool==='vidu'?'（Vidu：可用参考图+文字，建议写清主体动作与镜头运动）':'（可灵：文生视频，建议写实或资讯解说风）';
+  return '【生成平台】'+t.name+platNote+'\n【成片目标】知识资讯短视频，画面清楚、节奏平稳\n【标题】'+S.org.title+'\n【建议时长】5–15 秒（可分 2–3 段拼接）\n【画面风格】纪实/科普解说风，适度字幕，色调干净\n【分镜提示】\n'+shots+'\n\n【概括全文参考】\n'+orgBodyBrief(1200)+'\n\n【生成要求】按分镜生成短视频，突出核心事实与结论；旁白用简洁口语化中文。';
+}
+function draftSourceUrl(d){return String((d&&d.url)||(d&&d.pickUrl)||'').trim()}
+function suggestOrgTitle(d){
+  if(S.org&&S.org.title)return String(S.org.title).trim();
+  const t=String((d&&d.title)||'').trim();
+  return t||'待整理标题';
+}
+const AI_JUMP=[
+  {key:'deepseek',label:'DeepSeek',url:'https://chat.deepseek.com/'},
+  {key:'doubao',label:'豆包',url:'https://www.doubao.com/chat/'},
+  {key:'chatgpt',label:'ChatGPT',url:'https://chatgpt.com/'},
+  {key:'gemini',label:'Gemini',url:'https://gemini.google.com/'}
+];
+function aiJumpButtonsHtml(){
+  return AI_JUMP.map(a=>'<button type="button" class="btn btn-p btn-s" data-ai-jump="'+a.key+'">'+a.label+'</button>').join('');
+}
+function bindAiJump(root){
+  if(!root)return;
+  root.querySelectorAll('[data-ai-jump]').forEach(btn=>{btn.onclick=()=>exportToAi(btn.dataset.aiJump)});
+}
+function buildStarExportPrompt(d){
+  const url=draftSourceUrl(d),title=suggestOrgTitle(d),content=String((d&&d.content)||'').trim().slice(0,12000);
+  const linkNote=url?('\n参考链接（请勿访问该链接，部分站点会 404 或返回脚本；只根据下方正文整理）：'+url):'';
+  return '请根据下方「原文内容」整理，不要访问任何网址，不要根据链接去抓取。\n\n先按 STAR 原理梳理（情境、任务、行动、结果），再写成固定结构。\n\n【输出格式】\n第一行单独写：标题：（15-28字，准确吸引人）\n\n正文仅三段（不要写链接、平台名、「据报道」）：\n一、结论\n2-4句：核心事实与明确判断\n\n二、分析\n用 1. 2. 3. 4. 分条：事件核心、焦点/争议、各方观点、启示\n\n三、总结\n2-4句：警示与可操作建议\n\n若下方正文是代码、乱码或过短，请直接说明「素材无效，请用户粘贴真实正文」。\n\n原标题：'+title+linkNote+'\n\n---原文内容（以此为准）---\n'+content;
+}
+function buildStarExportFile(d){
+  const url=draftSourceUrl(d),title=suggestOrgTitle(d),content=String((d&&d.content)||'').trim();
+  return '标题：'+title+'\n\n原文链接：'+(url||'无')+'\n\n正文：\n一、结论\n\n\n二、分析\n1. \n2. \n3. \n4. \n\n三、总结\n\n\n---\n（上方正文可在 AI 中生成后粘贴补充；下方为参考素材）\n\n---原文素材---\n'+content.slice(0,15000);
+}
+async function exportToAi(key){
+  const plat=AI_JUMP.find(x=>x.key===key)||AI_JUMP[0];
+  const d=S.draft;
+  if(!d||!d.ok)return err('请先通过审核');
+  if(isLikelyCode(d.content))return err('正文像是网页脚本而非文章，请点「阅读原文」复制真实正文后再试');
+  const title=suggestOrgTitle(d),fileText=buildStarExportFile(d),prompt=buildStarExportPrompt(d);
+  const safe=title.slice(0,24).replace(/[\\/:*?"<>|\s]+/g,'_')||'素材整理';
+  const blob=new Blob(['\ufeff'+fileText],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=safe+'_审核.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  const copied=await copyTextPrompt(prompt,null,null,false);
+  window.open(plat.url,'_blank','noopener,noreferrer');
+  const url=draftSourceUrl(d);
+  ok('已打开 '+plat.label+' · 已下载「'+safe+'_审核.txt」'+(copied?' · 提示词已复制，粘贴发送即可':'')+(url?'':' · 建议先抓取链接'));
+}
+const exportToDeepSeek=()=>exportToAi('deepseek');
+async function copyTextPrompt(text,fieldId,okMsg,showTip){
+  if(!text)return false;
+  try{await navigator.clipboard.writeText(text);if(showTip&&okMsg)ok(okMsg);return true}catch(e){
+    const ta=$(fieldId);if(ta){ta.focus();ta.select();if(showTip)ok('请按 Ctrl+C 复制下方文字')}
+    return false;
+  }
+}
+async function copyImgPrompt(showTip){return copyTextPrompt(buildChatGptImgPrompt(),'imgPrompt','配图提示词已复制，可粘贴到 ChatGPT',showTip)}
+async function copyVidPrompt(showTip){return copyTextPrompt(buildVideoPrompt(S.vidTool),'vidPrompt','视频提示词已复制，可粘贴到 '+((VIDEO_TOOLS[S.vidTool]||VIDEO_TOOLS.jimeng).name),showTip)}
+function bindVidTools(){
+  document.querySelectorAll('#vidTools label').forEach(l=>{
+    l.onclick=()=>{
+      document.querySelectorAll('#vidTools label').forEach(x=>x.classList.remove('on'));
+      l.classList.add('on');
+      const inp=l.querySelector('input');if(inp){inp.checked=true;S.vidTool=inp.value;localStorage.setItem('fwz_vid_tool',S.vidTool);drawImgBody()}
+    };
+  });
+}
+function bindMediaTabs(){
+  document.querySelectorAll('.media-tab').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('.media-tab').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      S.mediaMode=b.dataset.media||'img';
+      localStorage.setItem('fwz_media_mode',S.mediaMode);
+      drawImgBody();
+    };
+  });
+}
+function drawImgBody(){
+  const box=$('mediaBody');if(!box)return;
+  if(S.mediaMode==='vid'){
+    const vt=S.vidTool||'jimeng';
+    const prev=buildVideoPrompt(vt);
+    box.innerHTML='<p class="hint">选择平台后生成视频提示词（基于已确认概括），进入本栏自动复制</p>'+
+      '<div class="vid-tools" id="vidTools">'+
+      Object.keys(VIDEO_TOOLS).map(k=>'<label class="'+(vt===k?'on':'')+'"><input type="radio" name="vidTool" value="'+k+'" '+(vt===k?'checked':'')+'/> '+VIDEO_TOOLS[k].name+'</label>').join('')+
+      '</div>'+
+      '<textarea id="vidPrompt" readonly style="width:100%;min-height:240px;font-size:.8rem;line-height:1.55;padding:10px;border:1px solid var(--border);border-radius:8px;resize:vertical"></textarea>'+
+      '<div class="row" style="margin-top:8px">'+
+      '<button class="btn btn-p" id="gvCopy" style="flex:1">一键复制视频提示词</button>'+
+      '<button class="btn btn-g" id="gvOpen" style="flex:1">复制并打开平台</button></div>';
+    const ta=$('vidPrompt');if(ta)ta.value=prev;
+    bindVidTools();
+    $('gvCopy').onclick=()=>copyVidPrompt(true);
+    $('gvOpen').onclick=genVid;
+    copyVidPrompt(false);
+    return;
+  }
+  const prev=buildChatGptImgPrompt();
+  box.innerHTML='<p class="hint">完整提示词如下，进入本栏即自动复制，也可手动选中或点按钮复制</p>'+
+    '<textarea id="imgPrompt" readonly style="width:100%;min-height:220px;font-size:.8rem;line-height:1.55;padding:10px;border:1px solid var(--border);border-radius:8px;resize:vertical"></textarea>'+
+    '<div class="row" style="margin-top:8px">'+
+    '<button class="btn btn-p" id="giCopy" style="flex:1">一键复制提示词</button>'+
+    '<button class="btn btn-g" id="gi" style="flex:1">复制并打开 ChatGPT</button></div>';
+  const ta=$('imgPrompt');if(ta)ta.value=prev;
+  $('giCopy').onclick=()=>copyImgPrompt(true);
+  $('gi').onclick=genImg;
+  copyImgPrompt(false);
+}
+function drawImg(){
+  const e=$('img');
+  if(!S.org){e.innerHTML='<div class="empty">请先完成文件内容审核</div>';return}
+  if(!S.orgOk){e.innerHTML='<div class="lock">请先确认内容</div>';return}
+  e.innerHTML='<div class="media-tabs"><button type="button" class="media-tab '+(S.mediaMode==='img'?'on':'')+'" data-media="img">生成配图</button><button type="button" class="media-tab '+(S.mediaMode==='vid'?'on':'')+'" data-media="vid">生成视频</button></div><div id="mediaBody"></div>';
+  bindMediaTabs();
+  drawImgBody();
+}
+function getPubPlatform(){const r=document.querySelector('input[name=pubPlat]:checked');return r?r.value:'zhihu'}
+function getPubType(){if(getPubPlatform()==='xhs'){const r=document.querySelector('input[name=xhsType]:checked');return r?r.value:'note'}const r=document.querySelector('input[name=zhType]:checked');return r?r.value:'article'}
+function bindPubPlats(){document.querySelectorAll('#pubPlats label').forEach(l=>{l.onclick=()=>{document.querySelectorAll('#pubPlats label').forEach(x=>x.classList.remove('on'));l.classList.add('on');const inp=l.querySelector('input');if(inp){inp.checked=true;S.pubPlatform=inp.value;localStorage.setItem('fwz_pub_plat',S.pubPlatform)}syncPubTypeUI();drawPublish()}})}
+function syncPubTypeUI(){const xhs=getPubPlatform()==='xhs';const zt=$('zhTypes'),xt=$('xhsTypes'),ql=$('zhihuQ'),qll=$('zhihuQLabel'),ptl=$('pubTypeLabel');if(zt)zt.style.display=xhs?'none':'flex';if(xt)xt.style.display=xhs?'flex':'none';if(ql)ql.style.display=xhs?'none':'block';if(qll)qll.style.display=xhs?'none':'block';if(ptl)ptl.textContent=xhs?'小红书发布类型':'知乎发布类型'}
+function bindZhTypes(){document.querySelectorAll('#zhTypes label,#xhsTypes label').forEach(l=>{l.onclick=()=>{const box=l.closest('.zhihu-types');if(box)box.querySelectorAll('label').forEach(x=>x.classList.remove('on'));l.classList.add('on');const inp=l.querySelector('input');if(inp)inp.checked=true}})}
+function buildZhihuPlain(){if(!S.org)return'';return S.org.title+'\n\n'+S.org.body}
+function buildZhihuMd(){if(!S.org)return'';let md='# '+S.org.title+'\n\n'+S.org.body;if(S.imgs.length){md+='\n\n---\n\n';S.imgs.forEach((u,i)=>{md+='!['+'配图'+(i+1)+']('+u+')\n'})}return md}
+function pubOpenUrl(){const plat=getPubPlatform();if(plat==='xhs')return 'https://creator.xiaohongshu.com/publish/publish';const t=getPubType();const q=($('zhihuQ')&&$('zhihuQ').value||'').trim();if(t==='answer'&&q){const m=q.match(/question\/(\d+)/);if(m)return 'https://www.zhihu.com/question/'+m[1];if(/^\d+$/.test(q))return 'https://www.zhihu.com/question/'+q}if(t==='pin')return 'https://www.zhihu.com/';return 'https://zhuanlan.zhihu.com/write'}
+async function copyPub(){const t=buildZhihuPlain();if(!t)return err('暂无审核稿');try{await navigator.clipboard.writeText(t);ok('已复制标题+正文')}catch(e){err('复制失败，请手动选中复制')}}
+function exportPub(){const md=buildZhihuMd();if(!md)return err('暂无审核稿');const b=new Blob([md],{type:'text/markdown;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(S.org.title.slice(0,18)||'post')+'.md';a.click();ok('已导出 .md 文件')}
+function openPub(){window.open(pubOpenUrl(),'_blank')}
+async function oneClickPub(){if(!S.org||!S.orgOk){err('请先确认内容');return}await copyPub();openPub();ok('已复制并打开'+PUB_PLAT[getPubPlatform()])}
+async function oneClickPubArticle(){if(!S.draft||!S.draft.ok){err('请先审核通过素材');return}if(!S.org){const go=$('go');if(go)go.click();await new Promise(r=>setTimeout(r,900))}if(!S.org){err('审核失败，请重试');return}if(!S.orgOk)S.orgOk=true;draw();ok('审核稿已就绪，请在下方发布')}
+function confirmPubSent(){
+  if(!S.org||!S.orgOk)return err('请先确认内容');
+  const plat=getPubPlatform(),t=getPubType(),at=Date.now();
+  savePubRecord({title:S.org.title,type:t,platform:plat,sentAt:at,framework:S.org.framework||S.framework||'scaq'});
+  ok('已记录 · '+PUB_PLAT[plat]+' · '+ZH_CAT[t]+' · '+fmtTime(at));drawPublish();
+}
+function renderPubHist(){
+  const h=loadPubHist();
+  if(!h.length)return '<p class="hint" style="margin-top:10px">暂无发送记录</p>';
+  return '<div class="pub-hist"><h3>发送记录（最近 '+h.length+' 条）</h3>'+h.slice(0,12).map(r=>'<div class="pub-item"><b>'+esc(r.title)+'</b><span>'+esc(r.cat)+' · '+fmtTime(r.sentAt)+'</span></div>').join('')+'</div>';
+}
+function drawPublish(){
+  bindPubPlats();bindZhTypes();syncPubTypeUI();
+  const area=$('publishArea');if(!area)return;
+  const plat=getPubPlatform(),platName=PUB_PLAT[plat]||'知乎';
+  const hist=loadPubHist();
+  const sent=!!(S.org&&hist.length&&hist[0].title===S.org.title&&hist[0].sentAt>Date.now()-600000);
+  const steps=$('zhSteps');
+  if(steps){const s1=S.draft&&S.draft.ok,s2=!!S.org,s3=S.orgOk,s4=hist.length>0;steps.innerHTML=
+    '<span class="step '+(s1?'done':'cur')+'">1.审核</span>'+
+    '<span class="step '+(s2?(s3?'done':'cur'):'')+'">2.内容审核</span>'+
+    '<span class="step '+(s3?(s4?'done':'cur'):'')+'">3.确认</span>'+
+    '<span class="step '+(s4?'done':'')+'">4.已发布</span>'}
+  if(!S.org||!S.orgOk){
+    area.innerHTML='<div class="lock">请先完成「文件内容审核」并点击「确认使用」</div>'+
+      '<button class="btn btn-p btn-zhihu" style="margin-top:10px" id="btnZhGen">一键生成并准备发布</button>'+renderPubHist();
+    const bg=$('btnZhGen');if(bg)bg.onclick=oneClickPubArticle;
+    return;
+  }
+  area.innerHTML=
+    '<div class="preview-box"><b>'+esc(S.org.title)+'</b><br><br>'+esc(S.org.body.slice(0,400))+(S.org.body.length>400?'…':'')+'</div>'+
+    '<button class="btn btn-zhihu" id="btnZhPub">一键复制并打开'+platName+'发布</button>'+
+    '<div class="row" style="margin-top:8px"><button class="btn btn-o" id="btnZhCopy">仅复制</button><button class="btn btn-o" id="btnZhExp">导出文件</button><button class="btn btn-o" id="btnZhOpen">仅打开'+platName+'</button></div>'+
+    (plat==='xhs'?'<p class="hint" style="margin-top:6px">小红书请在创作者中心粘贴发布，配图/视频从「生成配图 / 视频」保存后上传</p>':'')+
+    '<button class="btn btn-p" style="width:100%;margin-top:10px" id="btnZhConfirm">确认已发送（保存记录）</button>'+
+    renderPubHist();
+  $('btnZhPub').onclick=oneClickPub;
+  $('btnZhCopy').onclick=copyPub;
+  $('btnZhExp').onclick=exportPub;
+  $('btnZhOpen').onclick=openPub;
+  $('btnZhConfirm').onclick=confirmPubSent;
+}
+function drawOrg(){}
+function drawImg(){}
+function drawPublish(){}
+function draw(){drawList();drawReview()}
+async function organizeViaServer(d){
+  const base=getHotApiBase();
+  const mat=normalizeDraftMaterial(d);
+  const r=await fetch(base+'/api/organize',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:mat.title,content:mat.content,url:d.url||d.pickUrl||'',wordCount:S.wc})});
+  const j=await r.json();
+  if(!r.ok)throw new Error(j.error||('HTTP '+r.status));
+  return j;
+}
+function parseOrgJson(raw){
+  if(!raw)throw new Error('AI 未返回内容');
+  return JSON.parse(String(raw).replace(/^[\s\S]*?(\{[\s\S]*\})[\s\S]*$/,'$1'));
+}
+async function organizeViaBrowser(d){
+  const g=gs();
+  const model=chatModel();
+  const hdr={'Content-Type':'application/json',Authorization:'Bearer '+g.k};
+  const msgs=[{role:'system',content:orgSystemPrompt()},{role:'user',content:orgUserContent(d)}];
+  const call=async(useJson)=>{
+    const body={model,messages:msgs,temperature:0.75,max_tokens:4096};
+    if(useJson)body.response_format={type:'json_object'};
+    const r=await fetch(g.b+'/chat/completions',{method:'POST',headers:hdr,body:JSON.stringify(body)});
+    const j=await r.json();
+    if(!r.ok)throw new Error(parseApiErr(j,r));
+    return parseOrgJson(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content);
+  };
+  try{return await call(true)}catch(e){
+    if(/response_format|json_object|unsupported/i.test(String(e.message||'')))return await call(false);
+    throw e;
+  }
+}
+function applyOrgResult(p,label){
+  S.org={title:cleanOrgNoSource(stripLinks(p.title)),body:finalizeOrgBody(cleanOrgBody(stripLinks(p.body)),S.wc),framework:S.framework,thin:false};
+  S.orgOk=false;S.imgs=[];
+  ok('内容审核已完成（'+label+'）');
+}
+async function organize(){
+  let d=S.draft;if(!d||!d.ok)return;
+  $('go').disabled=true;$('go').textContent='审核中…';
+  if($('cnt'))$('cnt').textContent='正在抓取正文并审核…';
+  try{d=await enrichDraftForOrganize(d);S.draft=d}catch(e){}
+  if(draftBodyLen(d)<80){
+    err('正文过短：请点「抓取链接」或粘贴全文；百家号等站若失败请手动复制正文');
+    $('go').disabled=false;$('go').textContent=ORG_AUDIT_LABEL;
+    return;
+  }
+  if(!hasAiAccess()){
+    await new Promise(r=>setTimeout(r,400));
+    S.org=organizeDemo(d,S.wc);S.orgOk=false;S.imgs=[];
+    if(S.org.thin)err('未配置 AI：请双击「配置API.bat」填入 DeepSeek Key，或打开 API 设置');
+    else ok('演示模式审核（配置 Key 后可 AI 审核）');
+    $('go').disabled=false;$('go').textContent=ORG_AUDIT_LABEL;draw();
+    return;
+  }
+  try{
+    if(hasServerAi()){
+      const j=await organizeViaServer(d);
+      applyOrgResult(j,'服务端 '+((S.serverAi&&S.serverAi.model)||chatModel()));
+    }else{
+      const p=await organizeViaBrowser(d);
+      applyOrgResult(p,chatModel());
+    }
+  }catch(e){
+    if(hasServerAi()&&hasBrowserAi()){
+      try{const p=await organizeViaBrowser(d);applyOrgResult(p,chatModel()+'（备用）');}
+      catch(e2){err(e2.message||e.message||'审核失败')}
+    }else err(e.message||'审核失败');
+  }
+  $('go').disabled=false;$('go').textContent=ORG_AUDIT_LABEL;draw();
+}
+async function genImg(){
+  if(!S.org||!S.orgOk)return err('请先确认内容');
+  const okCopy=await copyImgPrompt(false);
+  window.open('https://chatgpt.com/','_blank');
+  if(okCopy)ok('已复制配图提示词并打开 ChatGPT，直接 Ctrl+V 粘贴即可');
+  else ok('已打开 ChatGPT，请在下方框内 Ctrl+A 全选后复制粘贴');
+}
+async function genVid(){
+  if(!S.org||!S.orgOk)return err('请先确认内容');
+  const tool=VIDEO_TOOLS[S.vidTool]||VIDEO_TOOLS.jimeng;
+  const okCopy=await copyVidPrompt(false);
+  window.open(tool.url,'_blank');
+  if(okCopy)ok('已复制视频提示词并打开 '+tool.name+'，直接 Ctrl+V 粘贴即可');
+  else ok('已打开 '+tool.name+'，请在下方框内复制提示词后粘贴');
+}
+async function scheduledUpdate(){
+  if($('cnt'))$('cnt').textContent='正在快速更新…';
+  await search(true);
+  refreshAllSimilar();
+  S.nextRefreshAt=Date.now()+HOUR2;
+  ok('更新完成');
+}
+function renderAnalyzePreviews(){const box=$('analyzePreviews');if(!box)return;box.innerHTML=S.analyzeFiles.map((f,i)=>(f.isImg?'<div style="position:relative"><img src="'+f.dataUrl+'" alt=""/><button type="button" data-rm="'+i+'" style="position:absolute;top:2px;right:2px;border:none;background:#0008;color:#fff;border-radius:4px;cursor:pointer;font-size:11px">×</button></div>':'<span class="tag" style="padding:6px 10px">📎 '+esc(f.name)+' <button type="button" data-rm="'+i+'" style="border:none;background:none;cursor:pointer">×</button></span>')).join('');box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{S.analyzeFiles.splice(+b.dataset.rm,1);renderAnalyzePreviews()})}
+function addAnalyzeFiles(fileList){Array.from(fileList||[]).forEach(f=>{const r=new FileReader();r.onload=()=>{S.analyzeFiles.push({name:f.name,type:f.type,dataUrl:r.result,isImg:(f.type||'').startsWith('image/')});renderAnalyzePreviews()};(f.type||'').startsWith('image/')?r.readAsDataURL(f):r.readAsText(f,'UTF-8')})}
+function analyzeSystemPrompt(){
+  return '你是资深知识科普编辑。用户会提供：网页链接、网页内视频、本地上传的视频/文章/PDF/图片等。请提炼其中值得学习、可实践的知识点，整理成一篇可直接进入「内容审核」的科普干货文。\n\n写作结构（参考案例「个税专项附加扣除大全：这7项很多人能用到，别白白多交税」）：\n1）标题 18-30 字：主题+价值/痛点\n2）开头 2-4 句：通俗解释核心概念，点出很多人不知道或容易漏掉什么\n3）主体：用「目前主要有以下 N 项」引出，再 1. 2. 3. 分条写，每条 2-4 句（含量化标准、适用人群、常见误区）\n4）实用提醒：哪些项最容易漏、怎么操作\n5）结尾：总结价值+行动建议（如 APP 申报、年度汇算）\n6）可写「官方入口：某某官方平台」纯文字名称，禁止任何 http/https 网址\n7）不要 SCAQ/ATAR 四段式，不要分析框架术语，语气亲切、像写给普通读者\n8）全文 600-1200 字\n\n输出 JSON：{\"title\":\"\",\"content\":\"\"}';
+}
+function formatLearnArticleDemo(raw,hintTitle){
+  let title=(hintTitle||'').trim();
+  const mt=raw.match(/【标题】([^\n]+)/);if(mt)title=mt[1].trim();
+  if(!title){const ln=raw.replace(/【[^】]+】/g,'\n').split('\n').map(x=>x.trim()).filter(x=>x.length>10&&!/^https?:/i.test(x));title=(ln[0]||'知识要点整理').slice(0,36)}
+  if(title.length>32)title=title.slice(0,30)+'…';
+  if(!/[：:，,]/.test(title)&&title.length<22)title=title+'：核心要点一篇读懂';
+  let main='';
+  const wm=raw.match(/【网页正文摘录】\n([\s\S]*?)(?=\n【|$)/);if(wm)main=wm[1].trim();
+  if(!main){const fm=raw.match(/【文件·[^】]+】\n([\s\S]*?)(?=\n【|$)/);if(fm)main=fm[1].trim()}
+  if(!main)main=raw.replace(/【[^】]+】/g,'\n').replace(/https?:\/\/\S+/gi,'').replace(/\s+/g,' ').trim();
+  main=main.slice(0,2200);
+  const topic=(title.split(/[：:]/)[0]||title).slice(0,16);
+  let content=topic+'，简单理解就是：把素材里的关键规则/方法讲清楚，让读者看完能马上用起来。很多人明明相关，却一直没注意到。\n\n';
+  const items=main.match(/(?:^|\n)(?:\d+[\.、．]|[一二三四五六七八九十]+[、．])\s*[^\n]{4,}/gm);
+  if(items&&items.length>=2){
+    content+='目前主要有以下'+Math.min(items.length,12)+'项：\n\n';
+    items.slice(0,12).forEach((it,i)=>{
+      const t=it.replace(/^\s*(?:\d+[\.、．]|[一二三四五六七八九十]+[、．])\s*/,'').trim();
+      const head=t.split(/[。！？\n]/)[0]||t.slice(0,40);
+      const rest=t.slice(head.length).replace(/^[。！？\s]+/,'').trim();
+      content+=(i+1)+'. '+head+'\n'+(rest?rest.slice(0,160)+(rest.length>160?'…':'')+'\n\n':'\n');
+    });
+  }else{
+    const paras=main.split(/[。！？]+/).map(x=>x.trim()).filter(x=>x.length>12).slice(0,8);
+    content+='主要内容如下：\n\n';
+    paras.forEach((p,i)=>{content+=(i+1)+'. '+p+'。\n\n'});
+  }
+  content+='很多人最容易漏掉的是素材里靠后的细则。建议对照上文逐条核对，别白白错过。\n\n一般通过官方 APP 或政务渠道即可办理/申报，操作并不复杂。合理使用这些知识，本质上也是一种合法、省事的个人管理方式。\n\n官方入口：请使用对应事项的官方 APP 或政务平台（不含网址，请自行搜索核实）。';
+  return{title:title.slice(0,40),content:content.slice(0,2800)};
+}
+function extractMetaDesc(html){
+  const picks=[
+    (html.match(/<meta[^>]+property=["']og:description["'][^>]+content=["']([^"']+)["']/i)||[])[1],
+    (html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:description["']/i)||[])[1],
+    (html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i)||[])[1],
+    (html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']description["']/i)||[])[1]
+  ];
+  return picks.find(x=>x&&String(x).trim().length>8)||'';
+}
+function unescapeJsonStr(s){
+  try{return JSON.parse('"'+String(s).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"')}catch(e){return String(s).replace(/\\n/g,'\n').replace(/\\"/g,'"').replace(/\\u([0-9a-fA-F]{4})/g,(_,h)=>String.fromCharCode(parseInt(h,16)))}
+}
+function extractVideoPageText(html,url){
+  const parts=[];
+  const meta=extractMetaDesc(html);
+  if(meta)parts.push(meta);
+  const re=/"((?:subtitle|caption|video_desc|videoDesc|desc|description|abstract|intro|share_title))"\s*:\s*"((?:\\.|[^"\\]){10,1200})"/gi;
+  let m;while((m=re.exec(html))){
+    const t=unescapeJsonStr(m[2]);
+    if(t.length>10&&!/^https?:/i.test(t)&&!isPlatformBoilerplate(t))parts.push(t);
+    if(parts.length>12)break;
+  }
+  if(/bilibili|b23\.tv/i.test(url)){
+    [...html.matchAll(/"desc"\s*:\s*"((?:\\.|[^"\\]){8,800})"/g)].slice(0,3).forEach(x=>{const t=unescapeJsonStr(x[1]);if(t.length>8)parts.push(t)});
+  }
+  return [...new Set(parts)].join('\n').replace(/\s+/g,' ').trim().slice(0,5000);
+}
+async function fetchUrlContent(url,it){
+  const sv=await fetchUrlContentServer(url);
+  if(sv.text&&sv.text.length>60&&!isLikelyCode(sv.text))return{title:sv.title||'',text:sv.text,url:sv.url||url,isVideo:!!(it&&it.isVideo)||isVideoUrl(url,it),err:sv.err};
+  if(sv.err&&!sv.text)return{title:'',text:'',err:sv.err};
+  try{
+    const html=await fetchRssText(url);
+    if(!html)return{title:'',text:'',err:'无法抓取该链接'};
+    const isVid=isVideoUrl(url,it);
+    const ex=extractArticleFromHtml(html);
+    let text=ex.text||'';
+    if(isVid){
+      const vtext=extractVideoPageText(html,url);
+      if(vtext&&!isLikelyCode(vtext))text=(text?text+'\n\n':'')+vtext;
+    }
+    if(ex.err&&!text)return{title:ex.title||'',text:'',err:ex.err};
+    return{title:ex.title||'',text:text.slice(0,8000),url,isVideo:isVid};
+  }catch(e){return{title:'',text:'',err:e.message}}
+}
+async function loadReviewFromUrl(){
+  const url=($('reviewUrl')&&$('reviewUrl').value||'').trim();
+  if(!url)return err('请先粘贴链接');
+  if(!/^https?:\/\//i.test(url))return err('链接需以 http:// 或 https:// 开头');
+  const btn=$('btnFetchUrl');
+  if(btn){btn.disabled=true;btn.textContent='抓取中…'}
+  try{
+    let u=await fetchUrlContentServer(url);
+    if(!u.text||u.text.length<60)u=await fetchUrlContent(url,S.draft);
+    if(!u.text&&!u.title){err(u.err||'抓取失败，请手动复制正文到审核框');return}
+    let content=(u.text||'').slice(0,8000);
+    if(isLikelyCode(content)){err(u.err||'抓取到的是网页脚本，不是文章正文。请点「阅读原文」在浏览器打开，复制正文粘贴到右侧');return}
+    const title=(u.title||'链接素材').slice(0,80);
+    if(!content&&u.title)content=u.title;
+    if(u.isVideo&&content)content='【视频/网页内容摘录】\n'+content;
+    S.selId=null;
+    S.draft={title,content,url:u.url||url,source:'链接抓取',ok:false,isVideo:!!u.isVideo,fetched:true};
+    reset();draw();
+    ok(u.err?'已载入（正文较少，可手动补充）':'链接内容已载入，请审核');
+  }catch(e){err(e.message||'抓取失败')}
+  if(btn){btn.disabled=false;btn.textContent='抓取链接'}
+}
+async function analyzeImageVision(dataUrl){const g=gs();if(!g.k)throw new Error('图片深度分析需配置 API');const r=await fetch(g.b+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+g.k},body:JSON.stringify({model:'gpt-4o-mini',max_tokens:800,messages:[{role:'user',content:[{type:'text',text:'分析图片中的知识信息，提炼成可写成科普文章的素材。JSON:{"title":"15-25字","content":"400字以内正文","keywords":[]}'},{type:'image_url',image_url:{url:dataUrl}}]}],temperature:0.4})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message);return JSON.parse(j.choices[0].message.content.replace(/^[\s\S]*?({[\s\S]*})[\s\S]*$/,'$1'))}
+async function analyzeMaterial(){
+  const url=($('analyzeUrl')&&$('analyzeUrl').value||'').trim(),note=($('analyzeNote')&&$('analyzeNote').value||'').trim();
+  const parts=[];if(url)parts.push('【链接】'+url);if(note)parts.push('【备注】'+note);
+  $('btnAnalyzeRun').disabled=true;$('btnAnalyzeRun').textContent='分析中…';
+  const res=$('analyzeResult');res.classList.remove('hidden');res.textContent='正在解析素材…';
+  try{
+    if(url){const u=await fetchUrlContent(url);if(u.title)parts.push('【标题】'+u.title);if(u.text)parts.push('【网页正文摘录】\n'+u.text.slice(0,2500));else if(u.err)parts.push('【链接】抓取受限，已保留URL')}
+    for(const f of S.analyzeFiles){
+      if(f.isImg&&f.dataUrl&&gs().k){try{const v=await analyzeImageVision(f.dataUrl);parts.push('【图片分析·'+f.name+'】\n标题：'+(v.title||'')+'\n'+(v.content||''))}catch(e){parts.push('【图片·'+f.name+'】'+e.message)}}
+      else if(f.isImg&&f.dataUrl)parts.push('【图片·'+f.name+'】已上传（配置 API 后可自动识图）');
+      else if(/\.(mp4|mov|webm|mkv|avi|m4v)$/i.test(f.name))parts.push('【视频·'+f.name+'】已上传。'+(gs().k?'（将结合链接/备注理解主题）':'请在「补充说明」写明视频主题与要点，或配置 API'));
+      else if(f.dataUrl)parts.push('【文件·'+f.name+'】\n'+String(f.dataUrl).slice(0,3000));
+      else parts.push('【附件·'+f.name+'】已收录');
+    }
+    const raw=parts.join('\n\n');
+    if(!raw.trim()){err('请至少提供链接、文件或说明');return}
+    let out;
+    const hintT=(raw.match(/【标题】([^\n]+)/)||[])[1]||'';
+    if(isDemo()&&!gs().k){
+      out=formatLearnArticleDemo(raw,hintT);
+    }else{
+      const g=gs();
+      const r=await fetch(g.b+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+g.k},body:JSON.stringify({model:'gpt-4o-mini',response_format:{type:'json_object'},messages:[{role:'system',content:analyzeSystemPrompt()},{role:'user',content:raw.slice(0,8000)}],temperature:0.45})});
+      const j=await r.json();if(!r.ok)throw new Error(j.error?.message);
+      const p=JSON.parse(j.choices[0].message.content);
+      out={title:stripLinks(p.title||hintT||'知识整理'),content:stripLinks(p.content||'')};
+    }
+    S.analyzeOut=out;
+    res.textContent='【标题】'+out.title+'\n\n'+out.content;
+    $('btnAnalyzeImport').style.display='inline-block';
+    ok('素材分析完成，可导入审核');
+  }catch(e){res.textContent='分析失败：'+e.message;err(e.message)}
+  $('btnAnalyzeRun').disabled=false;$('btnAnalyzeRun').textContent='开始分析';
+}
+function importAnalyzeToReview(){
+  if(!S.analyzeOut)return err('请先完成分析');
+  S.selId=null;
+  S.draft={title:S.analyzeOut.title,content:S.analyzeOut.content,url:($('analyzeUrl')&&$('analyzeUrl').value)||'',source:'素材分析',ok:false};
+  reset();$('analyzeModal').classList.remove('show');draw();ok('已导入内容审核');
+}
+function setupAnalyzeModal(){
+  $('btnAnalyze').onclick=()=>{$('analyzeModal').classList.add('show');S.analyzeFiles=[];S.analyzeOut=null;if($('analyzeResult')){$('analyzeResult').classList.add('hidden');$('analyzeResult').textContent=''}$('btnAnalyzeImport').style.display='none';renderAnalyzePreviews()};
+  $('btnAnalyzeClose').onclick=()=>$('analyzeModal').classList.remove('show');
+  $('btnAnalyzeRun').onclick=analyzeMaterial;
+  $('btnAnalyzeImport').onclick=importAnalyzeToReview;
+  $('analyzeDrop').onclick=()=>$('analyzeFiles').click();
+  $('analyzeFiles').onchange=e=>{addAnalyzeFiles(e.target.files);e.target.value=''};
+  const drop=$('analyzeDrop');
+  drop.ondragover=e=>{e.preventDefault();drop.style.borderColor='var(--accent)'};
+  drop.ondragleave=()=>{drop.style.borderColor=''};
+  drop.ondrop=e=>{e.preventDefault();drop.style.borderColor='';addAnalyzeFiles(e.dataTransfer.files)};
+}
+$('btnSettings').onclick=()=>{const g=gs(),db=gsDoubao();$('apiKey').value=g.k;$('apiBase').value=g.b;if($('orgModel'))$('orgModel').value=localStorage.getItem('fwz_chat_model')||chatModel();if($('doubaoKey'))$('doubaoKey').value=db.k;if($('doubaoEp'))$('doubaoEp').value=db.ep;if($('doubaoModel'))$('doubaoModel').value=db.model;if($('hotApi'))$('hotApi').value=localStorage.getItem('fwz_hot_api')||getHotApiBase();setDemoUI();$('modal').classList.add('show')};
+$('btnClose').onclick=()=>$('modal').classList.remove('show');
+document.querySelectorAll('[data-api-preset]').forEach(btn=>{btn.onclick=()=>applyApiPreset(btn.dataset.apiPreset)});
+if($('btnTestApi'))$('btnTestApi').onclick=()=>testOrgApi();
+$('btnSave').onclick=()=>{
+  const key=$('apiKey').value.trim();
+  localStorage.setItem('fwz_key',key);
+  localStorage.setItem('fwz_base',$('apiBase').value.trim()||'https://api.openai.com/v1');
+  if($('orgModel'))localStorage.setItem('fwz_chat_model',$('orgModel').value.trim());
+  if(key&&$('useDemo')&&$('useDemo').checked){$('useDemo').checked=false;localStorage.setItem('fwz_demo','0')}
+  else localStorage.setItem('fwz_demo',$('useDemo').checked?'1':'0');
+  if($('hotApi'))localStorage.setItem('fwz_hot_api',$('hotApi').value.trim());
+  if($('doubaoKey'))localStorage.setItem('fwz_doubao_key',$('doubaoKey').value.trim());
+  if($('doubaoEp'))localStorage.setItem('fwz_doubao_ep',$('doubaoEp').value.trim()||'https://ark.cn-beijing.volces.com/api/v3');
+  if($('doubaoModel'))localStorage.setItem('fwz_doubao_model',$('doubaoModel').value.trim()||'doubao-seedream-4-0-250828');
+  $('modal').classList.remove('show');setDemoUI();draw();
+  ok(hasDoubao()?'已保存（含豆包配图）':isDemo()?'演示模式已开启':'AI 模式已开启，可进行文件内容审核');
+};
+if($('useDemo'))$('useDemo').onchange=()=>{
+  if(!$('useDemo').checked&&!hasAiAccess()){err('请先配置 API（配置API.bat 或填写 Key）');$('useDemo').checked=true}
+  localStorage.setItem('fwz_demo',$('useDemo').checked?'1':'0');
+  setDemoUI();
+};
+$('btnSearch').onclick=()=>search(false);
+if($('btnFavs'))$('btnFavs').onclick=()=>{if(S.viewFavs){S.viewFavs=false;search(false)}else showFavorites()};
+$('btnRefreshNow').onclick=()=>scheduledUpdate();
+$('q').onkeydown=e=>{if(e.key==='Enter')search(false)};
+$('onlyValuable').onchange=()=>{S.items=pickDisplayItems(S.allItems);drawList()};
+$('btnUpload').onclick=()=>$('file').click();
+$('btnFetchUrl').onclick=()=>loadReviewFromUrl();
+if($('reviewUrl'))$('reviewUrl').onkeydown=e=>{if(e.key==='Enter')loadReviewFromUrl()};
+$('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.selId=null;S.draft={title:f.name.replace(/\.[^.]+$/,''),content:String(r.result),url:'',source:'本地上传',ok:false};reset();draw()};r.readAsText(f,'UTF-8');e.target.value=''};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');S.cat=t.dataset.c;S.hotChannel=null;setHotChannelUI('');search(false)});
+if($('chTabs'))$('chTabs').onclick=e=>{const btn=e.target.closest('.ch-tab');if(!btn)return;S.hotChannel=btn.dataset.ch;setHotChannelUI(S.hotChannel);search(false)};
+$('globalAuto').checked=localStorage.getItem('fwz_auto2h')==='1';
+$('globalAuto').onchange=()=>localStorage.setItem('fwz_auto2h',$('globalAuto').checked?'1':'0');
+setInterval(()=>{
+  updateCountdown();
+  if($('globalAuto').checked&&Date.now()>=S.nextRefreshAt)scheduledUpdate();
+},1000);
+loadSimCache();
+if(localStorage.getItem('fwz_demo')===null)localStorage.setItem('fwz_demo','1');
+if(localStorage.getItem('fwz_framework')==='atar')S.framework='atar';
+if(localStorage.getItem('fwz_pub_plat')==='xhs')S.pubPlatform='xhs';
+setupAnalyzeModal();
+setDemoUI();
+setHotChannelUI('all');
+function normalizeActiveCat(){
+  if(REMOVED_CATS.includes(S.cat))S.cat='all';
+  const tab=document.querySelector('.tab[data-c="'+S.cat+'"]');
+  if(!tab){
+    S.cat='all';
+    document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.c==='all'));
+  }
+}
+(async function boot(){
+  normalizeActiveCat();
+  const needHot=location.protocol==='file:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(needHot)tryWakeHotServer();
+  syncServerAiConfig().then(()=>setDemoUI());
+  search(false).catch(e=>{
+    console.error(e);
+    if(e&&e.name==='AbortError')return;
+    err((e&&e.message)||'页面加载失败，请刷新重试');
+    if($('btnSearch'))$('btnSearch').disabled=false;
+    if($('list'))$('list').innerHTML='<div class="empty">加载失败<br><small>请双击「打开网页.bat」或点「立即更新」</small></div>';
+  });
+  if(needHot){
+    waitForHotApi({maxMs:BOOT_HOT_WAIT_MS,interval:800}).then(ok=>{
+      if(!ok)return;
+      if(S.hotChannel&&(!S.items.length||(S.lastFetchStats&&S.lastFetchStats.fast)))search(true);
+    });
+  }
+})();
+</script>
+</body>
+</html>

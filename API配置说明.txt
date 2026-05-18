@@ -1,0 +1,42 @@
+发文张 · 免费 API 配置（一键概括）
+================================
+
+以下平台均兼容 OpenAI 接口，任选一种即可。
+
+┌──────────┬─────────────────────────────┬──────────────────────────────────────┐
+│ 平台     │ 注册领 Key                  │ 特点                                 │
+├──────────┼─────────────────────────────┼──────────────────────────────────────┤
+│ Groq     │ console.groq.com/keys       │ 免费额度，速度快，Key: gsk_          │
+│ 硅基流动 │ cloud.siliconflow.cn      │ 国内，新用户送额度，Key: sk-         │
+│ OpenRouter│ openrouter.ai/keys       │ 有 :free 免费模型                    │
+│ DeepSeek │ platform.deepseek.com     │ 国内，新用户赠送                     │
+│ 通义千问 │ dashscope.console.aliyun  │ 阿里云免费额度                       │
+└──────────┴─────────────────────────────┴──────────────────────────────────────┘
+
+【方式一 · 推荐】双击「配置API.bat」
+--------------------------------------
+1. 选 1～5 对应平台
+2. 自动打开注册页 + 记事本
+3. 把 Key 填到 OPENAI_API_KEY= 后面，保存
+4. 双击「启动网站.bat」→ 自动 AI 概括（无需浏览器填 Key）
+
+【方式二】网页「API 设置」
+--------------------------------------
+1. 点「Groq 免费」/「硅基流动」等按钮（自动填地址和模型）
+2. 粘贴 Key → 测试连接 → 保存
+3. 取消演示模式
+
+【一键概括】
+--------------------------------------
+1. 内容审核：抓取链接或粘贴全文
+2. 通过审核 → 一键概括
+
+【Groq 示例】
+  OPENAI_API_KEY=gsk_xxxx
+  OPENAI_BASE_URL=https://api.groq.com/openai/v1
+  OPENAI_MODEL=llama-3.3-70b-versatile
+
+【硅基流动 示例】
+  OPENAI_API_KEY=sk_xxxx
+  OPENAI_BASE_URL=https://api.siliconflow.cn/v1
+  OPENAI_MODEL=Qwen/Qwen2.5-7B-Instruct

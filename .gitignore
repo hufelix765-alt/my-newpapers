@@ -1,0 +1,27 @@
+# 依赖与构建产物
+node_modules/
+.next/
+out/
+dist/
+
+# 密钥与本地配置（切勿提交）
+.env
+.env.local
+.env.*.local
+
+# 日志与系统文件
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器与本地工具
+.idea/
+.vscode/
+.cursor/
+*.swp
+*~
+
+# 本地缓存
+.next/cache/

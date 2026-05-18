@@ -204,11 +204,12 @@ textarea{min-height:120px;resize:vertical}
 </header>
 <main class="wrap">
 <div id="err" class="err hidden"></${'di'+'v'}>
+<div id="ghOnlineTip" class="ok hidden" style="margin:0 0 10px;font-size:.75rem;line-height:1.55;padding:10px 12px;border-radius:8px">
+  <b>热榜已直连</b>（百度/微博/抖音/知乎）。头条·B站·小红书每 2 小时自动同步。
+  <button type="button" class="btn btn-o btn-s" id="ghBannerOpenApi" style="margin-left:6px;padding:4px 10px;font-size:.72rem">可选：配置 AI 接口</button>
+</${'di'+'v'}>
 <div id="ghSetupBanner" class="err hidden" style="margin:0 0 10px;font-size:.75rem;line-height:1.55;padding:10px 12px;border-radius:8px">
-  <b>热榜未连接</b>：GitHub 页只能打开界面，热榜/AI 需 Vercel 后端。
-  <a id="ghBannerVercel" href="https://vercel.com" target="_blank" rel="noopener">① 去 Vercel 部署</a>
-  → ② 复制 <code>https://xxx.vercel.app</code> →
-  <button type="button" class="btn btn-o btn-s" id="ghBannerOpenApi" style="margin-top:6px;padding:5px 12px;font-size:.72rem">③ 打开 API 设置并粘贴</button>
+  <b>热榜未连接</b>：请刷新页面；若仍失败，在 <button type="button" class="btn btn-o btn-s" id="ghBannerOpenApi2" style="padding:4px 10px;font-size:.72rem">API 设置</button> 填写 Vercel 地址。
 </div>
 <div class="box">
   <div class="row">
@@ -218,12 +219,7 @@ textarea{min-height:120px;resize:vertical}
   <div class="tabs" id="tabs">
     <button class="tab on" data-c="all">全部</button>
     <button class="tab" data-c="car">汽车</button>
-    <button class="tab" data-c="carInt">汽车内饰件</button>
-    <button class="tab" data-c="carExt">汽车外饰件</button>
-    <button class="tab" data-c="carSeat">汽车座椅</button>
-    <button class="tab" data-c="patHome">家电专利</button>
-    <button class="tab" data-c="patCar">汽车专利</button>
-    <button class="tab" data-c="patSeat">座椅专利</button>
+    <button class="tab" data-c="patent">专利</button>
     <button class="tab" data-c="fun">趣事</button>
     <button class="tab" data-c="other">其他</button>
   </div>

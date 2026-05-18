@@ -20,29 +20,16 @@
 
 页面地址示例：[https://hufelix765-alt.github.io/my-newpapers/](https://hufelix765-alt.github.io/my-newpapers/)
 
-**重要：** GitHub Pages **只能放网页**，不能跑热榜/AI 接口。需要 **再部署一个 Vercel 后端**（免费），手机才能正常用热榜。
+**热榜：** 推送到 GitHub 后，手机打开即可用（百度/微博/抖音/知乎浏览器直连；头条/B站/小红书由 Actions 每 2 小时同步 `hot-cache.json`）。**无需 Vercel 也能看热榜。**
 
-### 两步配置
+**AI 概括 / 链接抓取（可选）：** 若要用云端 AI，再部署 [Vercel](https://vercel.com) 同一仓库，并在 **API 设置** 填写 `https://你的项目.vercel.app`，或在 `public/fwz-config.json` 配置 `apiBase`。
 
-| 步骤 | 做什么 | 结果 |
-|------|--------|------|
-| ① 网页 | GitHub Pages（已有） | 手机可打开界面 |
-| ② 接口 | [Vercel](https://vercel.com) 部署同一仓库 | 提供 `/api/hot` 等 |
+### 使用步骤
 
-1. 在 Vercel 导入本仓库并 Deploy，记下地址，例如 `https://fawenzhang.vercel.app`
-2. 在 Vercel 配置环境变量 `OPENAI_API_KEY`（及其他可选项）
-3. 编辑仓库 **`public/fwz-config.json`**，把 `apiBase` 改成你的 Vercel 地址：
-
-```json
-{
-  "apiBase": "https://你的项目.vercel.app"
-}
-```
-
-4. `git push` 后等 GitHub Pages 更新（或 Actions 自动部署）
-5. 微信分享：**https://hufelix765-alt.github.io/my-newpapers/**
-
-也可在手机打开后 → **API 设置** → **热榜服务地址** 填 Vercel 地址 → 保存。
+1. `git push` 到 GitHub，等 Pages 部署完成（约 1～3 分钟）
+2. 微信分享：**https://hufelix765-alt.github.io/my-newpapers/**
+3. 点 **全部热榜** 或各平台频道即可浏览
+4. （可选）Vercel 部署 + 配置 `OPENAI_API_KEY` 后，在 **API 设置** 保存 Vercel 地址以启用 AI
 
 ---
 

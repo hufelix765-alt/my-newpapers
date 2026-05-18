@@ -15,21 +15,31 @@
    可选：OPENAI_BASE_URL、OPENAI_MODEL（见 .env.example）
 6. 重新 Deploy 一次
 
-二、发给微信好友的链接（复制这一行）
+二、GitHub Pages + 手机（你现在的用法）
+----------------------------------------
+网页：https://hufelix765-alt.github.io/my-newpapers/
+（只能显示界面，热榜必须再配 Vercel）
+
+1. 电脑打开 https://vercel.com → Import 仓库 my-newpapers → Deploy
+2. 记下地址，例如 https://my-newpapers.vercel.app
+3. 手机打开 GitHub 链接 → 点红色条「打开 API 设置」→ 热榜服务地址 粘贴 Vercel 地址 → 保存
+   （或电脑改 public/fwz-config.json 的 apiBase 后 push，等 Pages 更新）
+
+三、发给微信好友的链接（复制这一行）
 ------------------------------------
 https://你的项目名.vercel.app/app.html
 
 也可只发根地址（会自动跳转）：
 https://你的项目名.vercel.app/
 
-三、手机使用注意
+四、手机使用注意
 ----------------
 1. 微信里点链接 → 选择「在浏览器打开」更稳定
 2. 热榜、抓取、AI 概括都走云端，无需安装 Node.js
 3. 链接抓取部分网站（抖音视频页等）可能仍受限，可粘贴链接到「内容审核」
 4. API Key 在服务器环境变量里配置，不要发给陌生人
 
-四、电脑本地 vs 手机在线
+五、电脑本地 vs 手机在线
 --------------------------
 | 方式 | 适合 | 链接 |
 |------|------|------|

@@ -203,7 +203,13 @@ textarea{min-height:120px;resize:vertical}
   </div>
 </header>
 <main class="wrap">
-<div id="err" class="err hidden"></div>
+<div id="err" class="err hidden"></${'di'+'v'}>
+<div id="ghSetupBanner" class="err hidden" style="margin:0 0 10px;font-size:.75rem;line-height:1.55;padding:10px 12px;border-radius:8px">
+  <b>热榜未连接</b>：GitHub 页只能打开界面，热榜/AI 需 Vercel 后端。
+  <a id="ghBannerVercel" href="https://vercel.com" target="_blank" rel="noopener">① 去 Vercel 部署</a>
+  → ② 复制 <code>https://xxx.vercel.app</code> →
+  <button type="button" class="btn btn-o btn-s" id="ghBannerOpenApi" style="margin-top:6px;padding:5px 12px;font-size:.72rem">③ 打开 API 设置并粘贴</button>
+</div>
 <div class="box">
   <div class="row">
     <input type="text" id="q" placeholder="搜索关键词，如：新车、专利、座椅、新能源…" style="flex:1"/>
@@ -297,10 +303,13 @@ textarea{min-height:120px;resize:vertical}
   <input type="text" id="doubaoModel" placeholder="doubao-seedream-4-0-250828" style="margin:4px 0 10px"/>
   <p class="hint" style="font-size:.72rem">概括用 API；配图请用 ChatGPT 生图（见「生成配图」）</p>
   <hr style="margin:12px 0;border:none;border-top:1px solid var(--border)"/>
-  <p class="hint" style="margin-bottom:6px"><b>七大平台热榜</b>（双击「打开网页.bat」可自动启动服务）</p>
+  <p class="hint" style="margin-bottom:6px"><b>七大平台热榜</b>（GitHub 在线页必填 Vercel 地址）</p>
+  <motion.div id="ghApiTip" class="err hidden" style="margin-bottom:8px;font-size:.72rem;line-height:1.5">
+    手机/GitHub 页需先部署 Vercel：① <a id="ghVercelLink" href="https://vercel.com" target="_blank" rel="noopener">打开 Vercel 部署</a>（Import 本仓库）② 复制 https://xxx.vercel.app ③ 粘贴到下方 ④ 点保存
+  </${'di'+'v'}>
   <label class="hint">热榜服务地址</label>
-  <input type="text" id="hotApi" placeholder="http://localhost:3000" style="margin:4px 0 10px"/>
-  <p class="hint" style="font-size:.72rem">今日头条 · 百度 · 微博 · 抖音 · 知乎 · B站 · 小红书</p>
+  <input type="text" id="hotApi" placeholder="https://my-newpapers.vercel.app" style="margin:4px 0 10px"/>
+  <p class="hint" style="font-size:.72rem">本地电脑用 http://localhost:3000；手机/微信用 Vercel 的 https 地址</p>
   <div class="row"><button class="btn btn-o" id="btnClose">关闭</button><button class="btn btn-p" id="btnSave">保存</button></div>
 </div></div>
 <div class="modal" id="analyzeModal"><div class="modal-box wide">

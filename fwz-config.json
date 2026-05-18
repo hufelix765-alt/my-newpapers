@@ -1,5 +1,9 @@
 {
   "apiBase": "",
-  "siteName": "发文张",
-  "hint": "请把 apiBase 改成你的 Vercel 地址，例如 https://fawenzhang.vercel.app ，保存后重新推送到 GitHub"
+  "apiCandidates": [
+    "https://my-newpapers.vercel.app",
+    "https://fawenzhang.vercel.app"
+  ],
+  "vercelDeployUrl": "https://vercel.com/new/clone?repository-url=https://github.com/hufelix765-alt/my-newpapers",
+  "siteName": "发文张"
 }

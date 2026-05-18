@@ -959,6 +959,78 @@ function getConfiguredApiBase(){
   if(fromCfg)return fromCfg;
   return '';
 }
+let _discoverPromise=null;
+function resetApiDiscover(){_discoverPromise=null;}
+function fetchWithTimeout(url,ms){
+  const c=new AbortController();
+  const t=setTimeout(()=>c.abort(),ms||8000);
+  return fetch(url,{cache:'no-store',signal:c.signal}).finally(()=>clearTimeout(t));
+}
+async function probeHotApiBase(base){
+  const b=String(base||'').replace(/\/$/,'');
+  if(!b)return false;
+  try{
+    const r=await fetchWithTimeout(b+'/api/hot?limit=1&platforms=toutiao&_='+Date.now(),8000);
+    return r.ok;
+  }catch(e){return false}
+}
+async function discoverApiBase(){
+  if(_discoverPromise)return _discoverPromise;
+  _discoverPromise=(async()=>{
+    if(!isGithubPages())return '';
+    const existing=getConfiguredApiBase();
+    if(existing&&await probeHotApiBase(existing))return existing;
+    const cfg=await loadPublicConfig();
+    const list=[cfg.apiBase,...(cfg.apiCandidates||[])].map(u=>String(u||'').replace(/\/$/,'')).filter(Boolean);
+    const seen=new Set();
+    for(const base of list){
+      if(seen.has(base))continue;
+      seen.add(base);
+      if(await probeHotApiBase(base)){
+        localStorage.setItem('fwz_hot_api',base);
+        resetApiDiscover();
+        return base;
+      }
+    }
+    return '';
+  })();
+  return _discoverPromise;
+}
+async function ensureHotApiConfigured(){
+  if(!isGithubPages())return !!getHotApiBase();
+  if(getConfiguredApiBase())return probeHotApiBase(getConfiguredApiBase());
+  return !!(await discoverApiBase());
+}
+function updateGhSetupBanner(){
+  const b=$('ghSetupBanner');
+  if(!b)return;
+  if(shouldUseBrowserHot()||!isGithubPages()||getConfiguredApiBase())b.classList.add('hidden');
+  else b.classList.remove('hidden');
+}
+function showGithubApiSetup(openModal){
+  if(!isGithubPages())return;
+  const tip=$('ghApiTip');
+  if(tip)tip.classList.remove('hidden');
+  loadPublicConfig().then(cfg=>{
+    const deploy=cfg.vercelDeployUrl||'https://vercel.com/new/clone?repository-url=https://github.com/hufelix765-alt/my-newpapers';
+    const a=$('ghVercelLink')||$('ghBannerVercel');
+    if(a)a.href=deploy;
+    const hot=$('hotApi');
+    if(hot&&!hot.value.trim()){
+      const ph=(cfg.apiCandidates&&cfg.apiCandidates[0])||cfg.apiBase||'https://你的项目.vercel.app';
+      hot.placeholder=ph;
+    }
+  });
+  updateGhSetupBanner();
+  if(openModal){
+    if($('btnSettings'))$('btnSettings').click();
+    return;
+  }
+  if(!sessionStorage.getItem('fwz_gh_api_modal')){
+    sessionStorage.setItem('fwz_gh_api_modal','1');
+    setTimeout(()=>{if($('btnSettings'))$('btnSettings').click()},600);
+  }
+}
 function getHotApiBase(){
   const configured=getConfiguredApiBase();
   if(configured)return configured;
@@ -966,10 +1038,125 @@ function getHotApiBase(){
   if(location.protocol.startsWith('http'))return location.origin.replace(/\/$/,'');
   return 'http://localhost:3000';
 }
+function shouldUseBrowserHot(){
+  return isGithubPages()&&!getConfiguredApiBase();
+}
 function hotServiceHint(){
-  if(isGithubPages()&&!getConfiguredApiBase()&&!localStorage.getItem('fwz_hot_api'))
-    return '请先在「API 设置」填写 Vercel 热榜地址，或配置 fwz-config.json 的 apiBase';
+  if(shouldUseBrowserHot())
+    return '正在使用浏览器直连热榜；AI 概括/部分抓取仍可选填 Vercel 地址';
   return isLocalDev()?'请双击「打开网页.bat」或「启动网站.bat」':'请检查网络后下拉刷新';
+}
+let _hotBundle;
+let _hotBundleLoad;
+async function loadHotCacheBundle(){
+  if(_hotBundle!==undefined)return _hotBundle;
+  if(!_hotBundleLoad){
+    _hotBundleLoad=(async()=>{
+      if(!/^https?:/.test(location.protocol))return null;
+      try{
+        const r=await fetch(getSiteAssetUrl('hot-cache.json')+'?_'+Date.now(),{cache:'no-store'});
+        return r.ok?await r.json():null;
+      }catch(e){return null}
+    })();
+  }
+  _hotBundle=await _hotBundleLoad;
+  return _hotBundle;
+}
+async function ghFetchJson(url,ref){
+  const r=await fetch(url,{cache:'no-store',headers:{Accept:'application/json',Referer:ref||url}});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  return r.json();
+}
+function walkBaiduNodes(node,out){
+  if(!node||typeof node!=='object')return;
+  if(Array.isArray(node)){node.forEach(n=>walkBaiduNodes(n,out));return}
+  if(typeof node.word==='string'||typeof node.query==='string')out.push(node);
+  Object.values(node).forEach(v=>walkBaiduNodes(v,out));
+}
+async function clientFetchBaidu(limit){
+  const json=await ghFetchJson('https://top.baidu.com/api/board?platform=wise&tab=realtime','https://top.baidu.com/');
+  const flat=[];walkBaiduNodes(json.data&&json.data.cards,flat);
+  const seen=new Set(),items=[];
+  for(const item of flat){
+    const title=(item.word||item.query||'').trim();
+    if(!title||seen.has(title))continue;
+    seen.add(title);
+    items.push({id:'baidu-'+items.length+'-'+title,title,summary:item.desc||item.hotScore||'百度实时热搜',url:item.rawUrl||item.url||'https://www.baidu.com/s?wd='+encodeURIComponent(title),source:'百度热搜',platform:'baidu',heat:item.hotScore,rank:items.length+1});
+    if(items.length>=limit)break;
+  }
+  return items;
+}
+async function clientFetchWeibo(limit){
+  const json=await ghFetchJson('https://weibo.com/ajax/side/hotSearch','https://weibo.com/');
+  const list=(json.data&&json.data.realtime)||[];
+  const items=[];
+  for(let i=0;i<list.length&&items.length<limit;i++){
+    const item=list[i];
+    const title=(item.word||item.note||'').trim();
+    if(!title)continue;
+    const heat=item.num!=null?String(item.num):'';
+    items.push({id:'weibo-'+(item.mid||i),title,summary:item.category?(item.category+(heat?' · 热度 '+heat:'')):(heat?'热度 '+heat:'微博热搜'),url:item.url||'https://s.weibo.com/weibo?q='+encodeURIComponent(title),source:'微博热搜',platform:'weibo',heat,rank:item.rank||items.length+1});
+  }
+  return items;
+}
+async function clientFetchZhihu(limit){
+  const json=await ghFetchJson('https://api.zhihu.com/topstory/hot-list?limit=50','https://www.zhihu.com/');
+  const items=[];
+  (json.data||[]).slice(0,limit).forEach((row,i)=>{
+    const t=row.target||{};
+    const title=(t.title_area&&t.title_area.text||t.question&&t.question.title||t.title||'').trim();
+    if(!title)return;
+    const url=(t.link&&t.link.url)||(t.id?'https://www.zhihu.com/question/'+t.id:'')||'https://www.zhihu.com/search?q='+encodeURIComponent(title);
+    items.push({id:'zhihu-'+i+'-'+title.slice(0,8),title,summary:(t.excerpt_area&&t.excerpt_area.text)||t.excerpt||'知乎热榜',url,source:'知乎热榜',platform:'zhihu',rank:items.length+1});
+  });
+  return items;
+}
+async function clientFetchDouyin(limit){
+  const json=await ghFetchJson('https://aweme.snssdk.com/aweme/v1/hot/search/list/','https://www.douyin.com/');
+  const list=(json.data&&json.data.word_list)||json.word_list||[];
+  const items=[];
+  for(let i=0;i<list.length&&items.length<limit;i++){
+    const item=list[i];
+    const title=(item.word||'').trim();
+    if(!title)continue;
+    const heat=item.hot_value!=null?String(item.hot_value):'';
+    const sid=String(item.sentence_id||'').trim();
+    const url=sid?('https://www.douyin.com/hot/'+sid):('https://www.douyin.com/search/'+encodeURIComponent(title)+'?type=general');
+    items.push({id:'douyin-'+(item.sentence_id||i),title,summary:heat?'热度 '+heat:'抖音热榜',url,source:'抖音热榜',platform:'douyin',heat,rank:items.length+1,clusterId:item.group_id,groupId:item.group_id});
+  }
+  return items;
+}
+const CLIENT_HOT_FETCH={baidu:clientFetchBaidu,weibo:clientFetchWeibo,zhihu:clientFetchZhihu,douyin:clientFetchDouyin};
+async function fetchPlatformHotBrowser(q,channel){
+  const ch=channel||S.hotChannel||'all';
+  const cfg=HOT_CH[ch]||HOT_CH.all;
+  const platforms=(cfg.p||'toutiao,baidu,weibo,douyin,zhihu,bilibili,xiaohongshu').split(',').map(s=>s.trim()).filter(Boolean);
+  const limit=Math.min(HOT_FETCH_LIMIT,30);
+  const bundle=await loadHotCacheBundle();
+  const stats={};
+  let raw=[];
+  await Promise.all(platforms.map(async p=>{
+    let list=[];
+    try{
+      if(CLIENT_HOT_FETCH[p])list=await CLIENT_HOT_FETCH[p](limit);
+    }catch(e){}
+    if(!list.length&&bundle&&Array.isArray(bundle.items)){
+      list=bundle.items.filter(it=>(it.platform||'')===p).slice(0,limit);
+    }
+    stats[p]={ok:list.length>0,count:list.length,error:list.length?'':'暂无数据'};
+    raw=raw.concat(list);
+  }));
+  const forcePt=cfg.p||'';
+  let list=raw.map((it,i)=>enrichHotItem(it,i,forcePt||it.platform));
+  list=filterHotByChannel(list,ch);
+  if(q)list=list.filter(it=>matchQ(it,q));
+  const seen=new Set();
+  list=list.filter(it=>{const k=(it.platform||'')+'|'+it.title.slice(0,24);if(seen.has(k))return false;seen.add(k);return true});
+  list=sortHotByUpdate(list);
+  const ok=cfg.p?(stats[cfg.p]&&stats[cfg.p].count>0?1:0):Object.values(stats).filter(s=>s.ok&&s.count>0).length;
+  const total=cfg.p?1:platforms.length;
+  S.lastFetchStats={total,ok,raw:list.length,channel:ch,browser:true};
+  return {list,meta:{total:list.length,platformsOk:ok,platformsTotal:total,browser:true},stats};
 }
 const HOT_LAUNCHER='http://127.0.0.1:38765';
 let _hotWakeTried=false;
@@ -1068,7 +1255,7 @@ function cardTags(it){
     (it.isHot?'<span class="tag tag-hot">热点</span>':'')+(it.isNew?'<span class="tag tag-new">新品</span>':'')+(it.isLearn?'<span class="tag tag-learn">科普</span>':'');
   return h+cardTimeTags(it);
 }
-async function fetchPlatformHot(q,channel){
+async function fetchPlatformHotFromServer(q,channel){
   const base=getHotApiBase();
   const ch=channel||S.hotChannel||'all';
   const cfg=HOT_CH[ch]||HOT_CH.all;
@@ -1104,6 +1291,17 @@ async function fetchPlatformHot(q,channel){
     }
   }
   throw lastErr||new Error('连接失败');
+}
+async function fetchPlatformHot(q,channel){
+  if(shouldUseBrowserHot())return fetchPlatformHotBrowser(q,channel);
+  const base=getHotApiBase();
+  if(!base)return fetchPlatformHotBrowser(q,channel);
+  try{
+    return await fetchPlatformHotFromServer(q,channel);
+  }catch(e){
+    if(isGithubPages())return fetchPlatformHotBrowser(q,channel);
+    throw e;
+  }
 }
 function itemUpdateTs(it){
   return normalizeHotPubTime(it.updatedAt)||normalizeHotPubTime(it.publishedAt)||normalizeHotPubTime(it.syncedAt)||0;
@@ -1515,13 +1713,25 @@ async function search(silent){
       const fallback=loadHotCache(chAtStart,q);
       if(fallback.length){
         setHotListUI(fallback,chLabel,{fromCache:true,silent,fetchFail:true});
+      }else if(shouldUseBrowserHot()){
+        err(chLabel+' 拉取失败：'+((e&&e.message)||'请下拉刷新'));
+        $('cnt').textContent=chLabel+' · 加载失败';
+        S.items=[];S.allItems=[];
       }else{
         let online=await pingHotApi();
         if(!online){
-          online=await ensureHotService(false);
-          if(online)return search(silent);
-          err('热榜服务未连接：'+hotServiceHint());
-          $('cnt').textContent=chLabel+' · 未连接';
+          if(isGithubPages()){
+            await ensureHotApiConfigured();
+            online=await pingHotApi();
+          }
+          if(!online){
+            online=await ensureHotService(false);
+            if(online)return search(silent);
+          }
+          if(!online){
+            err('热榜服务未连接：'+hotServiceHint());
+            $('cnt').textContent=chLabel+' · 未连接';
+          }else return search(silent);
         }else{
           err(chLabel+' 拉取失败：'+((e&&e.message)||'请稍后点「立即更新」'));
           $('cnt').textContent=chLabel+' · 连接异常';
@@ -2091,7 +2301,7 @@ function setupAnalyzeModal(){
   drop.ondragleave=()=>{drop.style.borderColor=''};
   drop.ondrop=e=>{e.preventDefault();drop.style.borderColor='';addAnalyzeFiles(e.dataTransfer.files)};
 }
-$('btnSettings').onclick=()=>{const g=gs(),db=gsDoubao();$('apiKey').value=g.k;$('apiBase').value=g.b;if($('orgModel'))$('orgModel').value=localStorage.getItem('fwz_chat_model')||chatModel();if($('doubaoKey'))$('doubaoKey').value=db.k;if($('doubaoEp'))$('doubaoEp').value=db.ep;if($('doubaoModel'))$('doubaoModel').value=db.model;if($('hotApi'))$('hotApi').value=localStorage.getItem('fwz_hot_api')||getHotApiBase();setDemoUI();$('modal').classList.add('show')};
+$('btnSettings').onclick=()=>{const g=gs(),db=gsDoubao();$('apiKey').value=g.k;$('apiBase').value=g.b;if($('orgModel'))$('orgModel').value=localStorage.getItem('fwz_chat_model')||chatModel();if($('doubaoKey'))$('doubaoKey').value=db.k;if($('doubaoEp'))$('doubaoEp').value=db.ep;if($('doubaoModel'))$('doubaoModel').value=db.model;if($('hotApi'))$('hotApi').value=localStorage.getItem('fwz_hot_api')||getConfiguredApiBase()||'';if(isGithubPages())showGithubApiSetup(false);setDemoUI();$('modal').classList.add('show')};
 $('btnClose').onclick=()=>$('modal').classList.remove('show');
 document.querySelectorAll('[data-api-preset]').forEach(btn=>{btn.onclick=()=>applyApiPreset(btn.dataset.apiPreset)});
 if($('btnTestApi'))$('btnTestApi').onclick=()=>testOrgApi();
@@ -2102,7 +2312,18 @@ $('btnSave').onclick=()=>{
   if($('orgModel'))localStorage.setItem('fwz_chat_model',$('orgModel').value.trim());
   if(key&&$('useDemo')&&$('useDemo').checked){$('useDemo').checked=false;localStorage.setItem('fwz_demo','0')}
   else localStorage.setItem('fwz_demo',$('useDemo').checked?'1':'0');
-  if($('hotApi'))localStorage.setItem('fwz_hot_api',$('hotApi').value.trim());
+  if($('hotApi')){
+    const hot=$('hotApi').value.trim().replace(/\/$/,'');
+    localStorage.setItem('fwz_hot_api',hot);
+    resetApiDiscover();
+    if(hot&&isGithubPages()){
+      updateGhSetupBanner();
+      probeHotApiBase(hot).then(okApi=>{
+        if(okApi){ok('热榜服务已连接');if(S.hotChannel)search(true)}
+        else err('地址无法访问 /api/hot，请确认已在 Vercel 部署本仓库');
+      });
+    }
+  }
   if($('doubaoKey'))localStorage.setItem('fwz_doubao_key',$('doubaoKey').value.trim());
   if($('doubaoEp'))localStorage.setItem('fwz_doubao_ep',$('doubaoEp').value.trim()||'https://ark.cn-beijing.volces.com/api/v3');
   if($('doubaoModel'))localStorage.setItem('fwz_doubao_model',$('doubaoModel').value.trim()||'doubao-seedream-4-0-250828');
@@ -2146,14 +2367,24 @@ function normalizeActiveCat(){
     document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.c==='all'));
   }
 }
+if($('ghBannerOpenApi'))$('ghBannerOpenApi').onclick=()=>showGithubApiSetup(true);
 (async function boot(){
   normalizeActiveCat();
-  if(isGithubPages())await loadPublicConfig();
+  if(isGithubPages()){
+    await loadPublicConfig();
+    await loadHotCacheBundle();
+    updateGhSetupBanner();
+    if(getConfiguredApiBase()){
+      const linked=await ensureHotApiConfigured();
+      updateGhSetupBanner();
+      if(linked&&!sessionStorage.getItem('fwz_api_linked')){
+        sessionStorage.setItem('fwz_api_linked','1');
+        ok('已连接 Vercel 热榜服务');
+      }
+    }
+  }
   const needHot=isLocalDev();
   if(needHot)tryWakeHotServer();
-  if(isGithubPages()&&!getConfiguredApiBase()&&!localStorage.getItem('fwz_hot_api')){
-    ok('当前为 GitHub 在线页：请在「API 设置」填写 Vercel 部署地址（热榜/AI 接口）');
-  }
   syncServerAiConfig().then(()=>setDemoUI());
   search(false).catch(e=>{
     console.error(e);

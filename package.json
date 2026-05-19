@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node gen.mjs && next build",
+    "build": "node gen.mjs",
     "start": "next start",
     "lint": "next lint",
     "gen": "node gen.mjs"

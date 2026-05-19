@@ -236,6 +236,7 @@ textarea{min-height:120px;resize:vertical}
       <button type="button" class="ch-tab" data-ch="zhihu">知乎热榜</button>
       <button type="button" class="ch-tab" data-ch="bilibili">哔哩哔哩</button>
       <button type="button" class="ch-tab" data-ch="xiaohongshu">小红书</button>
+      <button type="button" class="ch-tab" data-ch="wechat">公众号</button>
     </div>
     <div class="discover-meta">
       <span class="hint" id="cnt">加载中…</span>
@@ -250,7 +251,7 @@ textarea{min-height:120px;resize:vertical}
     <h2>内容审核</h2>
     <p class="hint workspace-hint">左侧选选题 · 粘贴链接抓取 · 右侧编辑标题与正文</p>
     <div class="review-toolbar row">
-      <input type="text" id="reviewUrl" placeholder="粘贴网页 / 知乎 / B站 / 新闻链接…"/>
+      <input type="text" id="reviewUrl" placeholder="粘贴网页 / 微信公众号(mp.weixin.qq.com) / 知乎 / B站…"/>
       <button type="button" class="btn btn-p" id="btnFetchUrl">抓取链接</button>
     </div>
     <input type="file" id="file" class="hidden" accept=".txt,.md,.json,.csv,.html,.pdf"/>

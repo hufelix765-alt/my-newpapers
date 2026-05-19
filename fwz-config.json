@@ -5,5 +5,9 @@
     "https://fawenzhang.vercel.app"
   ],
   "vercelDeployUrl": "https://vercel.com/new/clone?repository-url=https://github.com/hufelix765-alt/my-newpapers",
-  "siteName": "发文张"
+  "siteName": "发文张",
+  "wechatFeeds": [
+    {"u": "https://rsshub.app/wechat/sogou/%E8%BD%A6%E4%B8%9C%E8%A5%BF", "s": "车东西"},
+    {"u": "https://rsshub.app/wechat/sogou/%E4%B8%93%E5%88%A9%E9%A1%BE%E8%81%98", "s": "专利顾聘"}
+  ]
 }

@@ -26,7 +26,14 @@ const S={
   mediaMode:localStorage.getItem('fwz_media_mode')||'img',vidTool:localStorage.getItem('fwz_vid_tool')||'jimeng'
 };
 const VIDEO_TOOLS={jimeng:{name:'即梦 AI',url:'https://jimeng.jianying.com/ai-tool/video/generate'},vidu:{name:'Vidu',url:'https://www.vidu.cn/create'},kling:{name:'可灵 AI',url:'https://klingai.kuaishou.com/'}};
-const HOT_CH={all:{p:'',label:'全部热榜'},toutiao:{p:'toutiao',label:'今日头条'},baidu:{p:'baidu',label:'百度热搜'},weibo:{p:'weibo',label:'微博'},douyin:{p:'douyin',label:'抖音'},zhihu:{p:'zhihu',label:'知乎热榜'},bilibili:{p:'bilibili',label:'哔哩哔哩'},xiaohongshu:{p:'xiaohongshu',label:'小红书'}};
+const HOT_CH={all:{p:'',label:'全部热榜'},toutiao:{p:'toutiao',label:'今日头条'},baidu:{p:'baidu',label:'百度热搜'},weibo:{p:'weibo',label:'微博'},douyin:{p:'douyin',label:'抖音'},zhihu:{p:'zhihu',label:'知乎热榜'},bilibili:{p:'bilibili',label:'哔哩哔哩'},xiaohongshu:{p:'xiaohongshu',label:'小红书'},wechat:{p:'wechat',label:'微信公众号'}};
+const WECHAT_OA_FEEDS=[
+  {u:'https://rsshub.app/wechat/sogou/%E8%BD%A6%E4%B8%9C%E8%A5%BF',s:'车东西',c:'公众号'},
+  {u:'https://rsshub.app/wechat/sogou/%E6%B1%BD%E8%BD%A6%E4%B9%8B%E5%BF%83',s:'汽车之心',c:'公众号'},
+  {u:'https://rsshub.app/wechat/sogou/%E4%B8%93%E5%88%A9%E9%A1%BE%E8%81%98',s:'专利顾聘',c:'公众号'},
+  {u:'https://rsshub.app/wechat/sogou/%E7%9F%A5%E4%BA%A7%E5%8A%9B',s:'知产力',c:'公众号'},
+  {u:'https://rsshub.rssforever.com/wechat/sogou/36%E6%B0%AA',s:'36氪',c:'公众号'}
+];
 const PUB_PLAT={zhihu:'知乎',xhs:'小红书'};
 const ZH_CAT={article:'专栏文章',answer:'回答问题',pin:'想法',note:'图文笔记',video:'视频笔记'};
 const $=id=>document.getElementById(id);
@@ -238,6 +245,7 @@ function isArticleUrl(u){
   const s=String(u||'').trim();
   return /^https?:\/\//i.test(s)&&!isSearchUrl(s);
 }
+function isWechatArticleUrl(u){return /mp\.weixin\.qq\.com\/s\//i.test(String(u||''));}
 function buildSearchUrl(it){
   const title=String(it?.title||'').trim();
   if(!title)return '';
@@ -255,7 +263,7 @@ function normalizeArticleUrl(it){
 }
 function getArticleUrl(it){return normalizeArticleUrl(it)}
 function resolveItemUrl(it){return getArticleUrl(it)}
-const OPEN_LINK_LABELS={douyin:'去抖音热榜 →',baidu:'去百度查看 →',weibo:'去微博查看 →',zhihu:'去知乎查看 →',bilibili:'去B站查看 →',xiaohongshu:'去小红书查看 →',toutiao:'去头条查看 →'};
+const OPEN_LINK_LABELS={douyin:'去抖音热榜 →',baidu:'去百度查看 →',weibo:'去微博查看 →',zhihu:'去知乎查看 →',bilibili:'去B站查看 →',xiaohongshu:'去小红书查看 →',toutiao:'去头条查看 →',wechat:'阅读原文 →'};
 function getOpenLink(it){
   const direct=getArticleUrl(it);
   if(direct)return {href:direct,text:'阅读原文 →'};
@@ -488,8 +496,8 @@ function dedupeFeeds(feeds){
 }
 function getTopicFeeds(cat){
   const c=cat||S.cat;
-  if(isPatentCategory(c))return dedupeFeeds([...PAT_FEEDS,...PAT_EXTRA_FEEDS,...CAR_FEEDS]);
-  if(isCarCategory(c))return dedupeFeeds([...CAR_FEEDS,...CAR_EXTRA_FEEDS,...PAT_FEEDS]);
+  if(isPatentCategory(c))return dedupeFeeds([...PAT_FEEDS,...PAT_EXTRA_FEEDS,...WECHAT_OA_FEEDS]);
+  if(isCarCategory(c))return dedupeFeeds([...CAR_FEEDS,...CAR_EXTRA_FEEDS,...WECHAT_OA_FEEDS]);
   return [];
 }
 function isPatentCategory(cat){const c=cat||S.cat;return c==='patent'||PAT_CAT_KEYS.includes(c)}
@@ -502,6 +510,24 @@ function fromPatChannel(it){
   return /toutiao|zhihu|weibo|douyin|baidu|xiaohongshu|amazon|weixin|mp\.weixin/i.test(u);
 }
 function hasPatentSignal(tx){return PAT_BASE_KW.some(k=>tx.includes(k))||/CN\d{9,}/.test(tx)}
+function hasPatentSignalStrict(tx){
+  const t=String(tx||'');
+  if(/专利/.test(t))return true;
+  if(/CN\d{9,}/.test(t))return true;
+  return /发明专利|实用新型|外观设计|知识产权|专利局|专利申请|专利授权|专利公开|专利权|专利布局|PCT/i.test(t);
+}
+function matchPatentStrict(it,cat){
+  const tx=itemText(it);
+  if(!hasPatentSignalStrict(tx))return false;
+  const c=cat||S.cat;
+  if(c!=='patent')return matchPatentCategory(it,c);
+  return true;
+}
+function matchPatentForCat(it,cat){
+  const c=cat||S.cat;
+  if(c==='patent')return matchPatentStrict(it,c);
+  return matchPatentCategoryBroad(it,c);
+}
 function hasCommerceSignal(tx){return PAT_COMMERCE_KW.some(k=>tx.includes(k))}
 function patentDomainKw(cat){
   if(cat==='patent')return PAT_HOME_DOMAIN.concat(PAT_CAR_DOMAIN,PAT_SEAT_DOMAIN);
@@ -510,7 +536,7 @@ function patentDomainKw(cat){
 function matchDomain(tx,cat){const dom=patentDomainKw(cat);return dom.some(k=>tx.includes(k))}
 function matchPatentCategory(it,cat){
   const c=cat||S.cat;
-  if(c==='patent')return matchPatentCategoryBroad(it,'patHome')||matchPatentCategoryBroad(it,'patCar')||matchPatentCategoryBroad(it,'patSeat');
+  if(c==='patent')return matchPatentStrict(it,c);
   const tx=itemText(it);
   const dom=matchDomain(tx,c);
   const pat=hasPatentSignal(tx);
@@ -599,14 +625,22 @@ function attachReadUrlsToItems(items,pool){
 }
 function enrichPatentItem(it){
   const tx=itemText(it);const cat=S.cat;
+  ensureItemTimes(it);
+  if(!it.updatedAt&&it.publishedAt)it.updatedAt=it.publishedAt;
   it.patHit=[];
-  if(hasPatentSignal(tx))it.patHit.push('专利');
+  if(hasPatentSignalStrict(tx))it.patHit.push('专利');
+  else if(hasPatentSignal(tx))it.patHit.push('知产');
   if(hasCommerceSignal(tx))it.patHit.push('新品');
   if(fromPatChannel(it))it.patHit.push('热榜');
   if(/外贸|跨境|出海|亚马逊|Amazon/i.test(tx))it.patHit.push('外贸');
   if(cat==='patHome'&&matchDomain(tx,'patHome'))it.patSub='家电';
   else if(cat==='patCar'&&matchDomain(tx,'patCar'))it.patSub='汽车';
   else if(cat==='patSeat'&&matchDomain(tx,'patSeat'))it.patSub='座椅';
+  else if(cat==='patent'){
+    if(matchDomain(tx,'patSeat'))it.patSub='座椅';
+    else if(matchDomain(tx,'patCar')||CAR_KW.some(k=>tx.includes(k)))it.patSub='汽车';
+    else if(matchDomain(tx,'patHome'))it.patSub='家电';
+  }
   if(hasCommerceSignal(tx))it.isNew=true;
   const au=getArticleUrl(it);
   if(au)it.url=au;
@@ -642,24 +676,19 @@ function getPatentItems(){
   const d=getDefaultPatent();
   try{
     const s=localStorage.getItem('fwz_patent');
-    if(s){const a=JSON.parse(s);if(a&&a.length>=MIN_DISPLAY)return a.map(x=>enrichPatentItem({...x}))}
-    if(s){const a=JSON.parse(s);if(a&&a.length){const merged=dedupeByTitle([...d,...a.map(x=>enrichPatentItem({...x}))]);localStorage.setItem('fwz_patent',JSON.stringify(merged));return merged}}
+    if(s){const a=JSON.parse(s);if(a&&a.length>=MIN_DISPLAY)return sortHotByUpdate(a.map(x=>enrichPatentItem({...x})))}
+    if(s){const a=JSON.parse(s);if(a&&a.length){const merged=sortHotByUpdate(dedupeByTitle([...d,...a.map(x=>enrichPatentItem({...x}))]));localStorage.setItem('fwz_patent',JSON.stringify(merged));return merged}}
   }catch(e){}
-  localStorage.setItem('fwz_patent',JSON.stringify(d));return d;
+  localStorage.setItem('fwz_patent',JSON.stringify(d));return sortHotByUpdate(d);
 }
 function pickDisplayItemsPatent(list){
   const cat=S.cat;
   const pool=expandByDate((list||[]).filter(isNewsItem).map(it=>enrichPatentItem({...it,c:CAT[cat]||it.c})),MIN_DISPLAY);
-  let baked=getPatentItems().filter(it=>matchPatentCategoryBroad(it,cat));
-  let merged=dedupeByTitle([...pool,...baked]);
-  if(merged.length<MIN_DISPLAY)merged=dedupeByTitle([...merged,...getPatentItems().filter(it=>matchPatentCategoryBroad(it,cat))]);
+  let baked=getPatentItems().filter(it=>matchPatentForCat(it,cat));
+  let merged=dedupeByTitle([...pool.filter(it=>matchPatentForCat(it,cat)),...baked]);
+  if(merged.length<MIN_DISPLAY)merged=dedupeByTitle([...merged,...getPatentItems().filter(it=>matchPatentForCat(it,cat))]);
   merged=attachReadUrlsToItems(merged,[...list,...pool,...merged]);
-  merged.sort((a,b)=>{
-    const au=getArticleUrl(a)?1:0, bu=getArticleUrl(b)?1:0;
-    if(bu!==au)return bu-au;
-    return rankScore(b)-rankScore(a);
-  });
-  return merged.slice(0,DISPLAY_MAX_TOPIC);
+  return sortHotByUpdate(merged).slice(0,DISPLAY_MAX_TOPIC);
 }
 async function hydrateListReadUrls(){
   if(!isSpecialtyCategory(S.cat))return;
@@ -670,23 +699,28 @@ async function hydrateListReadUrls(){
     const per=isPatentCategory(S.cat)?RSS_PER_FEED_PAT:RSS_PER_FEED_CAR;
     const out=await fetchAllFeeds(feeds,per,{minRaw:40});
     const enrichFn=isPatentCategory(S.cat)?enrichPatentItem:enrichCarItem;
-    const matchBroad=isPatentCategory(S.cat)?matchPatentCategoryBroad:matchCarCategoryBroad;
+    const matchBroad=isPatentCategory(S.cat)?matchPatentForCat:matchCarCategoryBroad;
     const extra=out.filter(isNewsItem).map(it=>enrichFn({...it,c:CAT[S.cat]})).filter(it=>matchBroad(it,S.cat));
-    S.allItems=dedupeByTitle([...(S.allItems||[]),...extra]);
-    S.items=attachReadUrlsToItems(S.items,S.allItems);
+    S.allItems=sortHotByUpdate(dedupeByTitle([...(S.allItems||[]),...extra]));
+    S.items=sortHotByUpdate(attachReadUrlsToItems(S.items,S.allItems));
     drawList();
   }catch(e){}
 }
 function applySpecialtyList(cat,label,list,q,silent,t0,phase){
   const enrichFn=isPatentCategory(cat)?enrichPatentItem:enrichCarItem;
-  const matchBroad=isPatentCategory(cat)?matchPatentCategoryBroad:matchCarCategoryBroad;
+  const matchBroad=isPatentCategory(cat)?matchPatentForCat:matchCarCategoryBroad;
   const pickFn=isPatentCategory(cat)?pickDisplayItemsPatent:pickDisplayItemsCar;
   let enriched=list.filter(isNewsItem).map(it=>enrichFn({...it,c:label}));
   if(q)enriched=enriched.filter(it=>matchQ(it,q));
-  const related=stampListTimes(dedupeByTitle(enriched.filter(it=>matchBroad(it,cat))));
+  let related=enriched.filter(it=>matchBroad(it,cat));
+  if(isPatentCategory(cat)&&!q){
+    const hotPat=enriched.filter(it=>it.isHotList&&matchPatentStrict(it,cat));
+    related=dedupeByTitle(hotPat.concat(related.filter(it=>!it.isHotList||matchPatentStrict(it,cat))));
+  }
+  related=sortHotByUpdate(stampListTimes(dedupeByTitle(related)));
   S.allItems=related;
-  S.items=pickFn(related);
-  if(q)S.items=S.items.filter(it=>matchQ(it,q));
+  S.items=sortHotByUpdate(pickFn(related));
+  if(q)S.items=sortHotByUpdate(S.items.filter(it=>matchQ(it,q)));
   const st=S.lastFetchStats||{},sec=((Date.now()-(t0||Date.now()))/1000).toFixed(1);
   $('cnt').textContent=label+' · 展示 '+S.items.length+' 条 / 入库 '+S.allItems.length+' 条 · '+sec+'秒'+(phase==='bg'?' · 后台补充':(st.total?' · 源 '+st.ok+'/'+st.total:''));
   drawList();
@@ -700,7 +734,8 @@ async function loadSpecialtyCategory(silent,q){
   const gen=++S.specialtyLoadGen;
   const t0=Date.now();
   if(!silent)$('cnt').textContent=label+' · 正在快速抓取（目标 10 秒内）…';
-  const hotP=fetchPlatformHot(q,'all').then(r=>r.list||[]).catch(()=>[]);
+  const hotQ=isPatentCategory(cat)&&!q?'专利':q;
+  const hotP=fetchPlatformHot(hotQ,'all').then(r=>(r.list||[]).filter(it=>!isPatentCategory(cat)||matchPatentStrict(it,cat))).catch(()=>[]);
   const rssP=fetchAllFeeds(feeds,Math.min(per,20),{fast:true,deadlineMs:FAST_UPDATE_MS,minRaw:12});
   const [hotList,rssOut]=await Promise.all([hotP,rssP]);
   if(gen!==S.specialtyLoadGen)return;
@@ -1267,6 +1302,7 @@ function filterHotByChannel(list,channel){
   const ch=channel||S.hotChannel||'all';
   const cfg=HOT_CH[ch]||HOT_CH.all;
   if(!cfg.p)return list;
+  if(cfg.p==='wechat')return list.filter(it=>it.platform==='wechat'||isWechatArticleUrl(it.url));
   return list.filter(it=>it.platform===cfg.p);
 }
 function cardTags(it){
@@ -1278,6 +1314,7 @@ function cardTags(it){
     if(it.rank)h+='<span class="tag tag-rank">#'+esc(String(it.rank))+'</span>';
     h+='<span class="tag tag-src'+(srcOk?'':' tag-warn')+'">'+esc(it.src||'热榜')+'</span>';
     if(it.heat)h+='<span class="tag tag-heat">热度 '+esc(it.heat)+'</span>';
+    else if(it.platform==='wechat')h+='<span class="tag tag-learn">公众号</span>';
     else h+='<span class="tag tag-hot">热榜</span>';
     return h+cardTimeTags(it);
   }
@@ -1474,7 +1511,8 @@ function scoreValue(it){
   else if((it.src||'').match(/IT之家|少数派|爱范儿|量子位|雷锋网|极客公园|36氪|Solidot|HN|阮一峰/)&&t.length>12)s+=2;
   if(it.c==='科技')s+=2;
   if(isCarCat()||CAR_KW.some(k=>t.includes(k)))s+=2;
-  if(isPatentCat()||hasPatentSignal(t))s+=3;
+  if(isPatentCat()&&hasPatentSignalStrict(t))s+=4;
+  else if(isPatentCat()||hasPatentSignal(t))s+=3;
   if(PAT_COMMERCE_KW.some(k=>t.includes(k)))s+=2;
   if(fromPatChannel({title:t,body:t,url:t}))s+=2;
   if(CAR_INT_KW.some(k=>t.includes(k)))s+=2;
@@ -1516,9 +1554,10 @@ function applyValuableFilter(list){
   const only=$('onlyValuable').checked;
   const min=getValuableMinScore(list.length);
   let arr=list.filter(isNewsItem).map(it=>({...it,score:scoreValue(it)}));
-  arr.sort((a,b)=>rankScore(b)-rankScore(a));
-  if(only)arr=arr.filter(it=>it.score>=min||(it.isHot&&it.score>=2)||(it.isNew&&it.score>=2)||(it.isLearn&&it.score>=2)||(it.isHot&&it.isLearn)||(it.c==='科技'&&it.score>=2)||(isCarCat()&&matchCarCategory(it,S.cat))||(isPatentCat()&&matchPatentCategory(it,S.cat)));
-  return arr;
+  if(isPatentCat()||isCarCat()||S.hotChannel)arr=sortHotByUpdate(arr);
+  else arr.sort((a,b)=>rankScore(b)-rankScore(a));
+  if(only)arr=arr.filter(it=>it.score>=min||(it.isHot&&it.score>=2)||(it.isNew&&it.score>=2)||(it.isLearn&&it.score>=2)||(it.isHot&&it.isLearn)||(it.c==='科技'&&it.score>=2)||(isCarCat()&&matchCarCategory(it,S.cat))||(isPatentCat()&&matchPatentForCat(it,S.cat)));
+  return isPatentCat()||isCarCat()||S.hotChannel?sortHotByUpdate(arr):arr;
 }
 function pickDisplayItemsCar(list){
   const cat=S.cat;
@@ -1527,12 +1566,7 @@ function pickDisplayItemsCar(list){
   let merged=dedupeByTitle([...pool,...baked]);
   if(merged.length<MIN_DISPLAY)merged=dedupeByTitle([...merged,...getCarItems().filter(it=>matchCarCategoryBroad(it,cat))]);
   merged=attachReadUrlsToItems(merged,[...list,...pool,...merged]);
-  merged.sort((a,b)=>{
-    const au=getArticleUrl(a)?1:0, bu=getArticleUrl(b)?1:0;
-    if(bu!==au)return bu-au;
-    return rankScore(b)-rankScore(a);
-  });
-  return merged.slice(0,DISPLAY_MAX_TOPIC);
+  return sortHotByUpdate(merged).slice(0,DISPLAY_MAX_TOPIC);
 }
 function filterOneMonth(list){
   return expandByDate(list.filter(isNewsItem),MIN_DISPLAY);
@@ -1733,6 +1767,7 @@ async function search(silent){
     toggleHotFilterUI();
     const chAtStart=S.hotChannel;
     const chLabel=(HOT_CH[chAtStart]||HOT_CH.all).label;
+    if(chAtStart==='wechat'){await loadWechatChannel(silent,q);return}
     const gen=++S.hotSearchGen;
     const cached=loadHotCache(chAtStart,q);
     if(cached.length)setHotListUI(cached,chLabel,{fromCache:true,silent:true});
@@ -2244,10 +2279,60 @@ function extractVideoPageText(html,url){
   }
   return [...new Set(parts)].join('\n').replace(/\s+/g,' ').trim().slice(0,5000);
 }
+async function fetchWechatFeedServer(limit){
+  const base=(getConfiguredApiBase()||getHotApiBase()||'').replace(/\/$/,'');
+  if(!base)return null;
+  try{
+    const r=await fetch(base+'/api/wechat-feed?limit='+(limit||30),{cache:'no-store'});
+    return r.ok?await r.json():null;
+  }catch(e){return null}
+}
+async function loadWechatChannel(silent,q){
+  S.viewFavs=false;
+  toggleHotFilterUI();
+  const chLabel=HOT_CH.wechat.label;
+  const gen=++S.hotSearchGen;
+  if(!silent){$('btnSearch').disabled=true;$('cnt').textContent='正在抓取公众号…'}
+  let list=[];
+  try{
+    const api=await fetchWechatFeedServer(40);
+    if(api&&api.items&&api.items.length){
+      list=api.items.map((it,i)=>enrichHotItem({...it,platform:'wechat',source:it.source||'微信公众号',src:it.source||'微信公众号'},i,'wechat'));
+      S.lastFetchStats={total:api.meta&&api.meta.accountsTotal||6,ok:api.meta&&api.meta.accountsOk||1,raw:list.length,channel:'wechat'};
+    }
+    if(list.length<10){
+      const rss=await fetchAllFeeds(WECHAT_OA_FEEDS,8,{fast:true,deadlineMs:18000,minRaw:6});
+      rss.filter(it=>isWechatArticleUrl(it.url)).forEach((it,i)=>{
+        list.push(enrichHotItem({...it,platform:'wechat',src:it.src||'公众号',source:'公众号'},list.length+i,'wechat'));
+      });
+    }
+    const bundle=await loadHotCacheBundle();
+    if(bundle&&Array.isArray(bundle.items)){
+      bundle.items.filter(it=>isWechatArticleUrl(it.url)).forEach((it,i)=>{
+        list.push(enrichHotItem(it,list.length+i,'wechat'));
+      });
+    }
+    list=sortHotByUpdate(dedupeByTitle(list));
+    if(q)list=list.filter(it=>matchQ(it,q));
+    if(gen!==S.hotSearchGen||S.hotChannel!=='wechat')return;
+    if(list.length){
+      saveHotCache('wechat',list);
+      setHotListUI(list,chLabel,{fromCache:false,silent});
+    }else{
+      const cached=loadHotCache('wechat',q);
+      if(cached.length)setHotListUI(cached,chLabel,{fromCache:true,silent});
+      else{setHotListUI([],chLabel,{fromCache:false,silent});if(!silent)ok('公众号源暂不可用，请粘贴 mp.weixin.qq.com 链接到右侧抓取')}
+    }
+  }catch(e){
+    if(!silent)err('公众号抓取失败：'+(e.message||'请稍后重试'));
+  }
+  drawList();
+  if(!silent)$('btnSearch').disabled=false;
+}
 async function fetchUrlContent(url,it){
   const sv=await fetchUrlContentServer(url);
   if(sv.text&&sv.text.length>60&&!isLikelyCode(sv.text))return{title:sv.title||'',text:sv.text,url:sv.url||url,isVideo:!!(it&&it.isVideo)||isVideoUrl(url,it),err:sv.err};
-  if(sv.err&&!sv.text)return{title:'',text:'',err:sv.err};
+  if(sv.err&&!sv.text&&!isWechatArticleUrl(url))return{title:'',text:'',err:sv.err};
   try{
     const html=await fetchRssText(url);
     if(!html)return{title:'',text:'',err:'无法抓取该链接'};

@@ -1,0 +1,20 @@
+发文张 · GitHub 网页更新（不用 Vercel）
+================================
+
+若 git push 不方便，用浏览器改 1 个文件即可：
+
+1. 打开 https://github.com/hufelix765-alt/my-newpapers
+2. 点仓库里的 index.html → 铅笔 Edit
+3. 用本电脑「fawenzhang」文件夹里的 index.html 全部内容覆盖粘贴
+4. 下方 Commit changes
+5. 等 1～3 分钟，手机打开并强制刷新：
+   https://hufelix765-alt.github.io/my-newpapers/
+
+新版特点：
+- 热榜数据已写在 index.html 里，不依赖 hot-cache.json 是否上传成功
+- 百度/微博/抖音/知乎手机浏览器直连
+- 不再出现「热榜服务未连接」红色提示
+
+本地重新生成 index.html（可选）：
+  npx tsx scripts/fetch-hot-runner.mts
+  node gen.mjs

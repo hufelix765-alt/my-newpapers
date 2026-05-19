@@ -959,12 +959,19 @@ async function loadPublicConfig(){
   return _publicConfig||{};
 }
 function getConfiguredApiBase(){
+  if(isGithubPages())return '';
   const saved=(localStorage.getItem('fwz_hot_api')||'').replace(/\/$/,'');
   if(saved)return saved;
   const cfg=_publicConfig||{};
   const fromCfg=String(cfg.apiBase||'').replace(/\/$/,'');
   if(fromCfg)return fromCfg;
   return '';
+}
+function getEmbeddedHotBundle(){
+  try{
+    const raw=typeof EMBEDDED_HOT_BUNDLE!=='undefined'?EMBEDDED_HOT_BUNDLE:null;
+    return raw&&raw.items&&raw.items.length?raw:null;
+  }catch(e){return null}
 }
 let _discoverPromise=null;
 function resetApiDiscover(){_discoverPromise=null;}
@@ -1067,7 +1074,7 @@ function getHotApiBase(){
   return 'http://localhost:3000';
 }
 function shouldUseBrowserHot(){
-  return isGithubPages()&&!getConfiguredApiBase();
+  return isGithubPages();
 }
 function hotServiceHint(){
   if(shouldUseBrowserHot())
@@ -1078,6 +1085,8 @@ let _hotBundle;
 let _hotBundleLoad;
 async function loadHotCacheBundle(){
   if(_hotBundle!==undefined)return _hotBundle;
+  const embedded=getEmbeddedHotBundle();
+  if(embedded){_hotBundle=embedded;return _hotBundle;}
   if(!_hotBundleLoad){
     _hotBundleLoad=(async()=>{
       if(!/^https?:/.test(location.protocol))return null;
@@ -1087,7 +1096,7 @@ async function loadHotCacheBundle(){
       }catch(e){return null}
     })();
   }
-  _hotBundle=await _hotBundleLoad;
+  _hotBundle=await _hotBundleLoad||getEmbeddedHotBundle();
   return _hotBundle;
 }
 async function ghFetchJson(url,ref){
@@ -1218,6 +1227,7 @@ async function waitForHotApi(opts){
   return false;
 }
 async function ensureHotService(silent){
+  if(shouldUseBrowserHot())return true;
   if(await pingHotApi())return true;
   if(!isLocalDev()){
     if(!silent)err('热榜连接失败，'+hotServiceHint());
@@ -1745,30 +1755,24 @@ async function search(silent){
       const fallback=loadHotCache(chAtStart,q);
       if(fallback.length){
         setHotListUI(fallback,chLabel,{fromCache:true,silent,fetchFail:true});
-      }else if(shouldUseBrowserHot()){
-        err(chLabel+' 拉取失败：'+((e&&e.message)||'请下拉刷新'));
-        $('cnt').textContent=chLabel+' · 加载失败';
-        S.items=[];S.allItems=[];
       }else{
-        let online=await pingHotApi();
-        if(!online){
-          if(isGithubPages()){
-            await ensureHotApiConfigured();
-            online=await pingHotApi();
-          }
-          if(!online){
-            online=await ensureHotService(false);
-            if(online)return search(silent);
-          }
-          if(!online){
-            err('热榜服务未连接：'+hotServiceHint());
-            $('cnt').textContent=chLabel+' · 未连接';
-          }else return search(silent);
+        const bundle=await loadHotCacheBundle();
+        const pKey=(HOT_CH[chAtStart]&&HOT_CH[chAtStart].p)||'';
+        const fromEmbed=(bundle&&bundle.items||[]).filter(it=>!pKey||(it.platform||'')===pKey);
+        if(fromEmbed.length){
+          const list=fromEmbed.map((it,i)=>enrichHotItem(it,i,it.platform)).filter(it=>!q||matchQ(it,q));
+          saveHotCache(chAtStart,list);
+          setHotListUI(list,chLabel,{fromCache:true,silent,fetchFail:true});
+        }else if(isGithubPages()){
+          $('cnt').textContent=chLabel+' · 加载失败，请刷新';
         }else{
-          err(chLabel+' 拉取失败：'+((e&&e.message)||'请稍后点「立即更新」'));
-          $('cnt').textContent=chLabel+' · 连接异常';
+          let online=await pingHotApi();
+          if(!online)online=await ensureHotService(false);
+          if(online)return search(silent);
+          err('热榜服务未连接：'+hotServiceHint());
+          $('cnt').textContent=chLabel+' · 未连接';
+          S.items=[];S.allItems=[];
         }
-        S.items=[];S.allItems=[];
       }
     }
     drawList();

@@ -337,7 +337,22 @@ textarea{min-height:120px;resize:vertical}
 function buildScript() {
   let code = readFileSync(join(__dirname, 'client.js'), 'utf8');
   code = code.replace(/<\/script/gi, '<\\/script');
-  return '<script>\n' + code + '\n</script>';
+  const cachePath = join(__dirname, 'public', 'hot-cache.json');
+  let bundle = 'null';
+  try {
+    bundle = readFileSync(cachePath, 'utf8').trim();
+    JSON.parse(bundle);
+    bundle = bundle.replace(/<\/script/gi, '<\\/script');
+  } catch {
+    bundle = 'null';
+  }
+  return (
+    '<script>\nconst EMBEDDED_HOT_BUNDLE=' +
+    bundle +
+    ';\n' +
+    code +
+    '\n</script>'
+  );
 }
 const html = buildHtml();
 writeFileSync(outPath, html, 'utf8');
